@@ -1,0 +1,37 @@
+# --- secrets ---
+.env
+
+# --- client / reference material (never committed; see README "Inputs you must supply") ---
+*.xlsx
+*.xls
+*.docx
+~$*
+April/
+May/
+June/
+July/
+August/
+September/
+October/
+November/
+December/
+January/
+February/
+March/
+New folder/
+oem market/
+
+# --- run artefacts and caches ---
+outputs/
+data/cache.sqlite
+data/*.txt
+data/corpus/opinions.json
+data/corpus/mimic_test.json
+system.log
+*.log
+
+# --- python ---
+__pycache__/
+*.pyc
+.venv/
+venv/

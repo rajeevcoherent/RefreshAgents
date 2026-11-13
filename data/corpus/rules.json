@@ -1,0 +1,496 @@
+[
+ {
+  "id": "R1",
+  "statement": "Forecast minus historical CAGR is typically 0.4–1.1 percentage points.",
+  "lhs": "growth.fcst_minus_hist",
+  "op": "between",
+  "rhs": [
+   0.004,
+   0.011
+  ],
+  "scope": null,
+  "kind": "house_convention",
+  "rationale": "Analysts set forecasts modestly above history by a consistent margin.",
+  "use": "Outside this band needs market-specific evidence before acceptance.",
+  "train_n": 43,
+  "train_support": 0.86,
+  "test_n": 15,
+  "test_support": 0.867,
+  "support": 0.862,
+  "status": "kept"
+ },
+ {
+  "id": "R2",
+  "statement": "Root forecast CAGR usually falls between 4.7% and 13.7%.",
+  "lhs": "growth.fcst_cagr",
+  "op": "between",
+  "rhs": [
+   0.047,
+   0.137
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Across markets, long-term growth rarely exceeds these bounds.",
+  "use": "If outside this band, verify the market's structural growth drivers.",
+  "train_n": 43,
+  "train_support": 0.814,
+  "test_n": 15,
+  "test_support": 0.8,
+  "support": 0.81,
+  "status": "kept"
+ },
+ {
+  "id": "R3",
+  "statement": "APAC region CAGR gap should be positive, i.e. APAC grows faster than the global root.",
+  "lhs": "region.cagr_gap.APAC",
+  "op": ">",
+  "rhs": 0.0,
+  "scope": null,
+  "kind": "economics",
+  "rationale": "APAC is the fastest-growing region in the vast majority of markets.",
+  "use": "A negative APAC gap requires strong market-specific evidence.",
+  "train_n": 30,
+  "train_support": 0.933,
+  "test_n": 7,
+  "test_support": 1,
+  "support": 0.946,
+  "status": "kept"
+ },
+ {
+  "id": "R4",
+  "statement": "Region CAGR spread (fastest minus slowest region) is usually 2.5–7.7 pp.",
+  "lhs": "region.cagr_range",
+  "op": "between",
+  "rhs": [
+   0.025,
+   0.077
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Regional growth dispersion tends to be moderate and bounded.",
+  "use": "Outside this range, check for over- or under-differentiated regional forecasts.",
+  "train_n": 30,
+  "train_support": 0.8,
+  "test_n": 7,
+  "test_support": 0.571,
+  "support": 0.757,
+  "status": "weak"
+ },
+ {
+  "id": "R5",
+  "statement": "North America share of the root market is typically 28–41%.",
+  "lhs": "region.share.NA",
+  "op": "between",
+  "rhs": [
+   0.28,
+   0.41
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "NA is the largest region in most markets, but not extremely concentrated.",
+  "use": "If outside this band, verify regional sizing against comparable markets.",
+  "train_n": 30,
+  "train_support": 0.8,
+  "test_n": 7,
+  "test_support": 1,
+  "support": 0.838,
+  "status": "kept"
+ },
+ {
+  "id": "R6",
+  "statement": "Europe share of the root market is typically 20–32%.",
+  "lhs": "region.share.Europe",
+  "op": "between",
+  "rhs": [
+   0.2,
+   0.32
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Europe's share is moderate and stable across markets.",
+  "use": "Outside this band needs market-specific evidence.",
+  "train_n": 30,
+  "train_support": 0.767,
+  "test_n": 7,
+  "test_support": 0.714,
+  "support": 0.757,
+  "status": "kept"
+ },
+ {
+  "id": "R7",
+  "statement": "APAC share of the root market is typically 14–35%.",
+  "lhs": "region.share.APAC",
+  "op": "between",
+  "rhs": [
+   0.14,
+   0.35
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "APAC share varies with the market's development but rarely leaves this range.",
+  "use": "If outside, verify APAC country builds and market definition.",
+  "train_n": 30,
+  "train_support": 0.8,
+  "test_n": 7,
+  "test_support": 0.714,
+  "support": 0.784,
+  "status": "kept"
+ },
+ {
+  "id": "R8",
+  "statement": "Latin America share of the root market is typically 3–9.5%.",
+  "lhs": "region.share.LATAM",
+  "op": "between",
+  "rhs": [
+   0.03,
+   0.095
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "LATAM is usually a small but non-negligible region.",
+  "use": "Outside this band, check country coverage and macro assumptions.",
+  "train_n": 30,
+  "train_support": 0.833,
+  "test_n": 7,
+  "test_support": 1,
+  "support": 0.865,
+  "status": "kept"
+ },
+ {
+  "id": "R9",
+  "statement": "Middle East & Africa share of the root market is typically 3–9%.",
+  "lhs": "region.share.MEA",
+  "op": "between",
+  "rhs": [
+   0.03,
+   0.09
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "MEA is consistently a small single-digit share in global markets.",
+  "use": "Shares above 9% require specific evidence of unusual MEA demand.",
+  "train_n": 30,
+  "train_support": 0.833,
+  "test_n": 7,
+  "test_support": 0.857,
+  "support": 0.838,
+  "status": "kept"
+ },
+ {
+  "id": "R10",
+  "statement": "U.S. share of North America is typically 84–93%.",
+  "lhs": "country.share.U.S.",
+  "op": "between",
+  "rhs": [
+   0.84,
+   0.93
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "The U.S. dominates NA in nearly every market, but Canada holds a small share.",
+  "use": "If U.S. share falls below 84%, verify Canada or Rest of NA over-allocation.",
+  "train_n": 32,
+  "train_support": 0.812,
+  "test_n": 7,
+  "test_support": 0.714,
+  "support": 0.794,
+  "status": "kept"
+ },
+ {
+  "id": "R11",
+  "statement": "China share of APAC is typically 18–42%.",
+  "lhs": "country.share.China",
+  "op": "between",
+  "rhs": [
+   0.18,
+   0.42
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "China is a major APAC market, but Japan, India, South Korea also contribute.",
+  "use": "Outside this band needs market-specific evidence.",
+  "train_n": 29,
+  "train_support": 0.862,
+  "test_n": 7,
+  "test_support": 0.714,
+  "support": 0.833,
+  "status": "kept"
+ },
+ {
+  "id": "R12",
+  "statement": "India share of APAC is typically 9–24%.",
+  "lhs": "country.share.India",
+  "op": "between",
+  "rhs": [
+   0.09,
+   0.24
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "India's share is moderate, rarely above one-quarter of APAC.",
+  "use": "If outside, check comparable markets' India weighting.",
+  "train_n": 29,
+  "train_support": 0.828,
+  "test_n": 7,
+  "test_support": 1,
+  "support": 0.861,
+  "status": "kept"
+ },
+ {
+  "id": "R13",
+  "statement": "Brazil share of Latin America is typically 33–47%.",
+  "lhs": "country.share.Brazil",
+  "op": "between",
+  "rhs": [
+   0.33,
+   0.47
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Brazil is the largest LATAM market, but Mexico and Argentina are significant.",
+  "use": "Outside this band, verify LATAM country splits.",
+  "train_n": 30,
+  "train_support": 0.833,
+  "test_n": 8,
+  "test_support": 1,
+  "support": 0.868,
+  "status": "kept"
+ },
+ {
+  "id": "R14",
+  "statement": "Canada share of North America is typically 7–15%.",
+  "lhs": "country.share.Canada",
+  "op": "between",
+  "rhs": [
+   0.07,
+   0.15
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Canada is a stable secondary market within NA.",
+  "use": "Outside this band, check for over- or under-weighting Canada.",
+  "train_n": 32,
+  "train_support": 0.781,
+  "test_n": 7,
+  "test_support": 0.714,
+  "support": 0.769,
+  "status": "kept"
+ },
+ {
+  "id": "R15",
+  "statement": "Germany share of Europe is typically 15–28%.",
+  "lhs": "country.share.Germany",
+  "op": "between",
+  "rhs": [
+   0.15,
+   0.28
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Germany is the largest European market, but not overwhelming.",
+  "use": "If Germany share is below 15%, verify Europe's country mix.",
+  "train_n": 32,
+  "train_support": 0.812,
+  "test_n": 8,
+  "test_support": 0.5,
+  "support": 0.75,
+  "status": "weak"
+ },
+ {
+  "id": "R16",
+  "statement": "U.K. share of Europe is typically 12–22%.",
+  "lhs": "country.share.U.K.",
+  "op": "between",
+  "rhs": [
+   0.12,
+   0.22
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "U.K. is consistently a major European market.",
+  "use": "Outside this band, check U.K. market definition and historical share.",
+  "train_n": 31,
+  "train_support": 0.839,
+  "test_n": 7,
+  "test_support": 0.857,
+  "support": 0.842,
+  "status": "kept"
+ },
+ {
+  "id": "R17",
+  "statement": "France share of Europe is typically 11–19%.",
+  "lhs": "country.share.France",
+  "op": "between",
+  "rhs": [
+   0.11,
+   0.19
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "France is a stable top-three European market.",
+  "use": "If outside, verify comparable markets' France share.",
+  "train_n": 32,
+  "train_support": 0.812,
+  "test_n": 8,
+  "test_support": 0.75,
+  "support": 0.8,
+  "status": "kept"
+ },
+ {
+  "id": "R18",
+  "statement": "Japan share of APAC is typically 10–25%.",
+  "lhs": "country.share.Japan",
+  "op": "between",
+  "rhs": [
+   0.1,
+   0.25
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Japan is a mature APAC market, second or third in size.",
+  "use": "Outside this band needs market-specific evidence.",
+  "train_n": 29,
+  "train_support": 0.862,
+  "test_n": 7,
+  "test_support": 0.857,
+  "support": 0.861,
+  "status": "kept"
+ },
+ {
+  "id": "R19",
+  "statement": "South Korea share of APAC is typically 5–10%.",
+  "lhs": "country.share.South Korea",
+  "op": "between",
+  "rhs": [
+   0.05,
+   0.1
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "South Korea is a small but consistent APAC player.",
+  "use": "If above 10%, verify South Korea weighting against comparable markets.",
+  "train_n": 29,
+  "train_support": 0.724,
+  "test_n": 7,
+  "test_support": 0.714,
+  "support": 0.722,
+  "status": "kept"
+ },
+ {
+  "id": "R20",
+  "statement": "Top-level segment share (largest segment) is typically 41–69%.",
+  "lhs": "seg.top_share",
+  "op": "between",
+  "rhs": [
+   0.41,
+   0.69
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Most markets have a leading segment but not an extreme monopoly.",
+  "use": "If outside, check segment definition and split methodology.",
+  "train_n": 43,
+  "train_support": 0.791,
+  "test_n": 15,
+  "test_support": 0.733,
+  "support": 0.776,
+  "status": "kept"
+ },
+ {
+  "id": "R21",
+  "statement": "Segment CAGR spread (fastest minus slowest top-level segment) is typically 1.8–4.7 pp.",
+  "lhs": "seg.cagr_spread",
+  "op": "between",
+  "rhs": [
+   0.018,
+   0.047
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Segment growth differences are moderate and rarely extremely wide.",
+  "use": "If wider than 4.7 pp, ensure segment-specific evidence supports it.",
+  "train_n": 43,
+  "train_support": 0.791,
+  "test_n": 15,
+  "test_support": 0.933,
+  "support": 0.828,
+  "status": "kept"
+ },
+ {
+  "id": "R22",
+  "statement": "Segment share-weighted mean absolute CAGR deviation from root is typically 0.4–1.5 pp.",
+  "lhs": "seg.cagr_dev",
+  "op": "between",
+  "rhs": [
+   0.004,
+   0.015
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Segment CAGRs cluster around the root; extreme deviations are rare.",
+  "use": "Outside this band, check for misaligned segment forecasts.",
+  "train_n": 43,
+  "train_support": 0.814,
+  "test_n": 15,
+  "test_support": 0.867,
+  "support": 0.828,
+  "status": "kept"
+ },
+ {
+  "id": "R23",
+  "statement": "Segment HHI (concentration) is typically 0.27–0.58.",
+  "lhs": "seg.hhi",
+  "op": "between",
+  "rhs": [
+   0.27,
+   0.58
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Markets are moderately concentrated, neither fragmented nor monopoly.",
+  "use": "If HHI is below 0.27 or above 0.58, verify segment structure.",
+  "train_n": 43,
+  "train_support": 0.791,
+  "test_n": 15,
+  "test_support": 0.933,
+  "support": 0.828,
+  "status": "kept"
+ },
+ {
+  "id": "R24",
+  "statement": "Segment mix variation across leaf countries (std) is typically below 1.9 pp.",
+  "lhs": "seg.country_mix_sd",
+  "op": "<",
+  "rhs": 0.019,
+  "scope": null,
+  "kind": "house_convention",
+  "rationale": "The team builds sheets with near-identical segment mixes across countries.",
+  "use": "If above 1.9 pp, verify whether segment mix variation is real or an artifact.",
+  "train_n": 37,
+  "train_support": 0.892,
+  "test_n": 11,
+  "test_support": 0.818,
+  "support": 0.875,
+  "status": "kept"
+ },
+ {
+  "id": "R25",
+  "statement": "Spread of country CAGRs around their region's CAGR (std) is typically 0.9–2.2 pp.",
+  "lhs": "country.cagr_gap_sd",
+  "op": "between",
+  "rhs": [
+   0.009,
+   0.022
+  ],
+  "scope": null,
+  "kind": "economics",
+  "rationale": "Country growth within a region is relatively homogeneous.",
+  "use": "If wider, check for over-differentiated country forecasts.",
+  "train_n": 36,
+  "train_support": 0.833,
+  "test_n": 9,
+  "test_support": 0.778,
+  "support": 0.822,
+  "status": "kept"
+ }
+]

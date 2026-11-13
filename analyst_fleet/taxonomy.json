@@ -1,0 +1,163 @@
+{
+ "_note": "Segmentation and geography structure of the client deliverable (labels only; taken from the structure of the aftermarket ME workbooks and the definitions document). No numbers live here.",
+ "market_name": "Global Industrial High Speed Helical Gearbox Aftermarket Market",
+ "short_name": "industrial high-speed helical gearbox aftermarket",
+ "base_year": 2025,
+ "forecast_end_year": 2032,
+ "currency": "US$ Mn",
+ "geography": {
+  "Global": {
+   "North America": [
+    "U.S.",
+    "Canada"
+   ],
+   "Europe": [
+    "Germany",
+    "U.K.",
+    "France",
+    "Spain",
+    "Italy",
+    "Russia",
+    "Rest of Europe"
+   ],
+   "Asia Pacific": {
+    "China": null,
+    "India": null,
+    "Japan": null,
+    "South Korea": null,
+    "Rest of Asia Pacific": null,
+    "South East Asia": [
+     "Vietnam",
+     "Indonesia",
+     "Thailand",
+     "Malaysia",
+     "Philippines",
+     "Rest of South Asia"
+    ]
+   },
+   "Latin America": [
+    "Mexico",
+    "Brazil",
+    "Argentina",
+    "Chile",
+    "Colombia",
+    "Guatemala",
+    "Costa Rica",
+    "Guyana",
+    "Rest of Latin America"
+   ],
+   "Middle East and Africa": {
+    "Middle East and North Africa": [
+     "Saudi Arabia (KSA)",
+     "UAE",
+     "Oman",
+     "Qatar",
+     "Bahrain",
+     "Kuwait",
+     "Morocco",
+     "Lebanon",
+     "Turkey",
+     "Rest of MENA"
+    ],
+    "Africa": [
+     "Kenya",
+     "Nigeria",
+     "South Africa",
+     "Zimbabwe",
+     "Egypt",
+     "Algeria",
+     "Rest of Africa"
+    ]
+   }
+  }
+ },
+ "dimensions": [
+  {
+   "title": "By Application",
+   "priced": true,
+   "segments": [
+    {
+     "name": "Steam Turbines"
+    },
+    {
+     "name": "Gas Turbines"
+    },
+    {
+     "name": "Compressors",
+     "children": [
+      "Centrifugal Compressor",
+      "IGC (Motor driven & Turbine driven)"
+     ]
+    },
+    {
+     "name": "Pumps (High-speed centrifugal pumps (Motor driven & Turbine driven)"
+    },
+    {
+     "name": "Turbo expanders"
+    },
+    {
+     "name": "Blowers (Turbine driven)"
+    }
+   ]
+  },
+  {
+   "title": "By Industry Vertical",
+   "priced": false,
+   "segments": [
+    {
+     "name": "Oil & Gas",
+     "children": [
+      "Petrochemical",
+      "Fertilizers",
+      "FPSO and Gas pipeline projects",
+      "Oil pipeline projects"
+     ]
+    },
+    {
+     "name": "Power Generation"
+    },
+    {
+     "name": "Cement"
+    },
+    {
+     "name": "Steel"
+    },
+    {
+     "name": "Marine"
+    },
+    {
+     "name": "Others"
+    }
+   ]
+  }
+ ],
+ "oem_geo_aliases": {
+  "India ": "India",
+  "GCC": "GCC (Saudi Arabia, UAE, Oman, Qatar, Bahrain, Kuwait)",
+  "Rest of MEA": "Rest of Middle East and Africa"
+ },
+ "strategies": {
+  "2A": {
+   "name": "Country totals, then top-down",
+   "dimension": null,
+   "stands_for": "How big the gearbox aftermarket is in total, in each region and in each country, and how fast each grows.",
+   "in_this_market": "The global 2025 aftermarket is anchored on the INSTALLED BASE of qualifying high-speed helical gearboxes (OEM unit shipments 2020-25 extended back over the service life, times the share still operating), triangulated with the OEM market x an aftermarket/OEM ratio and with published figures converted to the client scope. That global value is then split top-down: Global -> 5 regions -> South East Asia, MENA and Africa -> 46 countries, each with a share of its parent and a 2025-2032 growth rate set by regional and country analysts (fleet age, utilisation, LNG / gas / petrochemical / power additions, geopolitics). Growth rates are reconciled so countries add up to their region.",
+   "produces": "Sizing block (share, CAGR, value 2025 per geography); the country CAGR row of the segment-growth band; each country's price level (index) on the ASP sheet; the country total every segment share applies to."
+  },
+  "2B": {
+   "name": "Use case x country",
+   "dimension": "By Industry Vertical",
+   "stands_for": "WHERE the gearbox works - the end-use facility or project that pays for the service.",
+   "in_this_market": "Each country's 2A total is split by industry vertical: Oil & Gas (one level deeper: Petrochemical, Fertilizers, FPSO and gas pipeline projects, Oil pipeline projects), Power Generation, Cement, Steel, Marine, Others. A segment analyst forms a group view per country group (share and growth premium per vertical with reasons), then country analysts set each country's split. Each transaction belongs to one primary vertical (client allocation rule); vertical growth = country growth + a premium, adjusted so the verticals average back to the country rate.",
+   "produces": "The 'By Industry Vertical' shares (band 1) and growth rates (band 2) for every country."
+  },
+  "2C": {
+   "name": "Product type x application x country",
+   "dimension": "By Application",
+   "stands_for": "WHAT kind of gearbox train it is - the driven machine and the gearbox type inside it.",
+   "in_this_market": "Applications are the driven equipment: Steam Turbines, Gas Turbines, Compressors (types: Centrifugal and Integrally Geared - IGC), Pumps, Turbo expanders, turbine-driven Blowers. Built bottom-up at global level: installed gearboxes per application x annual in-scope spend per gearbox (parts, overhaul and repair, inspection / monitoring / lubrication, replacement gearboxes, upgrades - each as a share of the new gearbox price). This gives the global application mix, the bottom-up route of the 2A anchor and the base price per application. Country analysts then set each country's application split, with the OEM new-unit mix shown for comparison; types (Centrifugal vs IGC) are shares of their parent.",
+   "produces": "The 'By Application' shares and growth rates for every country, the global bottom-up sizing route, and the base price per application on the ASP sheet."
+  },
+  "how_they_combine": "2A sets every total. 2B and 2C are two independent ways of splitting the SAME country total (by where the gearbox works, and by what it drives); they are not multiplied together. 2C's bottom-up build also feeds the 2A global anchor and the ASP base prices. In this sheet each number shows what each of the three contributed."
+ }
+}

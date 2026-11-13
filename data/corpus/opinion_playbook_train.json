@@ -1,0 +1,1453 @@
+{
+ "tag": "train",
+ "n_markets": 43,
+ "markets": [
+  "Asia and Middle East Water Treatment Chemical Market",
+  "Collagen Membrane Market",
+  "GCC Outbound Tourism Market",
+  "Global Amphetamine + Deaxmphetamine Market",
+  "Global Apomorphine API & FDF Market",
+  "Global Apomorphine API Market",
+  "Global Athletic Tape Market",
+  "Global Avocado Oil Market",
+  "Global Bourbon Whisky and Scottish Whiskey Market",
+  "Global Buprenorphine Market",
+  "Global Chronic Spontaneous Urticaria Market_Coherent Market Insights",
+  "Global Codeine Market",
+  "Global Cyber-Physical Systems Security Market",
+  "Global Decaf Coffee Market",
+  "Global Digital Twin Market",
+  "Global Gel Ice Pack Market",
+  "Global High Energy Laser Market",
+  "Global Industrial Automation Systems Market",
+  "Global Lamination Adhesives for Flexible Packaging Market",
+  "Global Laser Based Photo Rejuvenation Devices Market",
+  "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
+  "Global Next Generation Probiotics Market",
+  "Global PLC Market",
+  "Global Pizza Market",
+  "Global Retail Self Scanning Solutions Market",
+  "Global Sodium Oxybate API + FDF Market",
+  "Global Sodium Oxybate API Market",
+  "Global Superyacht Market",
+  "Global Supply Chain Risk Management Market",
+  "Global Technical Foam Market",
+  "Global Used Cooking Oil Collection Market",
+  "Global Water for Injection Container Market",
+  "Global Waveguide Market",
+  "India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market",
+  "Middle East Agriculture Market",
+  "North America & Europe Azelaic Acid Market",
+  "North America & US Trocar Market",
+  "North America Electronic Design Services Market",
+  "North America and Europe Pelargonic Acid Market",
+  "North America and Europe Sales Training Market",
+  "U.S Povidone Iodine Nasal Spray Market",
+  "U.S. Attic Ladder Market",
+  "U.S. Providone Iodine Market"
+ ],
+ "stages": {
+  "2A": {
+   "method": "Form opinions in this order: (1) base_year_anchor: find strongest direct evidence—company product revenue, regulatory quotas, trade/import statistics, or named third-party supply outlooks; if only shares/spreads are available, anchor all dimensions to 2025 latest actual year and do not restate history. (2) forecast_growth_vs_history: decide whether the market has structural tailwinds (regulation, technology, underpenetration) or maturity/saturation; set forecast gap accordingly, usually +0.5 to +1.2pp, never a step-change unless clear discontinuity. (3) region_split: identify the primary demand driver—healthcare spend, manufacturing/installed base, or consumer population; use that to set NA/EU/APAC shares before looking at means. (4) region_growth: assign growth premiums/discounts based on penetration and infrastructure buildout; APAC usually premium, NA/EU discount, unless policy-driven. (5) country_split: within regions, weight by production hubs, population, reimbursement, or defense programs; use residual 'Rest of' lines for long-tail. (6) country_growth: adjust country gaps by local policy, sanctions, macro, and maturity; cross-check against the 1.3pp typical country gap standard deviation. Evidence order: direct volume/revenue > trade data > installed base > population/income > analyst convention.",
+   "heuristics": [
+    {
+     "id": "2A-1",
+     "decision": "base_year_anchor",
+     "condition": "Direct bottom-up demand data exist: company product revenue, DEA quotas, official trade statistics, or reliable procedure volumes.",
+     "action": "Anchor the base-year market size to those direct volumes/revenues; set base-year shares to current observed mix and use 2025 as latest actual year. Typical magnitude: bottom-up anchor should reconcile within roughly ±10–15% of cross-checks; regional share anchor follows market driver (e.g., healthcare NA ~35–40%, manufacturing APAC ~25–38%).",
+     "why": "Direct data reduce proxy error and align demand with actual volumes; opinions use DEA quotas, Xolair revenue, HS 94 trade, and UCO supply outlook.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Amphetamine + Deaxmphetamine Market",
+      "Global Chronic Spontaneous Urticaria Market_Coherent Market Insights",
+      "Global Technical Foam Market",
+      "Global Used Cooking Oil Collection Market"
+     ],
+     "caveat": "When direct data cover only part of scope (e.g., HS code broader than product), adjust with scope judgment; do not use as sole anchor without reconciliation.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-2",
+     "decision": "base_year_anchor",
+     "condition": "No direct market size is available; only shares, spreads, or CAGR inputs are known.",
+     "action": "Anchor the model to 2025 as the latest actual year and set all region/country/segment shares at 2025 values; roll forward using CAGRs. Typical magnitude: no explicit market size; shares typical NA 0.375, Europe 0.271, APAC 0.227, LatAm 0.061, MEA 0.058 (all-market means).",
+     "why": "This is a house convention to avoid forecasting the past and to keep the latest observed mix as structural base; opinions repeatedly use 2025 base-year shares.",
+     "kind": "house_convention",
+     "markets": [
+      "Global Digital Twin Market",
+      "Middle East Agriculture Market",
+      "Global Gel Ice Pack Market",
+      "Global Water for Injection Container Market"
+     ],
+     "caveat": "Do not use an older year without adjusting for known mix shifts; if 2025 is still forecast, treat it as base due data lag but note uncertainty.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-3",
+     "decision": "forecast_growth_vs_history",
+     "condition": "Market has structural tailwinds: regulatory mandates, technology adoption, new application expansion, policy support, or underpenetration.",
+     "action": "Set forecast CAGR 0.5–1.2pp above historical CAGR; all-market mean uplift is +0.71pp (n=43). Use +0.8pp for tech/health adoption, +0.5–0.6pp for mature consumer/chemical, +1.0–1.2pp for digital twin/automation mandates.",
+     "why": "Acceleration from new demand drivers but not a step-change; opinions show +0.5pp for GCC tourism, +0.8pp for amphetamine/buprenorphine, +1.0pp for cyber-physical, +1.2pp for digital twin.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Amphetamine + Deaxmphetamine Market",
+      "Global Cyber-Physical Systems Security Market",
+      "Global Digital Twin Market",
+      "Global Pizza Market"
+     ],
+     "caveat": "If historical CAGR is already very high (>15%) or market is in hype phase, use lower end; do not extrapolate past growth linearly without evidence.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-4",
+     "decision": "forecast_growth_vs_history",
+     "condition": "Market is mature, saturated, or commoditized; or historical growth was inflated by launch/pandemic/one-time factors.",
+     "action": "Set forecast CAGR equal to or only modestly above historical; typical uplift 0.0 to +0.5pp, occasionally slightly below history. All-market mean 0.71pp but mature markets cluster at 0.0–0.6pp.",
+     "why": "High base and saturation offset tailwinds; opinions show North America electronic design 0.0pp, technical foam +0.5pp, azelaic acid +0.6pp, UCO +0.6pp.",
+     "kind": "mechanism",
+     "markets": [
+      "North America Electronic Design Services Market",
+      "Global Technical Foam Market",
+      "North America & Europe Azelaic Acid Market",
+      "Global Used Cooking Oil Collection Market"
+     ],
+     "caveat": "Do not apply to underpenetrated emerging regions or policy-driven markets; treat region-specific maturity separately.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-5",
+     "decision": "region_split",
+     "condition": "Market driven by healthcare spending, reimbursement, disease prevalence, or medical device utilization.",
+     "action": "Set North America 35–40%, Europe 25–32%, APAC 18–23%, LatAm 5–8%, MEA 1–3%, Africa negligible. In US-centric disease markets (e.g., ADHD/opioid treatment), NA can be 60–67%. Typical means: NA 0.375, Europe 0.271, APAC 0.227, LatAm 0.061, MEA 0.058 (all markets).",
+     "why": "High income and reimbursement concentrate demand in NA/EU; APAC lower due affordability; opinions show Buprenorphine NA 67.3%, CSU NA 38.6%, Water for Injection NA 40.4%.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Buprenorphine Market",
+      "Global Chronic Spontaneous Urticaria Market_Coherent Market Insights",
+      "Global Water for Injection Container Market",
+      "Global Gel Ice Pack Market"
+     ],
+     "caveat": "Do not use these shares for manufacturing/industrial-driven markets; for disease-specific US-centric conditions, check epidemiology before applying average NA share.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-6",
+     "decision": "region_split",
+     "condition": "Market driven by manufacturing/industrial base, installed equipment, or production capacity (automation, chemicals, components).",
+     "action": "Set APAC share 25–38% often largest, NA 20–38%, Europe 14–29%, LatAm 3–7%, MEA 4–7%. Use APAC 30–38% when China has large production scale (high energy laser 33.7%, technical foam 34.1%); NA 35–38% when defense/security budgets dominate (cyber-physical 37.3%).",
+     "why": "Production and industrial activity concentrate in Asia, especially China; NA/EU have large legacy installed base but lower growth. Opinions show APAC 33.7% in HEL, 34.1% in technical foam; NA 35.8% in pharma automation.",
+     "kind": "mechanism",
+     "markets": [
+      "Global High Energy Laser Market",
+      "Global Technical Foam Market",
+      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
+      "Global Cyber-Physical Systems Security Market"
+     ],
+     "caveat": "If defense/security-driven with strong US budgets, NA can be largest (cyber-physical 37.3%); use installed base and customer budgets, not population.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-7",
+     "decision": "region_growth",
+     "condition": "Emerging regions with underpenetration, infrastructure buildout, manufacturing expansion (APAC, sometimes MEA/LatAm).",
+     "action": "Set APAC growth premium +0.5 to +3.0pp vs root (all-market APAC mean +1.72pp); use +2.0 to +3.0pp for digital/automation/OT buildout, +1.0 to +1.5pp for healthcare/consumer catch-up. MEA premium 0 to +2.3pp if infrastructure/desalination/food security; LatAm typically -2.9 to +0.5pp.",
+     "why": "Fast expansion from low base, new capex, regulation; opinions show APAC +1.1pp technical foam, +1.9pp amphetamine, +3.0pp cyber-physical, +2.9pp digital twin; MEA +1.2pp UCO, +0.6pp cyber.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Cyber-Physical Systems Security Market",
+      "Global Digital Twin Market",
+      "Global PLC Market",
+      "Global Used Cooking Oil Collection Market"
+     ],
+     "caveat": "If APAC already dominant and mature (e.g., probiotics APAC 48.9% share and growth premium -0.9pp), do not assume APAC premium just because share high; check penetration.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-8",
+     "decision": "region_growth",
+     "condition": "Mature regions with high penetration, aging installed base, or public budget constraints (North America, Europe).",
+     "action": "Set NA growth premium typically -2.2 to +0.6pp vs root (all-market NA mean -0.35pp); Europe -1.6 to +1.1pp (mean -0.70pp). Use NA negative when replacement-driven, near zero when defense/health spending supports; Europe negative unless green/regulatory mandate (e.g., UCO/SAF +1.7pp).",
+     "why": "Saturation and slower capex; opinions show NA -2.2pp cyber, -2.1pp digital twin, -1.7pp UCO; Europe -1.6pp pharma automation, +1.7pp UCO due SAF mandates.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Cyber-Physical Systems Security Market",
+      "Global Digital Twin Market",
+      "Global Used Cooking Oil Collection Market",
+      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market"
+     ],
+     "caveat": "Do not apply negative NA to markets with U.S.-centric policy expansion (e.g., buprenorphine NA +0.6pp) or large defense budgets; evaluate structural supports.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-9",
+     "decision": "country_split",
+     "condition": "Within North America, large U.S. market dominates; Canada secondary.",
+     "action": "Set U.S. share of NA at 87–94%, Canada 6–13%; typical U.S. 89–91% (all stats U.S. mean 88.75%, n=32). Use 93–94% for consumer/U.S.-centric healthcare, 88% for industrial/security where Canada slightly larger.",
+     "why": "U.S. economic scale, healthcare/defense budgets; Canada smaller due population and market depth. Opinions show U.S. 88–94% across markets; e.g., Buprenorphine U.S. 91%, Decaf Coffee U.S. 94%, Cyber U.S. 88%.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Buprenorphine Market",
+      "Global Decaf Coffee Market",
+      "Global Cyber-Physical Systems Security Market",
+      "Global Water for Injection Container Market"
+     ],
+     "caveat": "If market is regulated at state/province level or Canada-specific resource base, Canada share may exceed 10%; but rare.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-10",
+     "decision": "country_split",
+     "condition": "Within APAC, large population/industrial hubs China, Japan, India; within Europe, fragmented with Germany largest.",
+     "action": "Set China share of APAC 25–42% (mean 29.7%; 37–42% for manufacturing/chemicals, 25–29% for healthcare/pharma), Japan 10–25%, India 9–22%; Europe Germany 15–28% (mean 23.0%), U.K./France 7–21% each, Rest of Europe 13–36% as residual. Use residual 'Rest of' lines for long-tail countries.",
+     "why": "Scale of consumption/manufacturing; opinions show China 42% in HEL, 57% in Technical Foam (APAC), Germany 22–28%, Rest of Europe 18–36%. This avoids spurious precision.",
+     "kind": "mechanism",
+     "markets": [
+      "Global High Energy Laser Market",
+      "Global Technical Foam Market",
+      "Global Water for Injection Container Market",
+      "Global PLC Market"
+     ],
+     "caveat": "Do not force all countries explicit when data thin; use 'Rest of' to avoid false precision; adjust China share based on manufacturing intensity.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-11",
+     "decision": "country_growth",
+     "condition": "Emerging manufacturing/consumption hubs (India, ASEAN, China sometimes; GCC; Brazil) with policy support, low base, infrastructure investment.",
+     "action": "Set India growth premium +1.0 to +3.0pp vs root (often +2.6 to +2.9 in digital/automation; +0.7 to +1.4 for healthcare/consumer); ASEAN +0.5 to +2.1pp; China 0.0 to +2.4pp depending market (positive for manufacturing/tech, lower for mature consumer); GCC +0.5 to +1.6pp for infrastructure; Brazil 0 to +1.2pp. Typical country cagr gap sd is 1.28pp, so >2pp is strong.",
+     "why": "Rapid investment, rising incomes, formalization; opinions show India +2.6pp pharma automation, +2.9pp digital twin, +3.0pp PLC; ASEAN +1.7pp cyber, +2.1pp digital twin; China +0.5pp cyber, +2.4pp probiotics.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Digital Twin Market",
+      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
+      "Global PLC Market",
+      "Global Next Generation Probiotics Market"
+     ],
+     "caveat": "If country has large mature installed base (Japan, South Korea) or macro constraints, do not apply positive; check per-market driver.",
+     "n_markets": 4
+    },
+    {
+     "id": "2A-12",
+     "decision": "country_growth",
+     "condition": "Countries under sanctions, macro stress, fiscal constraints, or high maturity/declining population (Russia, Japan, Australia, South Korea, Canada, southern Europe).",
+     "action": "Set Russia growth premium typically -2.0 to -5.5pp vs root (often -2.1 to -3.0 in regulated markets, -4 to -5.5 in security/import-dependent); Japan -1.5 to -4.2pp (more negative in manufacturing/legacy automation); Australia -0.7 to -3.1pp; Canada -0.7 to -2.0pp; Italy/Spain -0.4 to -2.2pp; South Korea -0.8 to -2.4pp. Use typical country gap sd 1.3pp; values beyond 3pp should have strong reason.",
+     "why": "Sanctions cut tech/export access, mature base slows replacement, weak capex; opinions show PLC Russia -3.2, Cyber Russia -4.0, Retail Self Scan Russia -5.5, PLC Japan -4.0, HEL Australia -3.1.",
+     "kind": "mechanism",
+     "markets": [
+      "Global PLC Market",
+      "Global Cyber-Physical Systems Security Market",
+      "Global Retail Self Scanning Solutions Market",
+      "Global High Energy Laser Market"
+     ],
+     "caveat": "Not all negative for Japan if market is healthcare aging (e.g., water for injection Japan +0.7pp); adjust for demand driver, do not apply blanket discounts.",
+     "n_markets": 4
+    }
+   ],
+   "pitfalls": [
+    "Do not apply all-market region share means blindly; a U.S.-centric disease market (amphetamines) can have NA 64.3%, far above the 37.5% mean.",
+    "Do not assume APAC growth premium solely because share is high; APAC can be mature (probiotics APAC 48.9% and growth -0.9pp).",
+    "Do not copy the large negative Russia gaps mechanically; sanctions severity changes over time and some markets may have import substitution.",
+    "Do not force every country into explicit shares; use residual 'Rest of' lines when data is thin, as done for Rest of Europe 18–36%, Rest of Middle East, Central Africa 50%.",
+    "Do not overfit to a single analyst's opinion; cross-check with all-market stats, e.g., forecast uplift mean 0.71pp not 2pp.",
+    "Do not treat base_year_anchor as a market estimate if only shares are given; anchor to 2025 shares, not an implied size."
+   ]
+  },
+  "2B": {
+   "method": "Start with use_case_split: identify 3–6 use cases from end-use/application/channel/patient group, using installed base, regulatory labels, and demand-side volume. Set the largest use case first from historical/legacy evidence, not a uniform 1/n split. Then assign use_case_growth premiums/discounts relative to the market root, using technology adoption lifecycle, regulatory/policy tailwinds, channel substitution, and maturity as primary drivers. Finally adjust use_case_mix_by_region for each region, using local industrial/demand specialization and policy/infrastructure shocks; keep shifts small (±1–3 pp) unless a documented extreme factor exists. Check that use-case shares in each region sum to 100% and that the weighted average growth premium equals the root within rounding.",
+   "heuristics": [
+    {
+     "id": "2B-1",
+     "decision": "use_case_split",
+     "condition": "There is one historical/legacy or installed-base dominant application.",
+     "action": "Set its share to 0.45–0.60, or 0.60–0.80 if regulatory/technical lock is very strong; do not default to equal segments.",
+     "why": "Largest use case reflects existing installed base and prevalence; all-market average top segment share is 0.54 (range 0.41–0.60 for typical markets), concentrated examples: Coastal desalination 76.3%, Electric utilities 59.2%, Food packaging 63.5%.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Cyber-Physical Systems Security Market",
+      "Global Digital Twin Market",
+      "Global Water for Injection Container Market",
+      "India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market"
+     ],
+     "caveat": "Do not apply if multiple use cases are genuinely comparable or if the market is early/fragmented; then use bottom-up demand.",
+     "n_markets": 4
+    },
+    {
+     "id": "2B-2",
+     "decision": "use_case_split",
+     "condition": "There are early-stage/adjacent use cases with high growth narrative but limited current revenue.",
+     "action": "Assign them 3–10% each in the 2025 split.",
+     "why": "Emerging segments have small installed base; examples: EV charging infrastructure 4.3%, Sustainable & Regenerative Agriculture 3.6%, Cell & Gene Therapy 6.5%, Oncology Support 1.3%, Medical Tourism 7.6%.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Digital Twin Market",
+      "Middle East Agriculture Market",
+      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
+      "GCC Outbound Tourism Market"
+     ],
+     "caveat": "If policy has already scaled the segment (e.g., renewable diesel/HVO 42.8%), do not keep it small.",
+     "n_markets": 4
+    },
+    {
+     "id": "2B-3",
+     "decision": "use_case_split",
+     "condition": "Market is defined by a single approved/regulatory or physical use case.",
+     "action": "Set that use case at 60–80%, do not invent large secondary segments.",
+     "why": "Revenues concentrate where label/regulatory/installed base lock demand; examples: Parkinson's Disease 63.1%, Opioid Use Disorder 60.2%, Coastal desalination 76.3%, Electric utilities 59.2%.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Apomorphine API & FDF Market",
+      "Global Buprenorphine Market",
+      "India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market",
+      "Global Digital Twin Market"
+     ],
+     "caveat": "Do not apply if there are multiple reimbursed indications or broad substitutable uses; then the top share should fall toward 0.35–0.45.",
+     "n_markets": 4
+    },
+    {
+     "id": "2B-4",
+     "decision": "use_case_growth",
+     "condition": "A use case is driven by new technology adoption, connectivity, or regulatory mandate and is not yet saturated.",
+     "action": "Set growth premium +1.5 to +3.5 pp vs root; for very early/high-mandate areas can be +4–6 pp.",
+     "why": "Adoption S-curves and policy tailwinds create above-market growth; examples: DERMS Integration +3.4pp, OT cybersecurity +3.2pp, continuous manufacturing +3.6pp, Cell & Gene Therapy +4.6pp; typical top-to-bottom segment spread is 0.026 (2.6 pp).",
+     "kind": "mechanism",
+     "markets": [
+      "Global Digital Twin Market",
+      "Global Industrial Automation Systems Market",
+      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market"
+     ],
+     "caveat": "Do not apply if the segment is already large/mature or if policy demand has already saturated; e.g., renewable diesel/HVO growth premium was -0.2pp despite policy support.",
+     "n_markets": 3
+    },
+    {
+     "id": "2B-5",
+     "decision": "use_case_growth",
+     "condition": "A use case is mature, legacy, or facing substitution/structural decline.",
+     "action": "Set growth discount -1.0 to -2.5 pp vs root; severe structural decline can be -2.5 to -4.0 pp.",
+     "why": "Replacement cycles, saturation, or substitute products limit growth; examples: ICS security -2.5pp, small molecule pharma -2.2pp, batch manufacturing -1.4pp, legacy ERP/HES integration -2.8 to -3.6pp, hair removal -4.0pp.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Cyber-Physical Systems Security Market",
+      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
+      "Global Digital Twin Market",
+      "Global Laser Based Photo Rejuvenation Devices Market"
+     ],
+     "caveat": "If a refresh/upgrade cycle or regulatory replacement demand exists, use a smaller discount (e.g., electric utilities -0.6pp).",
+     "n_markets": 4
+    },
+    {
+     "id": "2B-6",
+     "decision": "use_case_growth",
+     "condition": "A use case is large, essential, and non-discretionary (food, basic healthcare, established industrial process).",
+     "action": "Set growth premium/discount within ±0.5 pp of root.",
+     "why": "Demand tracks population/income but is saturated; examples: food & beverage avocado oil -0.1pp, food packaging +0.6pp, crop farming +0.7pp, pain management +0.2pp, pharmaceutical companies +0.5pp, electric utilities -0.6pp.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Avocado Oil Market",
+      "Middle East Agriculture Market",
+      "Global Lamination Adhesives for Flexible Packaging Market",
+      "Global Codeine Market",
+      "Global Water for Injection Container Market"
+     ],
+     "caveat": "If the essential segment faces policy restriction or substitution (e.g., opioid pain management, codeine pediatric), do not assume near-root growth.",
+     "n_markets": 5
+    },
+    {
+     "id": "2B-7",
+     "decision": "use_case_growth",
+     "condition": "A segment is small but benefits from premiumization, new consumer behavior, or specialized demand.",
+     "action": "Set growth premium +0.5 to +1.5 pp vs root.",
+     "why": "Small bases with high willingness-to-pay or emerging consumer behavior outgrow the market; examples: solo travelers +1.0pp, medical tourism +1.3pp, muscle support tape +1.3pp, rosacea +1.2pp, nutraceuticals +1.2pp.",
+     "kind": "mechanism",
+     "markets": [
+      "GCC Outbound Tourism Market",
+      "Global Athletic Tape Market",
+      "North America & Europe Azelaic Acid Market",
+      "Global Avocado Oil Market"
+     ],
+     "caveat": "Do not assign large premiums to small segments if they are capital-constrained or face reimbursement barriers.",
+     "n_markets": 4
+    },
+    {
+     "id": "2B-8",
+     "decision": "use_case_growth",
+     "condition": "There is a channel or end-user shift (e.g., DIY vs professional, homecare vs institutions, online vs offline).",
+     "action": "Set gaining channel growth premium +0.5 to +1.5 pp and losing channel discount -0.5 to -1.5 pp.",
+     "why": "Structural substitution moves volume between channels; examples: DIY +1.3pp/professional -1.0pp; homecare +0.8-0.9pp/ASCs -1.1-1.2pp; pizzeria +1.8pp/retail -0.6pp; warehouse clubs +2.6pp/department stores -2.1pp.",
+     "kind": "mechanism",
+     "markets": [
+      "U.S. Attic Ladder Market",
+      "U.S. Providone Iodine Market",
+      "Global Pizza Market",
+      "Global Retail Self Scanning Solutions Market"
+     ],
+     "caveat": "If the gaining channel is already dominant, its premium may be smaller; also ensure channel shifts are not double counted with use-case growth.",
+     "n_markets": 4
+    },
+    {
+     "id": "2B-9",
+     "decision": "use_case_split",
+     "condition": "Segmentation by end-user/purchase channel with a professional or institutional buyer.",
+     "action": "Set professional/institutional share 55–80% unless it is a mass-market consumer product, then consumer share 40–60%.",
+     "why": "Revenue concentrates where contract size and purchase frequency are higher; examples: professional attic ladder 58.4%, large enterprises 55.4%, pharma companies 56.0%, commercial agriculture 79.6%, retail pizza 54.0%.",
+     "kind": "mechanism",
+     "markets": [
+      "U.S. Attic Ladder Market",
+      "North America and Europe Sales Training Market",
+      "Global Water for Injection Container Market",
+      "Global Pizza Market",
+      "Middle East Agriculture Market"
+     ],
+     "caveat": "If product is consumer self-service or DIY-friendly, consumer share can be higher (e.g., amateur athletes 50.6%, residential agriculture 20.4%).",
+     "n_markets": 5
+    },
+    {
+     "id": "2B-10",
+     "decision": "use_case_mix_by_region",
+     "condition": "Regions have moderate differences in demand mix or industrial specialization but no extreme policy/infrastructure shock.",
+     "action": "Shift use-case share by ±1–3 pp per region relative to the global average, and offset shifts across use cases.",
+     "why": "Regional mixes follow local industry/cluster differences; typical segment country mix deviation is only 0.0091 (0.91 pp) on average, and observed region shifts are usually ±1–3 pp (e.g., DERMS North America +1/Asia Pacific -1; technical foam Asia Pacific consumer electronics +1).",
+     "kind": "house_convention",
+     "markets": [
+      "Global Digital Twin Market",
+      "Global Technical Foam Market",
+      "North America & Europe Azelaic Acid Market"
+     ],
+     "caveat": "Do not use larger shifts unless you have a documented policy or infrastructure shock; otherwise you risk impossible shares.",
+     "n_markets": 3
+    },
+    {
+     "id": "2B-11",
+     "decision": "use_case_mix_by_region",
+     "condition": "A region has an extreme factor such as water scarcity, blockade, directed-energy budget, or national industrial policy.",
+     "action": "Shift affected use-case shares ±5–15 pp from the regional average, with offsetting shifts in other uses summing to zero.",
+     "why": "Policy and resource shocks can redirect revenue quickly; examples: Kuwait water +17/crop -22, Qatar aquaculture +9/crop -17, Saudi water +5/crop -8, U.S. defense lasers North America +3/APAC -2/MEA -2.",
+     "kind": "mechanism",
+     "markets": [
+      "Middle East Agriculture Market",
+      "Global High Energy Laser Market"
+     ],
+     "caveat": "Do not apply extreme shifts uniformly; verify the policy is actually large enough. Mechanical balancing can hide misevaluation.",
+     "n_markets": 2
+    },
+    {
+     "id": "2B-12",
+     "decision": "use_case_mix_by_region",
+     "condition": "Regions have similar regulatory regime, income, and demand mix.",
+     "action": "Keep use-case regional mix within ±1 pp of the global average, or use no shift.",
+     "why": "Without a differentiator, demand patterns converge; all-market segment country-mix sd is 0.0091 (0.91 pp), implying most country deviations are small.",
+     "kind": "house_convention",
+     "markets": [
+      "Global Avocado Oil Market",
+      "Global Lamination Adhesives for Flexible Packaging Market"
+     ],
+     "caveat": "If the region has a unique industrial cluster (Asia electronics) or policy (Europe SAF) you must allow larger shift.",
+     "n_markets": 2
+    },
+    {
+     "id": "2B-13",
+     "decision": "use_case_growth",
+     "condition": "A use case had a one-time demand surge (e.g., COVID infection prevention, pandemic-era categories) or is a restricted pediatric/legacy indication.",
+     "action": "Set growth discount -0.5 to -1.5 pp vs root for the fading use case.",
+     "why": "Demand normalizes or regulation restricts use; examples: infection prevention -1.0 to -1.1pp, pediatric codeine -0.5pp, non-allergic rhinitis -1.5pp, cough management -0.4pp.",
+     "kind": "mechanism",
+     "markets": [
+      "U.S. Providone Iodine Market",
+      "U.S Povidone Iodine Nasal Spray Market",
+      "Global Codeine Market"
+     ],
+     "caveat": "If post-surge demand stabilizes at a higher baseline or seasonality sustains it, use a smaller discount.",
+     "n_markets": 3
+    },
+    {
+     "id": "2B-14",
+     "decision": "use_case_split",
+     "condition": "Segmentation by age or patient group.",
+     "action": "Set adult share 75–90%, geriatric 10–20%, pediatric 5–15% for adult-onset chronic conditions; adjust for pediatric-onset diseases.",
+     "why": "Prevalence and label restrictions concentrate demand in adults; examples: CSU adult 77.7%, geriatric 14.5%, pediatric 7.7%; codeine adult 87.8%, pediatric 12.2%.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Chronic Spontaneous Urticaria Market_Coherent Market Insights",
+      "Global Codeine Market"
+     ],
+     "caveat": "For pediatric-onset or geriatric-heavy diseases, reverse the shares based on epidemiology, not this default.",
+     "n_markets": 2
+    }
+   ],
+   "pitfalls": [
+    "Using growth premiums as absolute growth rates instead of adjustments to the root CAGR.",
+    "Forcing equal use-case shares when the market is concentrated; use installed base/regulatory evidence and allow one segment to be 50-80%.",
+    "Applying large regional mix shifts (+5 to +15 pp) without a specific policy or resource shock; typical region deviations are about 1 pp.",
+    "Mechanically balancing regional mix shifts by dumping residual into 'Others' without checking that the resulting shares are plausible; instead adjust all segments proportionally.",
+    "Double counting channel shifts: if you already adjusted channel use-case growth, do not also make a large channel mix shift unless it reflects geography-specific channel differences.",
+    "Copying growth premiums from one market category to another with different demand drivers (e.g., policy-driven defense vs consumer cosmetics).",
+    "Ignoring saturation: assigning high growth premiums to segments that are already large (e.g., renewable diesel/HVO) despite policy support."
+   ]
+  },
+  "2C": {
+   "method": "Start with the top-level type_split: identify the major types from regulation, installed base, standard of care, and technology maturity. Then set type_growth as share-shift premiums or discounts relative to the root market, making the weighted sum equal to root. After that, adjust type_mix_by_region only when there is product-specific regional evidence; otherwise hold regional shifts flat. Then split sub_segment_split within the largest parent types using installed-base or application logic. Finally set price_by_region as a consistency check, using local cost, logistics, and purchasing power; never use price to plug a volume gap. Evidence order: regulation/payer/standard; installed base and endpoint counts; substitution/adoption curves; regional income, manufacturing and logistics; historical price indices.",
+   "heuristics": [
+    {
+     "id": "2C-1",
+     "decision": "type_split",
+     "condition": "A market has a clear current standard/incumbent format, but an emerging alternative exists.",
+     "action": "Set the incumbent at 50-70% share and the emerging at 10-30%; put the remaining 5-25% in secondary/legacy segments. Use the all-market top-segment average of about 54% (range 41-87%) as a starting point, not 90%+ unless regulation/installed base locks in one choice.",
+     "why": "Installed base, switching costs and mature distribution favor current standards; incumbents rarely fall below 50% until a replacement is proven. Examples: fixed self-scanning kiosks 86.8%, tablets 57.9%, reusable ice packs 60.3%, rectangular waveguide 66.2%.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Retail Self Scanning Solutions Market",
+      "Global Amphetamine + Deaxmphetamine Market",
+      "Global Gel Ice Pack Market",
+      "Global Waveguide Market"
+     ],
+     "caveat": "Do not force a 50%+ leader if the market is genuinely fragmented or has multiple viable alternatives; then set the top segment 30-45%.",
+     "n_markets": 4
+    },
+    {
+     "id": "2C-2",
+     "decision": "type_split",
+     "condition": "For pharma/consumer health products, patent expiry and OTC status determine branded vs generic or Rx vs OTC.",
+     "action": "Set generic/OTC at 70-91% and branded/Rx at 9-30% for mature oral/small-molecule self-care; set branded at 65-80% and generic at 20-35% for novel biologics/abuse-deterrent/long-acting products. If OTC and old, use OTC around 91%.",
+     "why": "Self-care retail access and generic substitution drive share to generics/OTC; new formulations with patents or safety advantages keep branded high. Opinions: U.S. PI OTC 91% / Rx 9%; Codeine single-ingredient 85.6%; CSU branded 79.8% / generic 20.2%.",
+     "kind": "mechanism",
+     "markets": [
+      "U.S Povidone Iodine Nasal Spray Market",
+      "U.S. Providone Iodine Market",
+      "Global Codeine Market",
+      "Global Chronic Spontaneous Urticaria Market_Coherent Market Insights"
+     ],
+     "caveat": "Not applicable to medical devices/consumables or markets without bioequivalence/regulatory substitution.",
+     "n_markets": 4
+    },
+    {
+     "id": "2C-3",
+     "decision": "type_split",
+     "condition": "The market is regulated/asset-heavy and has a traditional on-premise/hardware baseline with cloud/software alternatives emerging.",
+     "action": "Set on-premise/hardware at 55-75% if GMP/validation/OT security concerns are strong; set cloud/hybrid/software at 20-40%. In less regulated digital-native markets, allow on-prem and cloud/hybrid near parity at 40-60%.",
+     "why": "Capital stock, validation, latency and security requirements delay adoption of cloud/software. Examples: pharma automation hardware 56.9%, on-premise 59.7%; digital twin on-premise 44.6% / cloud 39.1%; OT security solution 70.7% / services 29.3%.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
+      "Global Digital Twin Market",
+      "Global Cyber-Physical Systems Security Market"
+     ],
+     "caveat": "Do not set cloud/software below 15% just because the market is regulated; many cloud-native offers are already validated and growing.",
+     "n_markets": 3
+    },
+    {
+     "id": "2C-4",
+     "decision": "type_growth",
+     "condition": "A type is a small, emerging/next-generation segment, typically under 20% share, with adoption catalysts such as cloud, AI, sustainability, convenience, or clinical pipeline.",
+     "action": "Assign a growth premium of +0.5 to +6.0pp over the root market. Use +0.5 to +2.5pp for a normal premium niche; use +2.7 to +6.0pp only for near-zero but rapidly commercializing segments with clear catalysts.",
+     "why": "Small bases and marginal adoption create high relative growth. Reported examples: CV/AI scanning +5.7pp, mobile self-scanning +4.9pp, pipeline probiotics +4.7pp, pods/capsules +2.7pp, cloud +3.0pp, bio-based foams +2.8pp.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Retail Self Scanning Solutions Market",
+      "Global Next Generation Probiotics Market",
+      "Global Decaf Coffee Market",
+      "Global Technical Foam Market",
+      "Global Digital Twin Market"
+     ],
+     "caveat": "If the emerging type already has >30% share or revenue base is no longer small, reduce to <=+1.5pp; avoid giving +5pp just for a popular buzzword.",
+     "n_markets": 5
+    },
+    {
+     "id": "2C-5",
+     "decision": "type_growth",
+     "condition": "A type is mature/commodity/legacy with large installed base, price erosion, or regulatory substitution pressure.",
+     "action": "Set growth premium -0.2 to -3.6pp vs root; for severe legacy displacement set -1.0 to -4.5pp; for mild maturation set -0.1 to -0.7pp. If branded/patent-protected, keep premium near 0 or positive.",
+     "why": "Large base effect, genericization, and substitution to newer alternatives cause share loss. Examples: gas lasers -4.5pp, on-premise -3.6pp, cloth tape -2.3pp, generic forms -2.3pp, plain amphetamine -1.1pp, tablets -0.4pp.",
+     "kind": "mechanism",
+     "markets": [
+      "Global High Energy Laser Market",
+      "Global Digital Twin Market",
+      "Global Athletic Tape Market",
+      "Global Amphetamine + Deaxmphetamine Market"
+     ],
+     "caveat": "Don't penalize a mature type if it is protected by patents, regulation, or still increasing volume through mandatory use.",
+     "n_markets": 4
+    },
+    {
+     "id": "2C-6",
+     "decision": "type_mix_by_region",
+     "condition": "A split contains premium/novel and price-sensitive/legacy types, and regions differ in ability to pay, regulatory rigor, or industrial base.",
+     "action": "Shift premium/novel types +1 to +3pp in North America/Europe and price-sensitive/legacy types +1 to +3pp in APAC/LatAm/Africa. Total shift per type usually <=3pp; hold flat if no evidence.",
+     "why": "Higher income and stricter regulation pull premium/novel types toward developed regions; cost-sensitive procurement pulls commodity types toward emerging regions. Examples: azelaic pharma API NA +2, Europe cosmetic +1; high-energy laser fiber/solid NA +1, gas Africa +1; amphetamine mixed salts APAC +2; athletic tape cloth MEA +2.",
+     "kind": "mechanism",
+     "markets": [
+      "North America & Europe Azelaic Acid Market",
+      "Global High Energy Laser Market",
+      "Global Amphetamine + Deaxmphetamine Market",
+      "Global Athletic Tape Market"
+     ],
+     "caveat": "Do not shift every segment by +1/-1 just for regional flavor; globally standardized products may have zero regional shift, as in retail self-scanning product type.",
+     "n_markets": 4
+    },
+    {
+     "id": "2C-7",
+     "decision": "type_mix_by_region",
+     "condition": "Market maturity/asset age creates leapfrog or legacy adoption: developed markets already have base and shift to next-gen/system-level; emerging markets either use legacy or leapfrog to app-based/on-demand.",
+     "action": "Shift developed regions toward next-gen/distributed models by +1 to +9pp and emerging regions toward asset-level/basic/cash/on-demand by +1 to +8pp; default to ±2pp unless there is a structural reason for larger.",
+     "why": "Installed base inertia and income/technology leapfrog drive regional differences. Examples: PLC North America broadband +9, MEA narrowband +8; digital twin asset twin in MEA/LatAm +1, system twin developed; UCO route North America bulk +1, Africa on-demand +1.",
+     "kind": "mechanism",
+     "markets": [
+      "Global PLC Market",
+      "Global Digital Twin Market",
+      "Global Used Cooking Oil Collection Market"
+     ],
+     "caveat": "Large shifts like +9pp are outliers; many past analysts probably over-adjusted from a global average. If only one region has evidence, keep the shift <=2pp and re-check total regional shares.",
+     "n_markets": 3
+    },
+    {
+     "id": "2C-8",
+     "decision": "sub_segment_split",
+     "condition": "Within a parent type, one application/route/form is the default and the rest are niche.",
+     "action": "Set the dominant child at 40-70% of the parent, second at 20-40%, and remaining long-tail at 5-25%. Give the dominant child 0.0 to +0.7pp growth vs parent unless it is being disrupted; the fastest niche gets +0.5 to +3.0pp; laggards get -0.3 to -2.5pp.",
+     "why": "Pareto concentration is common; the all-market top-segment mean is about 0.54. Examples: GBR 62% of dental parent, flexible PU 56% of PU, tablets 57.9% of dosage forms, electricity metering 71% of metering.",
+     "kind": "mechanism",
+     "markets": [
+      "Collagen Membrane Market",
+      "Global Technical Foam Market",
+      "Global Amphetamine + Deaxmphetamine Market",
+      "Global PLC Market"
+     ],
+     "caveat": "If the category is fragmented with no default, don't force a >50% child; use several 20-30% children instead.",
+     "n_markets": 4
+    },
+    {
+     "id": "2C-9",
+     "decision": "sub_segment_split",
+     "condition": "The parent type is asset-heavy or installed-base-driven, so child shares follow the population of installed endpoints/equipment.",
+     "action": "Assign child shares proportional to installed endpoints, e.g., electricity meters 71% of metering, in-premises CPE 75% of broadband, transformer 27% of asset twins. Give replacement-critical children +0.2 to +1.7pp and legacy children -0.5 to -2.5pp.",
+     "why": "Current revenue follows installed base; growth follows replacement/digitization. Examples: electricity metering 71%, in-premises data networking 75%, transformer 27%, circuit breaker 20%.",
+     "kind": "mechanism",
+     "markets": [
+      "Global PLC Market",
+      "Global Digital Twin Market"
+     ],
+     "caveat": "If rapid new device installation is occurring, installed-based share under-estimates fast-growing children; use growth premium but don't jump share by more than 5pp without shipment data.",
+     "n_markets": 2
+    },
+    {
+     "id": "2C-10",
+     "decision": "price_by_region",
+     "condition": "Regional prices reflect ability to pay, local manufacturing costs, logistics, and regulatory premium.",
+     "action": "Set North America 1.00-1.25, Europe 1.00-1.30, APAC 0.75-0.99, LatAm 0.76-1.03, MEA 0.70-1.08, with Africa often lowest at 0.70-0.97. Use Europe >1.10 for strict regulated/premium markets, North America >1.10 for specialty/pods/strong dollar, APAC <0.95 for commodity/local manufacturing. If the product is globally traded/commodity, set all regions 0.95-1.05.",
+     "why": "Prices track local income, competition, logistics and reimbursement. Examples: Athletic tape Europe 1.28 / NA 1.17 / APAC 0.84 / Africa 0.70; Decaf NA 1.25 / APAC 0.75; WFI Europe 1.20 / APAC 0.83; UCO NA 1.15 / Africa 0.72.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Athletic Tape Market",
+      "Global Decaf Coffee Market",
+      "Global Water for Injection Container Market",
+      "Global Used Cooking Oil Collection Market"
+     ],
+     "caveat": "Do not use regional price index to compensate for a wrong volume split; if arbitrage/global procurement exists, e.g., collagen membrane LatAm indexes around 1.0, keep price near 1.0.",
+     "n_markets": 4
+    },
+    {
+     "id": "2C-11",
+     "decision": "price_by_region",
+     "condition": "You have sub-national or small/remote market price indices.",
+     "action": "Set high-volume/competitive hubs at 0.96-0.99, remote/landlocked/small order markets at 1.02-1.13 vs the national root. Example: India SWRO South 0.99, East 1.05, Northeast 1.13.",
+     "why": "Logistics costs, order size, and competitive intensity create within-country price spreads.",
+     "kind": "mechanism",
+     "markets": [
+      "India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market"
+     ],
+     "caveat": "Only apply sub-national if you have specific logistics/hub evidence; otherwise stay at regional level.",
+     "n_markets": 1
+    },
+    {
+     "id": "2C-12",
+     "decision": "type_mix_by_region",
+     "condition": "No product-specific regional difference in adoption or demand is known.",
+     "action": "Set all regional type-mix shifts to zero, i.e., no shift from global type shares; do not use global average region shares to force an adjustment.",
+     "why": "This is a house convention to prevent overfitting. In some past models, product type mix was flat across regions when the analyst had no evidence; however, always check whether a regional pattern exists before defaulting to zero.",
+     "kind": "house_convention",
+     "markets": [
+      "Global Retail Self Scanning Solutions Market"
+     ],
+     "caveat": "Do not confuse 'no data' with 'no regional difference'; collect evidence on regulation, income, and local production first. If evidence exists, apply heuristic 2C-6 or 2C-7 instead.",
+     "n_markets": 1
+    }
+   ],
+   "pitfalls": [
+    "Copying global average regional shares, e.g., NA 37.5%, Europe 27.1%, APAC 22.7%, as a default for every market. Actual shares vary widely; for example, chemicals APAC is 38%, high-energy laser APAC is 30%, and Europe can drop to 17%.",
+    "Applying huge growth premiums to every 'AI/sustainable/cloud/pods' niche without checking base size or revenue. Many small niches cannot sustain +5pp after they become >20% share.",
+    "Forcing a dominant segment when the market is fragmented. The average top-segment share is about 54%, but some categories have top shares of 40-45%.",
+    "Over-adjusting regional mix with large ±8/9pp shifts from a global base unless there is strong structural evidence. Such shifts are outliers and may be mechanical from a single expert.",
+    "Treating all split categories as brand/generic or OTC/Rx when devices/consumables have entirely different substitution dynamics.",
+    "Setting all price indices to 1.0 or using NA/Europe premium in commodity markets. Price should reflect local income, logistics, and competition, and should not be used to plug volume gaps.",
+    "Ignoring the base effect in type_growth: growth premium is share shift, not absolute growth. A small segment can have +6pp but still not move the market much, so do not assign big absolute size to it."
+   ]
+  }
+ },
+ "stats": {
+  "all": {
+   "growth.fcst_minus_hist": [
+    0.0071,
+    43
+   ],
+   "region.share.NA": [
+    0.375,
+    30
+   ],
+   "region.share.Europe": [
+    0.2713,
+    30
+   ],
+   "region.share.APAC": [
+    0.2268,
+    30
+   ],
+   "region.share.LATAM": [
+    0.0605,
+    30
+   ],
+   "region.share.MEA": [
+    0.058,
+    30
+   ],
+   "region.cagr_gap.NA": [
+    -0.0035,
+    30
+   ],
+   "region.cagr_gap.Europe": [
+    -0.007,
+    30
+   ],
+   "region.cagr_gap.APAC": [
+    0.0172,
+    30
+   ],
+   "region.cagr_gap.LATAM": [
+    -0.0123,
+    30
+   ],
+   "region.cagr_gap.MEA": [
+    -0.0166,
+    30
+   ],
+   "country.share.U.S.": [
+    0.8875,
+    32
+   ],
+   "country.share.China": [
+    0.2965,
+    29
+   ],
+   "country.share.Germany": [
+    0.2303,
+    32
+   ],
+   "country.share.Japan": [
+    0.1667,
+    29
+   ],
+   "country.share.India": [
+    0.198,
+    29
+   ],
+   "country.cagr_gap_sd": [
+    0.0128,
+    36
+   ],
+   "country.rest_share": [
+    0.1536,
+    36
+   ],
+   "seg.top_share": [
+    0.5356,
+    43
+   ],
+   "seg.cagr_spread": [
+    0.026,
+    43
+   ],
+   "seg.cagr_dev": [
+    0.0074,
+    43
+   ],
+   "seg.sub_cagr_dev": [
+    0.0088,
+    19
+   ],
+   "seg.small_fast": [
+    0.2167,
+    42
+   ],
+   "seg.country_mix_sd": [
+    0.0091,
+    37
+   ]
+  },
+  "Pharmaceuticals & APIs": {
+   "growth.fcst_minus_hist": [
+    0.0075,
+    12
+   ],
+   "region.share.NA": [
+    0.3979,
+    10
+   ],
+   "region.share.Europe": [
+    0.2656,
+    10
+   ],
+   "region.share.APAC": [
+    0.202,
+    10
+   ],
+   "region.share.LATAM": [
+    0.0595,
+    10
+   ],
+   "region.share.MEA": [
+    0.0443,
+    10
+   ],
+   "region.cagr_gap.NA": [
+    0.0015,
+    10
+   ],
+   "region.cagr_gap.Europe": [
+    -0.0037,
+    10
+   ],
+   "region.cagr_gap.APAC": [
+    0.0201,
+    10
+   ],
+   "region.cagr_gap.LATAM": [
+    -0.019,
+    10
+   ],
+   "region.cagr_gap.MEA": [
+    -0.0303,
+    10
+   ],
+   "country.share.U.S.": [
+    0.893,
+    9
+   ],
+   "country.share.China": [
+    0.2658,
+    9
+   ],
+   "country.share.Germany": [
+    0.235,
+    9
+   ],
+   "country.share.Japan": [
+    0.1667,
+    9
+   ],
+   "country.share.India": [
+    0.2231,
+    9
+   ],
+   "country.cagr_gap_sd": [
+    0.0153,
+    9
+   ],
+   "country.rest_share": [
+    0.1525,
+    9
+   ],
+   "seg.top_share": [
+    0.5867,
+    12
+   ],
+   "seg.cagr_spread": [
+    0.0214,
+    12
+   ],
+   "seg.cagr_dev": [
+    0.0062,
+    12
+   ],
+   "seg.sub_cagr_dev": [
+    0.0098,
+    3
+   ],
+   "seg.small_fast": [
+    0.5887,
+    12
+   ],
+   "seg.country_mix_sd": [
+    0.0095,
+    8
+   ]
+  },
+  "ICT, software & digital services": {
+   "growth.fcst_minus_hist": [
+    0.0087,
+    6
+   ],
+   "region.share.NA": [
+    0.3503,
+    5
+   ],
+   "region.share.Europe": [
+    0.2835,
+    5
+   ],
+   "region.share.APAC": [
+    0.2378,
+    5
+   ],
+   "region.share.LATAM": [
+    0.052,
+    5
+   ],
+   "region.share.MEA": [
+    0.063,
+    5
+   ],
+   "region.cagr_gap.NA": [
+    -0.0135,
+    5
+   ],
+   "region.cagr_gap.Europe": [
+    -0.0089,
+    5
+   ],
+   "region.cagr_gap.APAC": [
+    0.0186,
+    5
+   ],
+   "region.cagr_gap.LATAM": [
+    -0.0128,
+    5
+   ],
+   "region.cagr_gap.MEA": [
+    0.0064,
+    5
+   ],
+   "country.share.U.S.": [
+    0.882,
+    6
+   ],
+   "country.share.China": [
+    0.3457,
+    4
+   ],
+   "country.share.Germany": [
+    0.2344,
+    6
+   ],
+   "country.share.Japan": [
+    0.1665,
+    4
+   ],
+   "country.share.India": [
+    0.1439,
+    4
+   ],
+   "country.cagr_gap_sd": [
+    0.018,
+    6
+   ],
+   "country.rest_share": [
+    0.1763,
+    6
+   ],
+   "seg.top_share": [
+    0.5302,
+    6
+   ],
+   "seg.cagr_spread": [
+    0.0447,
+    6
+   ],
+   "seg.cagr_dev": [
+    0.0126,
+    6
+   ],
+   "seg.sub_cagr_dev": [
+    0.0156,
+    4
+   ],
+   "seg.small_fast": [
+    -0.0506,
+    6
+   ],
+   "seg.country_mix_sd": [
+    0.0077,
+    5
+   ]
+  },
+  "Construction, travel & other services": {
+   "growth.fcst_minus_hist": [
+    0.0046,
+    3
+   ],
+   "country.cagr_gap_sd": [
+    0.0121,
+    2
+   ],
+   "country.rest_share": [
+    0.1312,
+    2
+   ],
+   "seg.top_share": [
+    0.5061,
+    3
+   ],
+   "seg.cagr_spread": [
+    0.023,
+    3
+   ],
+   "seg.cagr_dev": [
+    0.0074,
+    3
+   ],
+   "seg.sub_cagr_dev": [
+    0.0116,
+    2
+   ],
+   "seg.small_fast": [
+    -0.15,
+    3
+   ],
+   "seg.country_mix_sd": [
+    0.0092,
+    3
+   ]
+  },
+  "Medical devices & healthcare services": {
+   "growth.fcst_minus_hist": [
+    0.0076,
+    5
+   ],
+   "region.share.NA": [
+    0.3821,
+    3
+   ],
+   "region.share.Europe": [
+    0.2525,
+    3
+   ],
+   "region.share.APAC": [
+    0.2256,
+    3
+   ],
+   "region.share.LATAM": [
+    0.0792,
+    3
+   ],
+   "region.share.MEA": [
+    0.0578,
+    3
+   ],
+   "region.cagr_gap.NA": [
+    0.0013,
+    3
+   ],
+   "region.cagr_gap.Europe": [
+    -0.0059,
+    3
+   ],
+   "region.cagr_gap.APAC": [
+    0.0173,
+    3
+   ],
+   "region.cagr_gap.LATAM": [
+    -0.0153,
+    3
+   ],
+   "region.cagr_gap.MEA": [
+    -0.0268,
+    3
+   ],
+   "country.share.U.S.": [
+    0.8856,
+    4
+   ],
+   "country.share.China": [
+    0.273,
+    3
+   ],
+   "country.share.Germany": [
+    0.235,
+    3
+   ],
+   "country.share.Japan": [
+    0.2147,
+    3
+   ],
+   "country.share.India": [
+    0.2172,
+    3
+   ],
+   "country.cagr_gap_sd": [
+    0.0133,
+    4
+   ],
+   "country.rest_share": [
+    0.1293,
+    4
+   ],
+   "seg.top_share": [
+    0.5153,
+    5
+   ],
+   "seg.cagr_spread": [
+    0.0234,
+    5
+   ],
+   "seg.cagr_dev": [
+    0.0065,
+    5
+   ],
+   "seg.sub_cagr_dev": [
+    0.0065,
+    2
+   ],
+   "seg.small_fast": [
+    0.68,
+    5
+   ],
+   "seg.country_mix_sd": [
+    0.0094,
+    4
+   ]
+  },
+  "Industrial automation, electronics & components": {
+   "growth.fcst_minus_hist": [
+    0.0082,
+    5
+   ],
+   "region.share.NA": [
+    0.3191,
+    4
+   ],
+   "region.share.Europe": [
+    0.2586,
+    4
+   ],
+   "region.share.APAC": [
+    0.3045,
+    4
+   ],
+   "region.share.LATAM": [
+    0.0544,
+    4
+   ],
+   "region.share.MEA": [
+    0.0592,
+    4
+   ],
+   "region.cagr_gap.NA": [
+    -0.0084,
+    4
+   ],
+   "region.cagr_gap.Europe": [
+    -0.0155,
+    4
+   ],
+   "region.cagr_gap.APAC": [
+    0.0211,
+    4
+   ],
+   "region.cagr_gap.LATAM": [
+    -0.0016,
+    4
+   ],
+   "region.cagr_gap.MEA": [
+    0.0068,
+    4
+   ],
+   "country.share.U.S.": [
+    0.8715,
+    4
+   ],
+   "country.share.China": [
+    0.385,
+    4
+   ],
+   "country.share.Germany": [
+    0.258,
+    4
+   ],
+   "country.share.Japan": [
+    0.1905,
+    4
+   ],
+   "country.share.India": [
+    0.1305,
+    4
+   ],
+   "country.cagr_gap_sd": [
+    0.0143,
+    4
+   ],
+   "country.rest_share": [
+    0.1824,
+    4
+   ],
+   "seg.top_share": [
+    0.4144,
+    5
+   ],
+   "seg.cagr_spread": [
+    0.0426,
+    5
+   ],
+   "seg.cagr_dev": [
+    0.0145,
+    5
+   ],
+   "seg.sub_cagr_dev": [
+    0.0132,
+    3
+   ],
+   "seg.small_fast": [
+    0.1426,
+    5
+   ],
+   "seg.country_mix_sd": [
+    0.0076,
+    5
+   ]
+  },
+  "Food & beverage": {
+   "growth.fcst_minus_hist": [
+    0.0059,
+    5
+   ],
+   "region.share.NA": [
+    0.3467,
+    4
+   ],
+   "region.share.Europe": [
+    0.2683,
+    4
+   ],
+   "region.share.APAC": [
+    0.1816,
+    4
+   ],
+   "region.share.LATAM": [
+    0.0919,
+    4
+   ],
+   "region.share.MEA": [
+    0.0614,
+    4
+   ],
+   "region.cagr_gap.NA": [
+    -0.0068,
+    4
+   ],
+   "region.cagr_gap.Europe": [
+    -0.0022,
+    4
+   ],
+   "region.cagr_gap.APAC": [
+    0.0166,
+    4
+   ],
+   "region.cagr_gap.LATAM": [
+    0.0036,
+    4
+   ],
+   "region.cagr_gap.MEA": [
+    0.0006,
+    4
+   ],
+   "country.share.U.S.": [
+    0.9382,
+    3
+   ],
+   "country.share.China": [
+    0.1833,
+    4
+   ],
+   "country.share.Germany": [
+    0.1467,
+    4
+   ],
+   "country.share.Japan": [
+    0.1421,
+    4
+   ],
+   "country.share.India": [
+    0.1743,
+    4
+   ],
+   "country.cagr_gap_sd": [
+    0.0114,
+    5
+   ],
+   "country.rest_share": [
+    0.212,
+    5
+   ],
+   "seg.top_share": [
+    0.6021,
+    5
+   ],
+   "seg.cagr_spread": [
+    0.0234,
+    5
+   ],
+   "seg.cagr_dev": [
+    0.0059,
+    5
+   ],
+   "seg.sub_cagr_dev": [
+    0.0109,
+    2
+   ],
+   "seg.small_fast": [
+    -0.1262,
+    4
+   ],
+   "seg.country_mix_sd": [
+    0.0092,
+    5
+   ]
+  },
+  "Chemicals & materials": {
+   "growth.fcst_minus_hist": [
+    0.0056,
+    5
+   ],
+   "region.share.NA": [
+    0.3272,
+    2
+   ],
+   "region.share.Europe": [
+    0.1699,
+    2
+   ],
+   "region.share.APAC": [
+    0.382,
+    2
+   ],
+   "region.share.LATAM": [
+    0.0499,
+    2
+   ],
+   "region.share.MEA": [
+    0.0711,
+    2
+   ],
+   "region.cagr_gap.NA": [
+    -0.009,
+    2
+   ],
+   "region.cagr_gap.Europe": [
+    -0.0158,
+    2
+   ],
+   "region.cagr_gap.APAC": [
+    0.014,
+    2
+   ],
+   "region.cagr_gap.LATAM": [
+    -0.0051,
+    2
+   ],
+   "region.cagr_gap.MEA": [
+    -0.0062,
+    2
+   ],
+   "country.share.U.S.": [
+    0.8792,
+    4
+   ],
+   "country.share.China": [
+    0.417,
+    3
+   ],
+   "country.share.Germany": [
+    0.2104,
+    4
+   ],
+   "country.share.Japan": [
+    0.099,
+    3
+   ],
+   "country.share.India": [
+    0.198,
+    3
+   ],
+   "country.cagr_gap_sd": [
+    0.0115,
+    5
+   ],
+   "country.rest_share": [
+    0.127,
+    5
+   ],
+   "seg.top_share": [
+    0.4143,
+    5
+   ],
+   "seg.cagr_spread": [
+    0.026,
+    5
+   ],
+   "seg.cagr_dev": [
+    0.007,
+    5
+   ],
+   "seg.sub_cagr_dev": [
+    0.0068,
+    3
+   ],
+   "seg.small_fast": [
+    0.4317,
+    5
+   ],
+   "seg.country_mix_sd": [
+    0.0101,
+    5
+   ]
+  },
+  "Energy, water & utilities": {
+   "growth.fcst_minus_hist": [
+    0.0048,
+    2
+   ],
+   "seg.top_share": [
+    0.5799,
+    2
+   ],
+   "seg.cagr_spread": [
+    0.038,
+    2
+   ],
+   "seg.cagr_dev": [
+    0.009,
+    2
+   ],
+   "seg.small_fast": [
+    0.4536,
+    2
+   ],
+   "seg.country_mix_sd": [
+    0.0067,
+    2
+   ]
+  }
+ },
+ "calibration": [
+  {
+   "id": "CAL-1",
+   "applies_to": "all",
+   "note": "Market-specific evidence (installed base, OEM/shipment data, trade data, company revenues) overrides every house default band. A house_convention band is the weakest input: use it only when nothing specific is known, and say so.",
+   "source": "mimic test 2026-11-10: held-out Glass Packaging (CAL-2) and the gearbox (CAL-3, so the gearbox is not fully blind on this point) showed heuristics applied outside their conditions"
+  },
+  {
+   "id": "CAL-3",
+   "applies_to": "all",
+   "note": "For aftermarket, service, spare-part, repair or consumable markets, the base-year split follows the INSTALLED BASE where the assets already are (cumulative past installations and their age) - not where new capacity or manufacturing is growing today. Fast new-build regions earn a growth premium, not an inflated base-year share. Choose the heuristic whose CONDITION matches the market's demand mechanism before applying its numbers.",
+   "source": "mimic test 2026-11-10: held-out Glass Packaging (CAL-2) and the gearbox (CAL-3, so the gearbox is not fully blind on this point) showed heuristics applied outside their conditions"
+  }
+ ],
+ "disabled_decisions": {
+  "region_split": "mimic test 2026-11-10: with the region-share bands the analyst's base-year geography shares got worse on held-out markets (2.86 -> 3.94 pp; calibrated 3.66 pp) and on the gearbox (3.19 -> 7.00 pp), while every other decision improved; region shares are left to market evidence (OEM installed base), growth gaps keep their heuristics"
+ }
+}
