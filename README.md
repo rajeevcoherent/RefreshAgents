@@ -21,6 +21,10 @@ Ground rules:
 - **Generation is blind.** The publisher's own report is blocked from the evidence. Past human
   sheets teach *how* analysts form opinions (habits, spreads, typical shapes), never target values.
 
+**Final deliverable:** [`final/Input Sheet - Global Industrial High Speed Helical Gearbox Aftermarket Market (prior-validated).xlsx`](final/)
+(run `run4-scope`, prior-validated). Start with the *2A-2B-2C Definitions* sheet. Hover over any Data or
+ASP cell for its explanation, calculation and assumptions, or filter the *Cell Reasoning* sheet.
+
 ---
 
 ## Quick start
@@ -189,6 +193,7 @@ analyst_fleet/
   calc_chain.py, cell_reasoning.py, plain_language.py, writer.py   per-cell reasoning and workbook
   validator.py, prior_validator.py           validation leads
   taxonomy.json  geographies, segment dimensions, 2A/2B/2C roles
+final/           the final Input Sheet (prior-validated)
 data/corpus/     learned playbook, priors library, rules, evaluation reports
 run_input_sheet.py, validate_with_priors.py, rebuild_workbook.py      main entry points
 learn_from_corpus.py, learn_opinions.py, mimic_test.py               corpus learning
