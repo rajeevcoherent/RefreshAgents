@@ -1,52 +1,52 @@
 {
  "overall": {
   "country.cagr_gap_absmax": [
-   0.021,
+   0.0207,
    0.0322,
-   0.055,
-   36
+   0.0654,
+   42
   ],
   "country.cagr_gap_sd": [
-   0.0098,
-   0.0128,
-   0.0213,
-   36
+   0.0096,
+   0.013,
+   0.0223,
+   42
   ],
   "country.rest_share": [
    0.0846,
-   0.1536,
-   0.214,
-   36
+   0.1538,
+   0.212,
+   41
   ],
   "country.share.Argentina": [
    0.085,
-   0.1285,
+   0.135,
    0.197,
-   29
+   33
   ],
   "country.share.Australia": [
-   0.042,
-   0.0557,
+   0.0259,
+   0.053,
    0.1201,
-   28
+   32
   ],
   "country.share.Brazil": [
    0.334,
    0.3891,
    0.4638,
-   30
+   34
   ],
   "country.share.Canada": [
-   0.0728,
-   0.1125,
-   0.1512,
-   32
+   0.0763,
+   0.122,
+   0.16,
+   36
   ],
   "country.share.China": [
    0.185,
-   0.2965,
-   0.416,
-   29
+   0.3061,
+   0.417,
+   33
   ],
   "country.share.Egypt": [
    0.06,
@@ -55,58 +55,58 @@
    3
   ],
   "country.share.France": [
-   0.111,
-   0.1476,
+   0.112,
+   0.148,
    0.1882,
-   32
+   37
   ],
   "country.share.GCC": [
    0.4267,
    0.515,
-   0.7232,
-   24
+   0.6061,
+   27
   ],
   "country.share.Germany": [
-   0.1535,
-   0.2303,
-   0.278,
-   32
+   0.154,
+   0.235,
+   0.279,
+   37
   ],
   "country.share.India": [
-   0.092,
-   0.198,
+   0.084,
+   0.1923,
    0.2339,
-   29
+   33
   ],
   "country.share.Israel": [
    0.079,
-   0.2492,
+   0.2456,
    0.318,
-   18
+   20
   ],
   "country.share.Italy": [
    0.081,
-   0.1157,
+   0.1145,
    0.158,
-   31
+   36
   ],
   "country.share.Japan": [
    0.1,
-   0.1667,
+   0.161,
    0.244,
-   29
+   33
   ],
   "country.share.Mexico": [
    0.236,
-   0.2859,
+   0.2934,
    0.352,
-   30
+   34
   ],
   "country.share.Russia": [
    0.036,
-   0.0622,
+   0.062,
    0.089,
-   30
+   33
   ],
   "country.share.Saudi Arabia": [
    0.04,
@@ -116,21 +116,21 @@
   ],
   "country.share.South Africa": [
    0.156,
-   0.417,
+   0.406,
    0.5005,
-   29
+   33
   ],
   "country.share.South Korea": [
    0.052,
    0.0823,
    0.102,
-   29
+   33
   ],
   "country.share.Spain": [
    0.066,
-   0.0949,
-   0.1085,
-   31
+   0.0948,
+   0.128,
+   36
   ],
   "country.share.Turkey": [
    0.065,
@@ -140,15 +140,15 @@
   ],
   "country.share.U.K.": [
    0.1214,
-   0.1694,
-   0.217,
-   31
+   0.1657,
+   0.2193,
+   36
   ],
   "country.share.U.S.": [
-   0.8488,
-   0.8875,
+   0.8434,
+   0.878,
    0.9272,
-   32
+   36
   ],
   "country.share.UAE": [
    0.019,
@@ -157,160 +157,160 @@
    5
   ],
   "growth.fcst_cagr": [
-   0.048,
-   0.0812,
-   0.1362,
-   43
+   0.0523,
+   0.0784,
+   0.1558,
+   53
   ],
   "growth.fcst_minus_hist": [
-   0.0045,
-   0.0071,
-   0.0101,
-   43
+   0.0044,
+   0.0065,
+   0.0102,
+   53
   ],
   "growth.hist_cagr": [
-   0.0408,
+   0.0467,
    0.0732,
-   0.127,
-   43
+   0.1438,
+   53
   ],
   "growth.price_cagr": [
    0.0073,
-   0.0112,
-   0.0184,
-   16
+   0.0113,
+   0.0192,
+   21
   ],
   "region.cagr_gap.APAC": [
    0.0081,
    0.0172,
-   0.0287,
-   30
+   0.0305,
+   34
   ],
   "region.cagr_gap.Europe": [
-   -0.0153,
-   -0.007,
+   -0.0191,
+   -0.0071,
    0.0088,
-   30
+   34
   ],
   "region.cagr_gap.LATAM": [
    -0.0272,
    -0.0123,
    0.0041,
-   30
+   34
   ],
   "region.cagr_gap.MEA": [
    -0.0459,
    -0.0166,
    0.011,
-   30
+   34
   ],
   "region.cagr_gap.NA": [
-   -0.0145,
+   -0.0212,
    -0.0035,
    0.0035,
-   30
+   34
   ],
   "region.cagr_range": [
    0.0253,
    0.0407,
-   0.0764,
-   30
+   0.0789,
+   34
   ],
   "region.fastest_is_apac": [
    0.0,
    1.0,
    1.0,
-   30
+   34
   ],
   "region.share.APAC": [
    0.1459,
-   0.2268,
-   0.3455,
-   30
+   0.23,
+   0.385,
+   34
   ],
   "region.share.Europe": [
-   0.202,
-   0.2713,
+   0.1907,
+   0.2675,
    0.3206,
-   30
+   34
   ],
   "region.share.LATAM": [
    0.0337,
    0.0605,
    0.0945,
-   30
+   34
   ],
   "region.share.MEA": [
    0.034,
    0.058,
-   0.0881,
-   30
+   0.09,
+   34
   ],
   "region.share.NA": [
-   0.2844,
-   0.375,
+   0.274,
+   0.3654,
    0.4044,
-   30
+   34
   ],
   "region.slowest_is_europe": [
    0.0,
    0.0,
    1.0,
-   30
+   34
   ],
   "region.top": [
-   0.337,
+   0.3366,
    0.3853,
    0.483,
-   30
+   34
   ],
   "seg.cagr_dev": [
-   0.0042,
-   0.0074,
-   0.0145,
-   43
+   0.0046,
+   0.0078,
+   0.016,
+   53
   ],
   "seg.cagr_spread": [
-   0.0177,
-   0.026,
-   0.0461,
-   43
+   0.0184,
+   0.0295,
+   0.05,
+   53
   ],
   "seg.country_mix_sd": [
    0.0065,
-   0.0091,
-   0.0183,
-   37
+   0.0089,
+   0.0216,
+   45
   ],
   "seg.hhi": [
-   0.2727,
-   0.419,
-   0.5805,
-   43
+   0.268,
+   0.4015,
+   0.5691,
+   53
   ],
   "seg.n": [
-   2.8333,
-   4,
-   6.1667,
-   43
+   2.8571,
+   4.3333,
+   6.6667,
+   53
   ],
   "seg.small_fast": [
-   -0.35,
-   0.2167,
+   -0.3667,
+   0.138,
    1.0,
-   42
+   52
   ],
   "seg.sub_cagr_dev": [
    0.0044,
-   0.0088,
-   0.0238,
-   19
+   0.0093,
+   0.0275,
+   24
   ],
   "seg.top_share": [
-   0.4117,
-   0.5356,
+   0.394,
+   0.5153,
    0.693,
-   43
+   53
   ]
  },
  "by_category": {
@@ -534,126 +534,126 @@
    ]
   },
   "ICT, software & digital services": {
-   "n_markets": 6,
+   "n_markets": 7,
    "growth.fcst_cagr": [
-    0.1051,
-    0.1258,
-    0.1558,
-    6
+    0.1067,
+    0.1362,
+    0.16,
+    7
    ],
    "growth.fcst_minus_hist": [
-    0.0051,
-    0.0087,
-    0.0102,
-    6
+    0.0064,
+    0.0092,
+    0.012,
+    7
    ],
    "region.share.NA": [
     0.205,
-    0.3503,
-    0.392,
-    5
+    0.3615,
+    0.3893,
+    6
    ],
    "region.share.Europe": [
-    0.27,
-    0.2835,
-    0.2899,
-    5
+    0.1907,
+    0.2778,
+    0.287,
+    6
    ],
    "region.share.APAC": [
     0.2299,
-    0.2378,
-    0.385,
-    5
+    0.2484,
+    0.3227,
+    6
    ],
    "region.share.LATAM": [
     0.042,
-    0.052,
-    0.08,
-    5
+    0.0542,
+    0.078,
+    6
    ],
    "region.share.MEA": [
-    0.05,
-    0.063,
+    0.041,
+    0.0615,
     0.064,
-    5
+    6
    ],
    "region.cagr_gap.NA": [
-    -0.0217,
-    -0.0135,
-    0.003,
-    5
+    -0.0391,
+    -0.0174,
+    0.0009,
+    6
    ],
    "region.cagr_gap.Europe": [
-    -0.0104,
-    -0.0089,
-    -0.0003,
-    5
+    -0.0193,
+    -0.0096,
+    -0.0029,
+    6
    ],
    "region.cagr_gap.APAC": [
     0.0141,
-    0.0186,
+    0.0237,
     0.0305,
-    5
+    6
    ],
    "region.cagr_gap.LATAM": [
     -0.0278,
-    -0.0128,
+    -0.0057,
     0.0041,
-    5
+    6
    ],
    "region.cagr_gap.MEA": [
     -0.0262,
-    0.0064,
-    0.0231,
-    5
+    0.0041,
+    0.0111,
+    6
    ],
    "region.cagr_range": [
     0.0321,
-    0.0438,
+    0.0469,
     0.0522,
-    5
+    6
    ],
    "country.share.U.S.": [
-    0.7645,
-    0.882,
+    0.84,
+    0.88,
     0.892,
-    6
+    7
    ],
    "country.share.Canada": [
-    0.106,
-    0.118,
-    0.137,
-    6
+    0.108,
+    0.12,
+    0.16,
+    7
    ],
    "country.share.Germany": [
-    0.154,
-    0.2344,
-    0.263,
-    6
+    0.192,
+    0.2432,
+    0.3036,
+    7
    ],
    "country.share.U.K.": [
     0.124,
-    0.1694,
+    0.1761,
     0.217,
-    5
+    6
    ],
    "country.share.France": [
-    0.111,
-    0.155,
-    0.173,
-    6
+    0.1467,
+    0.158,
+    0.207,
+    7
    ],
    "country.share.Italy": [
     0.043,
-    0.099,
-    0.158,
-    5
+    0.09,
+    0.1134,
+    6
    ],
    "country.share.Spain": [
-    0.066,
-    0.0945,
-    0.128,
-    5
+    0.0387,
+    0.0813,
+    0.098,
+    6
    ],
    "country.share.Russia": [
     0.054,
@@ -663,93 +663,93 @@
    ],
    "country.share.China": [
     0.3197,
-    0.3457,
+    0.339,
     0.374,
-    4
+    5
    ],
    "country.share.Japan": [
-    0.1423,
-    0.1665,
+    0.118,
+    0.161,
     0.1993,
-    4
+    5
    ],
    "country.share.India": [
     0.127,
-    0.1439,
-    0.178,
-    4
+    0.1532,
+    0.182,
+    5
    ],
    "country.share.South Korea": [
+    0.083,
     0.091,
-    0.0934,
     0.102,
-    4
+    5
    ],
    "country.share.Brazil": [
     0.3734,
-    0.3942,
-    0.428,
-    5
+    0.4036,
+    0.414,
+    6
    ],
    "country.share.Mexico": [
     0.236,
-    0.277,
+    0.2838,
     0.3,
-    5
+    6
    ],
    "country.share.Argentina": [
     0.098,
-    0.1414,
+    0.1369,
     0.158,
-    4
+    5
    ],
    "country.share.South Africa": [
     0.088,
-    0.204,
-    0.4356,
-    5
+    0.1935,
+    0.2326,
+    6
    ],
    "country.rest_share": [
-    0.068,
-    0.1763,
+    0.12,
+    0.1643,
     0.196,
-    6
+    7
    ],
    "country.cagr_gap_sd": [
-    0.0121,
-    0.018,
-    0.0213,
-    6
+    0.015,
+    0.0191,
+    0.0397,
+    7
    ],
    "seg.top_share": [
-    0.3084,
-    0.5302,
+    0.4452,
+    0.5134,
     0.5647,
-    6
+    7
    ],
    "seg.cagr_spread": [
-    0.019,
-    0.0447,
-    0.0493,
-    6
+    0.0377,
+    0.0448,
+    0.0572,
+    7
    ],
    "seg.cagr_dev": [
-    0.0061,
+    0.0119,
     0.0126,
-    0.016,
-    6
+    0.0164,
+    7
    ],
    "seg.sub_cagr_dev": [
     0.0074,
-    0.0156,
+    0.0205,
     0.0301,
-    4
+    5
    ],
    "seg.country_mix_sd": [
     0.0038,
-    0.0077,
-    0.0524,
-    5
+    0.0082,
+    0.0093,
+    6
    ]
   },
   "Construction, travel & other services": {
@@ -1011,237 +1011,243 @@
    ]
   },
   "Industrial automation, electronics & components": {
-   "n_markets": 5,
+   "n_markets": 8,
    "growth.fcst_cagr": [
-    0.0005,
-    0.0813,
-    0.1228,
-    5
+    0.0596,
+    0.0976,
+    0.1237,
+    8
    ],
    "growth.fcst_minus_hist": [
-    -0.0,
-    0.0082,
+    0.0044,
+    0.0072,
     0.0101,
-    5
+    8
+   ],
+   "growth.price_cagr": [
+    0.0067,
+    0.0117,
+    0.0184,
+    3
    ],
    "region.share.NA": [
-    0.274,
-    0.3191,
-    0.358,
-    4
+    0.224,
+    0.2826,
+    0.347,
+    6
    ],
    "region.share.Europe": [
     0.216,
-    0.2586,
-    0.289,
-    4
+    0.252,
+    0.2712,
+    6
    ],
    "region.share.APAC": [
     0.267,
-    0.3045,
-    0.3455,
-    4
+    0.3413,
+    0.3674,
+    6
    ],
    "region.share.LATAM": [
     0.045,
-    0.0544,
+    0.056,
     0.071,
-    4
+    6
    ],
    "region.share.MEA": [
-    0.041,
+    0.04,
     0.0592,
-    0.102,
-    4
+    0.0851,
+    6
    ],
    "region.cagr_gap.NA": [
-    -0.0136,
+    -0.0234,
     -0.0084,
     -0.0028,
-    4
+    6
    ],
    "region.cagr_gap.Europe": [
-    -0.0222,
+    -0.0347,
     -0.0155,
-    -0.0037,
-    4
+    -0.0058,
+    6
    ],
    "region.cagr_gap.APAC": [
-    0.0109,
+    0.0103,
     0.0211,
     0.025,
-    4
+    6
    ],
    "region.cagr_gap.LATAM": [
     -0.0236,
-    -0.0016,
-    0.0049,
-    4
+    -0.0047,
+    0.0002,
+    6
    ],
    "region.cagr_gap.MEA": [
-    -0.0083,
-    0.0068,
-    0.0107,
-    4
+    -0.0258,
+    0.0066,
+    0.0081,
+    6
    ],
    "region.cagr_range": [
     0.0185,
     0.0407,
     0.0472,
-    4
+    6
    ],
    "country.share.U.S.": [
     0.802,
-    0.8715,
-    0.913,
-    4
+    0.8555,
+    0.876,
+    6
    ],
    "country.share.Canada": [
     0.087,
-    0.1285,
-    0.198,
-    4
+    0.1445,
+    0.1566,
+    6
    ],
    "country.share.Germany": [
     0.238,
-    0.258,
-    0.305,
-    4
+    0.2765,
+    0.279,
+    6
    ],
    "country.share.U.K.": [
     0.108,
-    0.1595,
-    0.172,
-    4
+    0.1492,
+    0.162,
+    6
    ],
    "country.share.France": [
-    0.124,
+    0.112,
     0.1435,
-    0.162,
-    4
+    0.1584,
+    6
    ],
    "country.share.Italy": [
     0.094,
     0.1025,
     0.13,
-    4
+    6
    ],
    "country.share.Spain": [
-    0.078,
+    0.074,
     0.08,
     0.083,
-    4
+    6
    ],
    "country.share.Russia": [
-    0.055,
-    0.073,
+    0.045,
+    0.064,
     0.089,
-    3
+    4
    ],
    "country.share.China": [
     0.294,
-    0.385,
+    0.4131,
     0.416,
-    4
+    6
    ],
    "country.share.Japan": [
     0.138,
-    0.1905,
-    0.219,
-    4
+    0.1682,
+    0.203,
+    6
    ],
    "country.share.India": [
-    0.084,
+    0.08,
     0.1305,
-    0.187,
-    4
+    0.1372,
+    6
    ],
    "country.share.South Korea": [
     0.082,
-    0.094,
-    0.115,
-    4
+    0.0944,
+    0.098,
+    6
    ],
    "country.share.Brazil": [
     0.368,
-    0.387,
-    0.458,
-    4
+    0.3894,
+    0.447,
+    6
    ],
    "country.share.Mexico": [
     0.291,
-    0.2995,
-    0.316,
-    4
+    0.3,
+    0.3131,
+    6
    ],
    "country.share.Argentina": [
     0.092,
-    0.106,
-    0.124,
-    4
+    0.119,
+    0.149,
+    6
    ],
    "country.share.South Africa": [
     0.18,
-    0.2065,
+    0.2155,
     0.417,
-    4
+    6
    ],
    "country.rest_share": [
-    0.161,
-    0.1824,
-    0.1947,
-    4
+    0.1234,
+    0.1711,
+    0.1938,
+    6
    ],
    "country.cagr_gap_sd": [
     0.008,
-    0.0143,
+    0.0146,
     0.0176,
-    4
+    6
    ],
    "seg.top_share": [
-    0.3657,
-    0.4144,
-    0.5859,
-    5
+    0.4117,
+    0.4525,
+    0.5822,
+    8
    ],
    "seg.cagr_spread": [
-    0.0254,
-    0.0426,
+    0.0263,
+    0.0433,
     0.05,
-    5
+    8
    ],
    "seg.cagr_dev": [
-    0.0059,
+    0.007,
     0.0145,
-    0.1034,
-    5
+    0.036,
+    8
    ],
    "seg.sub_cagr_dev": [
     0.0036,
-    0.0132,
+    0.0159,
     0.0238,
-    3
+    6
    ],
    "seg.country_mix_sd": [
-    0.0015,
-    0.0076,
+    0.0059,
+    0.0092,
     0.0112,
-    5
+    7
    ]
   },
   "Food & beverage": {
-   "n_markets": 5,
+   "n_markets": 7,
    "growth.fcst_cagr": [
-    0.0456,
+    0.0534,
     0.0552,
-    0.0923,
-    5
+    0.0603,
+    7
    ],
    "growth.fcst_minus_hist": [
-    0.0054,
+    0.0057,
     0.0059,
-    0.0065,
-    5
+    0.0064,
+    7
    ],
    "growth.price_cagr": [
     0.0111,
@@ -1329,39 +1335,39 @@
    ],
    "country.share.Germany": [
     0.09,
-    0.1467,
+    0.1535,
     0.218,
-    4
+    5
    ],
    "country.share.U.K.": [
-    0.135,
-    0.1417,
+    0.12,
+    0.1415,
     0.1426,
-    4
+    5
    ],
    "country.share.France": [
     0.1224,
-    0.1512,
+    0.1435,
     0.175,
-    4
+    5
    ],
    "country.share.Italy": [
     0.075,
-    0.0911,
+    0.0966,
     0.126,
-    4
+    5
    ],
    "country.share.Spain": [
     0.067,
-    0.1015,
+    0.095,
     0.1085,
-    4
+    5
    ],
    "country.share.Russia": [
     0.03,
-    0.0463,
+    0.062,
     0.1253,
-    4
+    5
    ],
    "country.share.China": [
     0.13,
@@ -1413,156 +1419,258 @@
    ],
    "country.rest_share": [
     0.175,
-    0.212,
-    0.4324,
-    5
+    0.2016,
+    0.254,
+    6
    ],
    "country.cagr_gap_sd": [
-    0.0036,
+    0.0096,
     0.0114,
     0.013,
-    5
+    7
    ],
    "seg.top_share": [
     0.5245,
     0.6021,
     0.6357,
-    5
+    7
    ],
    "seg.cagr_spread": [
-    0.0077,
-    0.0234,
-    0.0393,
-    5
+    0.0208,
+    0.0245,
+    0.0288,
+    7
    ],
    "seg.cagr_dev": [
-    0.0036,
+    0.0042,
     0.0059,
+    0.0069,
+    7
+   ],
+   "seg.sub_cagr_dev": [
+    0.0051,
     0.0088,
-    5
+    0.013,
+    3
    ],
    "seg.country_mix_sd": [
-    0.0068,
-    0.0092,
-    0.0534,
-    5
+    0.0071,
+    0.0088,
+    0.0107,
+    7
    ]
   },
   "Chemicals & materials": {
-   "n_markets": 5,
+   "n_markets": 9,
    "growth.fcst_cagr": [
-    0.0462,
-    0.0583,
+    0.0523,
     0.0695,
-    5
+    0.077,
+    9
    ],
    "growth.fcst_minus_hist": [
     0.0045,
-    0.0056,
-    0.007,
-    5
+    0.0058,
+    0.0064,
+    9
+   ],
+   "growth.price_cagr": [
+    0.0065,
+    0.0098,
+    0.0192,
+    6
+   ],
+   "region.share.NA": [
+    0.277,
+    0.284,
+    0.3773,
+    3
+   ],
+   "region.share.Europe": [
+    0.1378,
+    0.202,
+    0.2485,
+    3
+   ],
+   "region.share.APAC": [
+    0.316,
+    0.341,
+    0.423,
+    3
+   ],
+   "region.share.LATAM": [
+    0.0337,
+    0.0615,
+    0.066,
+    3
+   ],
+   "region.share.MEA": [
+    0.032,
+    0.09,
+    0.1102,
+    3
+   ],
+   "region.cagr_gap.NA": [
+    -0.0113,
+    -0.0067,
+    0.0027,
+    3
+   ],
+   "region.cagr_gap.Europe": [
+    -0.0191,
+    -0.0125,
+    -0.0061,
+    3
+   ],
+   "region.cagr_gap.APAC": [
+    0.0105,
+    0.0109,
+    0.0172,
+    3
+   ],
+   "region.cagr_gap.LATAM": [
+    -0.0145,
+    -0.0067,
+    -0.0034,
+    3
+   ],
+   "region.cagr_gap.MEA": [
+    -0.0219,
+    -0.016,
+    0.0036,
+    3
+   ],
+   "region.cagr_range": [
+    0.0234,
+    0.0324,
+    0.0363,
+    3
    ],
    "country.share.U.S.": [
     0.691,
-    0.8792,
+    0.876,
     0.9272,
-    4
+    5
    ],
    "country.share.Canada": [
     0.0728,
-    0.1208,
+    0.124,
     0.309,
-    4
+    5
    ],
    "country.share.Germany": [
     0.1624,
-    0.2104,
+    0.2186,
     0.257,
-    4
+    5
    ],
    "country.share.U.K.": [
     0.0656,
-    0.1137,
-    0.124,
-    4
+    0.1214,
+    0.1775,
+    5
    ],
    "country.share.France": [
     0.0829,
-    0.1677,
+    0.1542,
     0.212,
-    4
+    5
    ],
    "country.share.Italy": [
     0.0547,
-    0.1419,
+    0.1387,
     0.1488,
-    4
+    5
    ],
    "country.share.Spain": [
     0.0458,
-    0.1007,
+    0.1031,
     0.1338,
-    4
+    5
    ],
    "country.share.Russia": [
     0.052,
-    0.0657,
+    0.0624,
     0.2275,
-    4
+    5
    ],
    "country.share.China": [
-    0.404,
-    0.417,
+    0.3833,
+    0.4105,
     0.5701,
-    3
+    4
    ],
    "country.share.Japan": [
     0.0813,
-    0.099,
+    0.1027,
     0.231,
-    3
+    4
    ],
    "country.share.India": [
     0.092,
-    0.198,
+    0.1952,
     0.231,
-    3
+    4
    ],
    "country.share.South Korea": [
     0.022,
-    0.052,
+    0.0615,
     0.0792,
+    4
+   ],
+   "country.share.Brazil": [
+    0.1719,
+    0.334,
+    0.3477,
+    3
+   ],
+   "country.share.Mexico": [
+    0.2959,
+    0.318,
+    0.4966,
+    3
+   ],
+   "country.share.Argentina": [
+    0.089,
+    0.1396,
+    0.1402,
+    3
+   ],
+   "country.share.South Africa": [
+    0.1923,
+    0.3222,
+    0.6781,
     3
    ],
    "country.rest_share": [
     0.055,
-    0.127,
-    0.32,
-    5
+    0.1334,
+    0.1909,
+    6
    ],
    "country.cagr_gap_sd": [
     0.0098,
-    0.0115,
-    0.0123,
-    5
+    0.0113,
+    0.0116,
+    6
    ],
    "seg.top_share": [
     0.3267,
-    0.4143,
-    0.5759,
-    5
+    0.394,
+    0.4217,
+    9
    ],
    "seg.cagr_spread": [
-    0.0186,
-    0.026,
-    0.0371,
-    5
+    0.0242,
+    0.0312,
+    0.0457,
+    9
    ],
    "seg.cagr_dev": [
-    0.0058,
-    0.007,
+    0.0066,
+    0.0086,
     0.0135,
-    5
+    9
    ],
    "seg.sub_cagr_dev": [
     0.0059,
@@ -1571,10 +1679,10 @@
     3
    ],
    "seg.country_mix_sd": [
-    0.0078,
-    0.0101,
-    0.0222,
-    5
+    0.0079,
+    0.0087,
+    0.0183,
+    8
    ]
   },
   "Energy, water & utilities": {
@@ -1582,11 +1690,11 @@
   }
  },
  "directional": {
-  "share of markets with forecast CAGR > historical CAGR": 0.95,
-  "share of global markets where APAC grows fastest": 0.87,
-  "share of global markets where Europe grows slowest": 0.23,
-  "share of global markets where NA is the largest region": 0.77,
-  "share of global markets where NA grows slower than global": 0.63,
-  "share of markets where smaller segments grow faster (seg.small_fast < 0)": 0.31
+  "share of markets with forecast CAGR > historical CAGR": 0.96,
+  "share of global markets where APAC grows fastest": 0.88,
+  "share of global markets where Europe grows slowest": 0.24,
+  "share of global markets where NA is the largest region": 0.71,
+  "share of global markets where NA grows slower than global": 0.62,
+  "share of markets where smaller segments grow faster (seg.small_fast < 0)": 0.37
  }
 }

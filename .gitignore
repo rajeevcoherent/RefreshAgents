@@ -26,6 +26,7 @@ outputs/
 data/cache.sqlite
 data/*.txt
 data/corpus/opinions.json
+data/corpus/opinions_incremental.json
 data/corpus/mimic_test.json
 system.log
 *.log

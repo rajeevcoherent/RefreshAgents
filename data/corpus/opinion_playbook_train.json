@@ -1,10 +1,13 @@
 {
  "tag": "train",
- "n_markets": 43,
+ "n_markets": 53,
  "markets": [
+  "Africa Agriculture Market",
   "Asia and Middle East Water Treatment Chemical Market",
   "Collagen Membrane Market",
+  "Europe Functional Dairy Ingredients Market",
   "GCC Outbound Tourism Market",
+  "Global Advanced Surface Engineering & Protective Coatings Market",
   "Global Amphetamine + Deaxmphetamine Market",
   "Global Apomorphine API & FDF Market",
   "Global Apomorphine API Market",
@@ -14,15 +17,18 @@
   "Global Buprenorphine Market",
   "Global Chronic Spontaneous Urticaria Market_Coherent Market Insights",
   "Global Codeine Market",
+  "Global Creator Economy Market",
   "Global Cyber-Physical Systems Security Market",
   "Global Decaf Coffee Market",
   "Global Digital Twin Market",
   "Global Gel Ice Pack Market",
   "Global High Energy Laser Market",
   "Global Industrial Automation Systems Market",
+  "Global Industrial and Autonomous Robotics Market",
   "Global Lamination Adhesives for Flexible Packaging Market",
   "Global Laser Based Photo Rejuvenation Devices Market",
   "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
+  "Global MINIATURE Ball Bearing Market",
   "Global Next Generation Probiotics Market",
   "Global PLC Market",
   "Global Pizza Market",
@@ -35,6 +41,9 @@
   "Global Used Cooking Oil Collection Market",
   "Global Water for Injection Container Market",
   "Global Waveguide Market",
+  "India Industrial Gas Market",
+  "India Industrial Gas Market Cross Section",
+  "India Process & Factory Automation Market",
   "India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market",
   "Middle East Agriculture Market",
   "North America & Europe Azelaic Acid Market",
@@ -44,7 +53,8 @@
   "North America and Europe Sales Training Market",
   "U.S Povidone Iodine Nasal Spray Market",
   "U.S. Attic Ladder Market",
-  "U.S. Providone Iodine Market"
+  "U.S. Providone Iodine Market",
+  "U.S. Used Cooking Oil Market Report"
  ],
  "stages": {
   "2A": {
@@ -77,10 +87,13 @@
       "Global Digital Twin Market",
       "Middle East Agriculture Market",
       "Global Gel Ice Pack Market",
-      "Global Water for Injection Container Market"
+      "Global Water for Injection Container Market",
+      "Global Creator Economy Market",
+      "Global Industrial and Autonomous Robotics Market",
+      "India Industrial Gas Market"
      ],
      "caveat": "Do not use an older year without adjusting for known mix shifts; if 2025 is still forecast, treat it as base due data lag but note uncertainty.",
-     "n_markets": 4
+     "n_markets": 7
     },
     {
      "id": "2A-3",
@@ -93,10 +106,16 @@
       "Global Amphetamine + Deaxmphetamine Market",
       "Global Cyber-Physical Systems Security Market",
       "Global Digital Twin Market",
-      "Global Pizza Market"
+      "Global Pizza Market",
+      "Africa Agriculture Market",
+      "Europe Functional Dairy Ingredients Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section",
+      "Global MINIATURE Ball Bearing Market",
+      "U.S. Used Cooking Oil Market Report"
      ],
      "caveat": "If historical CAGR is already very high (>15%) or market is in hype phase, use lower end; do not extrapolate past growth linearly without evidence.",
-     "n_markets": 4
+     "n_markets": 10
     },
     {
      "id": "2A-4",
@@ -109,10 +128,12 @@
       "North America Electronic Design Services Market",
       "Global Technical Foam Market",
       "North America & Europe Azelaic Acid Market",
-      "Global Used Cooking Oil Collection Market"
+      "Global Used Cooking Oil Collection Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "India Process & Factory Automation Market"
      ],
      "caveat": "Do not apply to underpenetrated emerging regions or policy-driven markets; treat region-specific maturity separately.",
-     "n_markets": 4
+     "n_markets": 6
     },
     {
      "id": "2A-5",
@@ -141,10 +162,12 @@
       "Global High Energy Laser Market",
       "Global Technical Foam Market",
       "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
-      "Global Cyber-Physical Systems Security Market"
+      "Global Cyber-Physical Systems Security Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Global MINIATURE Ball Bearing Market"
      ],
      "caveat": "If defense/security-driven with strong US budgets, NA can be largest (cyber-physical 37.3%); use installed base and customer budgets, not population.",
-     "n_markets": 4
+     "n_markets": 6
     },
     {
      "id": "2A-7",
@@ -157,10 +180,13 @@
       "Global Cyber-Physical Systems Security Market",
       "Global Digital Twin Market",
       "Global PLC Market",
-      "Global Used Cooking Oil Collection Market"
+      "Global Used Cooking Oil Collection Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Global Industrial and Autonomous Robotics Market",
+      "Global MINIATURE Ball Bearing Market"
      ],
      "caveat": "If APAC already dominant and mature (e.g., probiotics APAC 48.9% share and growth premium -0.9pp), do not assume APAC premium just because share high; check penetration.",
-     "n_markets": 4
+     "n_markets": 7
     },
     {
      "id": "2A-8",
@@ -173,10 +199,12 @@
       "Global Cyber-Physical Systems Security Market",
       "Global Digital Twin Market",
       "Global Used Cooking Oil Collection Market",
-      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market"
+      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Global MINIATURE Ball Bearing Market"
      ],
      "caveat": "Do not apply negative NA to markets with U.S.-centric policy expansion (e.g., buprenorphine NA +0.6pp) or large defense budgets; evaluate structural supports.",
-     "n_markets": 4
+     "n_markets": 6
     },
     {
      "id": "2A-9",
@@ -205,10 +233,13 @@
       "Global High Energy Laser Market",
       "Global Technical Foam Market",
       "Global Water for Injection Container Market",
-      "Global PLC Market"
+      "Global PLC Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Europe Functional Dairy Ingredients Market",
+      "Global MINIATURE Ball Bearing Market"
      ],
      "caveat": "Do not force all countries explicit when data thin; use 'Rest of' to avoid false precision; adjust China share based on manufacturing intensity.",
-     "n_markets": 4
+     "n_markets": 7
     },
     {
      "id": "2A-11",
@@ -221,10 +252,11 @@
       "Global Digital Twin Market",
       "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
       "Global PLC Market",
-      "Global Next Generation Probiotics Market"
+      "Global Next Generation Probiotics Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market"
      ],
      "caveat": "If country has large mature installed base (Japan, South Korea) or macro constraints, do not apply positive; check per-market driver.",
-     "n_markets": 4
+     "n_markets": 5
     },
     {
      "id": "2A-12",
@@ -237,10 +269,68 @@
       "Global PLC Market",
       "Global Cyber-Physical Systems Security Market",
       "Global Retail Self Scanning Solutions Market",
-      "Global High Energy Laser Market"
+      "Global High Energy Laser Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market"
      ],
      "caveat": "Not all negative for Japan if market is healthcare aging (e.g., water for injection Japan +0.7pp); adjust for demand driver, do not apply blanket discounts.",
-     "n_markets": 4
+     "n_markets": 5
+    },
+    {
+     "decision": "forecast_growth_vs_history",
+     "condition": "Step-change digital platform, robotics/automation, or creator-economy market with platform monetization, labour shortages, reshoring, or price deflation.",
+     "action": "Set forecast CAGR 2.5–3.5pp above historical CAGR; observed +3.4pp for creator economy and +3.3pp for robotics.",
+     "why": "Non-linear adoption and spending/payback shifts create a step-change, not the usual 0.5–1.2pp uplift covered by 2A-3.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Creator Economy Market",
+      "Global Industrial and Autonomous Robotics Market"
+     ],
+     "caveat": "Do not apply to mature/commodity or modest regulatory/policy markets; those follow 2A-3/2A-4.",
+     "id": "2A-13",
+     "n_markets": 2,
+     "added": "incremental"
+    },
+    {
+     "decision": "region_split",
+     "condition": "Digital advertising/platform revenue market where shares follow ARPU and platform penetration rather than manufacturing or healthcare.",
+     "action": "Set North America 35–40%, Asia Pacific 30–35%, Europe 17–22%, Latin America 4–7%, Middle East & Africa 3–5%.",
+     "why": "North America leads on high ARPU and mature creator monetization; APAC follows on massive user base and China's short-video/live-commerce; Europe is third with strong but fragmented ad market; LatAm/MEA have lower monetization infrastructure.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Creator Economy Market"
+     ],
+     "caveat": "Do not use manufacturing/healthcare templates for digital platform revenue.",
+     "id": "2A-14",
+     "n_markets": 1,
+     "added": "incremental"
+    },
+    {
+     "decision": "region_growth",
+     "condition": "High-growth digital/platform market with late-stage APAC adoption and China/South Korea platform export boom.",
+     "action": "Set APAC growth premium +4 to +5pp vs root; LatAm +1 to +2pp; MEA 0 to +0.5pp; Europe -1.5 to -2pp; North America -3.5 to -4pp.",
+     "why": "APAC outgrows on China's creator economy boom and South Korea's content exports; LatAm benefits from rising mobile video consumption; North America and Europe are more mature with slower incremental monetization.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Creator Economy Market"
+     ],
+     "caveat": "Do not apply to manufacturing/industrial markets where APAC premium is typically +1 to +3pp (2A-7).",
+     "id": "2A-15",
+     "n_markets": 1,
+     "added": "incremental"
+    },
+    {
+     "decision": "country_growth",
+     "condition": "Within digital/platform economies, monetization infrastructure, ARPU, and platform penetration drive country growth, not population size or emerging-market status alone.",
+     "action": "Set China growth premium +5 to +7pp, South Korea +4 to +5pp over region/root; India and ASEAN -9 to -11pp, Japan -4 to -5pp, Canada -3 to -4pp, Argentina -2 to -3pp, South Africa -2 to -3pp.",
+     "why": "China and South Korea outperform due to strong domestic platforms and mature creator monetization; India and ASEAN lag on lower ARPU and fragmented payments; Japan's traditional media and aging demographics slow growth.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Creator Economy Market"
+     ],
+     "caveat": "Do not apply to manufacturing/consumer markets where India/ASEAN usually receive positive emerging-market premiums (2A-11).",
+     "id": "2A-16",
+     "n_markets": 1,
+     "added": "incremental"
     }
    ],
    "pitfalls": [
@@ -249,7 +339,10 @@
     "Do not copy the large negative Russia gaps mechanically; sanctions severity changes over time and some markets may have import substitution.",
     "Do not force every country into explicit shares; use residual 'Rest of' lines when data is thin, as done for Rest of Europe 18–36%, Rest of Middle East, Central Africa 50%.",
     "Do not overfit to a single analyst's opinion; cross-check with all-market stats, e.g., forecast uplift mean 0.71pp not 2pp.",
-    "Do not treat base_year_anchor as a market estimate if only shares are given; anchor to 2025 shares, not an implied size."
+    "Do not treat base_year_anchor as a market estimate if only shares are given; anchor to 2025 shares, not an implied size.",
+    "Do not apply manufacturing/industrial region templates to digital platform/creator economy markets; their share and growth patterns are reversed (NA largest share but negative growth premium, APAC high share but India/ASEAN deeply negative).",
+    "Do not assume large population/emerging markets always get positive growth premiums; in low-ARPU digital markets, India/ASEAN can show -10pp gaps while China/Korea are positive.",
+    "Do not force uniform sub-national splits; use established industrial clusters and policy corridors (e.g., Maharashtra 44% of West India, Telangana +3.2pp, Rest of India -3.0pp) rather than population or equal share."
    ]
   },
   "2B": {
@@ -266,10 +359,12 @@
       "Global Cyber-Physical Systems Security Market",
       "Global Digital Twin Market",
       "Global Water for Injection Container Market",
-      "India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market"
+      "India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market",
+      "Africa Agriculture Market",
+      "Global Creator Economy Market"
      ],
      "caveat": "Do not apply if multiple use cases are genuinely comparable or if the market is early/fragmented; then use bottom-up demand.",
-     "n_markets": 4
+     "n_markets": 6
     },
     {
      "id": "2B-2",
@@ -282,10 +377,15 @@
       "Global Digital Twin Market",
       "Middle East Agriculture Market",
       "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
-      "GCC Outbound Tourism Market"
+      "GCC Outbound Tourism Market",
+      "Global Industrial and Autonomous Robotics Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section",
+      "India Process & Factory Automation Market",
+      "U.S. Used Cooking Oil Market Report"
      ],
      "caveat": "If policy has already scaled the segment (e.g., renewable diesel/HVO 42.8%), do not keep it small.",
-     "n_markets": 4
+     "n_markets": 9
     },
     {
      "id": "2B-3",
@@ -313,10 +413,18 @@
      "markets": [
       "Global Digital Twin Market",
       "Global Industrial Automation Systems Market",
-      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market"
+      "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
+      "Europe Functional Dairy Ingredients Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Global Creator Economy Market",
+      "Global Industrial and Autonomous Robotics Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section",
+      "India Process & Factory Automation Market",
+      "U.S. Used Cooking Oil Market Report"
      ],
      "caveat": "Do not apply if the segment is already large/mature or if policy demand has already saturated; e.g., renewable diesel/HVO growth premium was -0.2pp despite policy support.",
-     "n_markets": 3
+     "n_markets": 11
     },
     {
      "id": "2B-5",
@@ -329,10 +437,20 @@
       "Global Cyber-Physical Systems Security Market",
       "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
       "Global Digital Twin Market",
-      "Global Laser Based Photo Rejuvenation Devices Market"
+      "Global Laser Based Photo Rejuvenation Devices Market",
+      "Africa Agriculture Market",
+      "Europe Functional Dairy Ingredients Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Global Creator Economy Market",
+      "Global Industrial and Autonomous Robotics Market",
+      "Global MINIATURE Ball Bearing Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section",
+      "India Process & Factory Automation Market",
+      "U.S. Used Cooking Oil Market Report"
      ],
      "caveat": "If a refresh/upgrade cycle or regulatory replacement demand exists, use a smaller discount (e.g., electric utilities -0.6pp).",
-     "n_markets": 4
+     "n_markets": 14
     },
     {
      "id": "2B-6",
@@ -346,10 +464,14 @@
       "Middle East Agriculture Market",
       "Global Lamination Adhesives for Flexible Packaging Market",
       "Global Codeine Market",
-      "Global Water for Injection Container Market"
+      "Global Water for Injection Container Market",
+      "Africa Agriculture Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section"
      ],
      "caveat": "If the essential segment faces policy restriction or substitution (e.g., opioid pain management, codeine pediatric), do not assume near-root growth.",
-     "n_markets": 5
+     "n_markets": 9
     },
     {
      "id": "2B-7",
@@ -362,10 +484,14 @@
       "GCC Outbound Tourism Market",
       "Global Athletic Tape Market",
       "North America & Europe Azelaic Acid Market",
-      "Global Avocado Oil Market"
+      "Global Avocado Oil Market",
+      "Europe Functional Dairy Ingredients Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Global Creator Economy Market",
+      "U.S. Used Cooking Oil Market Report"
      ],
      "caveat": "Do not assign large premiums to small segments if they are capital-constrained or face reimbursement barriers.",
-     "n_markets": 4
+     "n_markets": 8
     },
     {
      "id": "2B-8",
@@ -395,10 +521,11 @@
       "North America and Europe Sales Training Market",
       "Global Water for Injection Container Market",
       "Global Pizza Market",
-      "Middle East Agriculture Market"
+      "Middle East Agriculture Market",
+      "Africa Agriculture Market"
      ],
      "caveat": "If product is consumer self-service or DIY-friendly, consumer share can be higher (e.g., amateur athletes 50.6%, residential agriculture 20.4%).",
-     "n_markets": 5
+     "n_markets": 6
     },
     {
      "id": "2B-10",
@@ -410,10 +537,14 @@
      "markets": [
       "Global Digital Twin Market",
       "Global Technical Foam Market",
-      "North America & Europe Azelaic Acid Market"
+      "North America & Europe Azelaic Acid Market",
+      "Africa Agriculture Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Global Industrial and Autonomous Robotics Market",
+      "Global MINIATURE Ball Bearing Market"
      ],
      "caveat": "Do not use larger shifts unless you have a documented policy or infrastructure shock; otherwise you risk impossible shares.",
-     "n_markets": 3
+     "n_markets": 7
     },
     {
      "id": "2B-11",
@@ -424,10 +555,12 @@
      "kind": "mechanism",
      "markets": [
       "Middle East Agriculture Market",
-      "Global High Energy Laser Market"
+      "Global High Energy Laser Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section"
      ],
      "caveat": "Do not apply extreme shifts uniformly; verify the policy is actually large enough. Mechanical balancing can hide misevaluation.",
-     "n_markets": 2
+     "n_markets": 4
     },
     {
      "id": "2B-12",
@@ -471,6 +604,56 @@
      ],
      "caveat": "For pediatric-onset or geriatric-heavy diseases, reverse the shares based on epidemiology, not this default.",
      "n_markets": 2
+    },
+    {
+     "decision": "use_case_split",
+     "condition": "Segmenting by end-use industry or functional application in a broad industrial/process market with no strongly dominant installed-base or regulatory application.",
+     "action": "set top one or two segments at 20–35% each and allocate the next 5–10 segments at 5–15%, with a 2–5% long tail.",
+     "why": "Demand is dispersed across many industrial processes and buyer groups, limiting concentration.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "India Process & Factory Automation Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section",
+      "Global Industrial and Autonomous Robotics Market",
+      "Global MINIATURE Ball Bearing Market",
+      "U.S. Used Cooking Oil Market Report"
+     ],
+     "caveat": "Do not apply if a single application has regulatory/physical lock; use 2B-1 or 2B-3 instead.",
+     "id": "2B-15",
+     "n_markets": 7,
+     "added": "incremental"
+    },
+    {
+     "decision": "use_case_growth",
+     "condition": "A use case is subject to a step-change demand mandate or structural collapse, such as sustainable-fuel mandates, e-commerce/logistics automation, or commodity-process industry decline.",
+     "action": "set growth premium +5 to +7 pp or discount -5 to -7 pp vs root.",
+     "why": "Step changes in policy or demand volumes reallocate share faster than ordinary technology adoption or maturity.",
+     "kind": "mechanism",
+     "markets": [
+      "U.S. Used Cooking Oil Market Report",
+      "Global Industrial and Autonomous Robotics Market",
+      "India Process & Factory Automation Market"
+     ],
+     "caveat": "Only with explicit capacity mandates or structural closures; not for cyclical slowdowns or generic maturity.",
+     "id": "2B-16",
+     "n_markets": 3,
+     "added": "incremental"
+    },
+    {
+     "decision": "use_case_split",
+     "condition": "Segmenting a platform or creator-economy user base by amateur/professional status with low participation barriers and monetization concentrated among professionals.",
+     "action": "set amateur/long-tail share 65–80% and professional share 20–35% for a participant-count split.",
+     "why": "Platforms lower earning barriers, so amateur creators dominate the installed base even though professionals capture most revenue.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Creator Economy Market"
+     ],
+     "caveat": "If the split is by revenue rather than count, professional share should be much higher; specify count vs revenue.",
+     "id": "2B-17",
+     "n_markets": 1,
+     "added": "incremental"
     }
    ],
    "pitfalls": [
@@ -480,7 +663,10 @@
     "Mechanically balancing regional mix shifts by dumping residual into 'Others' without checking that the resulting shares are plausible; instead adjust all segments proportionally.",
     "Double counting channel shifts: if you already adjusted channel use-case growth, do not also make a large channel mix shift unless it reflects geography-specific channel differences.",
     "Copying growth premiums from one market category to another with different demand drivers (e.g., policy-driven defense vs consumer cosmetics).",
-    "Ignoring saturation: assigning high growth premiums to segments that are already large (e.g., renewable diesel/HVO) despite policy support."
+    "Ignoring saturation: assigning high growth premiums to segments that are already large (e.g., renewable diesel/HVO) despite policy support.",
+    "Forcing a diversified industrial market into a dominant 45–80% segment when the largest actual segment is only 20–35%.",
+    "Applying professional/institutional buyer share (55–80%) to platform or creator-economy user splits, where the amateur/long-tail segment can be 65–80% by count.",
+    "Capping growth premiums/discounts at the usual ±4–6 pp and ignoring step-change mandates or structural collapses that can push a segment to +6.5 pp or below -5 pp."
    ]
   },
   "2C": {
@@ -497,10 +683,18 @@
       "Global Retail Self Scanning Solutions Market",
       "Global Amphetamine + Deaxmphetamine Market",
       "Global Gel Ice Pack Market",
-      "Global Waveguide Market"
+      "Global Waveguide Market",
+      "Africa Agriculture Market",
+      "Europe Functional Dairy Ingredients Market",
+      "Global Creator Economy Market",
+      "Global Industrial and Autonomous Robotics Market",
+      "Global MINIATURE Ball Bearing Market",
+      "India Industrial Gas Market",
+      "India Process & Factory Automation Market",
+      "U.S. Used Cooking Oil Market Report"
      ],
      "caveat": "Do not force a 50%+ leader if the market is genuinely fragmented or has multiple viable alternatives; then set the top segment 30-45%.",
-     "n_markets": 4
+     "n_markets": 12
     },
     {
      "id": "2C-2",
@@ -528,10 +722,11 @@
      "markets": [
       "Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market",
       "Global Digital Twin Market",
-      "Global Cyber-Physical Systems Security Market"
+      "Global Cyber-Physical Systems Security Market",
+      "India Process & Factory Automation Market"
      ],
      "caveat": "Do not set cloud/software below 15% just because the market is regulated; many cloud-native offers are already validated and growing.",
-     "n_markets": 3
+     "n_markets": 4
     },
     {
      "id": "2C-4",
@@ -545,10 +740,16 @@
       "Global Next Generation Probiotics Market",
       "Global Decaf Coffee Market",
       "Global Technical Foam Market",
-      "Global Digital Twin Market"
+      "Global Digital Twin Market",
+      "Africa Agriculture Market",
+      "Europe Functional Dairy Ingredients Market",
+      "Global Creator Economy Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section",
+      "U.S. Used Cooking Oil Market Report"
      ],
      "caveat": "If the emerging type already has >30% share or revenue base is no longer small, reduce to <=+1.5pp; avoid giving +5pp just for a popular buzzword.",
-     "n_markets": 5
+     "n_markets": 11
     },
     {
      "id": "2C-5",
@@ -561,10 +762,19 @@
       "Global High Energy Laser Market",
       "Global Digital Twin Market",
       "Global Athletic Tape Market",
-      "Global Amphetamine + Deaxmphetamine Market"
+      "Global Amphetamine + Deaxmphetamine Market",
+      "Africa Agriculture Market",
+      "Europe Functional Dairy Ingredients Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Global Creator Economy Market",
+      "Global MINIATURE Ball Bearing Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section",
+      "India Process & Factory Automation Market",
+      "U.S. Used Cooking Oil Market Report"
      ],
      "caveat": "Don't penalize a mature type if it is protected by patents, regulation, or still increasing volume through mandatory use.",
-     "n_markets": 4
+     "n_markets": 13
     },
     {
      "id": "2C-6",
@@ -577,10 +787,11 @@
       "North America & Europe Azelaic Acid Market",
       "Global High Energy Laser Market",
       "Global Amphetamine + Deaxmphetamine Market",
-      "Global Athletic Tape Market"
+      "Global Athletic Tape Market",
+      "Global MINIATURE Ball Bearing Market"
      ],
      "caveat": "Do not shift every segment by +1/-1 just for regional flavor; globally standardized products may have zero regional shift, as in retail self-scanning product type.",
-     "n_markets": 4
+     "n_markets": 5
     },
     {
      "id": "2C-7",
@@ -592,10 +803,11 @@
      "markets": [
       "Global PLC Market",
       "Global Digital Twin Market",
-      "Global Used Cooking Oil Collection Market"
+      "Global Used Cooking Oil Collection Market",
+      "Global MINIATURE Ball Bearing Market"
      ],
      "caveat": "Large shifts like +9pp are outliers; many past analysts probably over-adjusted from a global average. If only one region has evidence, keep the shift <=2pp and re-check total regional shares.",
-     "n_markets": 3
+     "n_markets": 4
     },
     {
      "id": "2C-8",
@@ -608,10 +820,13 @@
       "Collagen Membrane Market",
       "Global Technical Foam Market",
       "Global Amphetamine + Deaxmphetamine Market",
-      "Global PLC Market"
+      "Global PLC Market",
+      "Global Creator Economy Market",
+      "Global Industrial and Autonomous Robotics Market",
+      "India Industrial Gas Market"
      ],
      "caveat": "If the category is fragmented with no default, don't force a >50% child; use several 20-30% children instead.",
-     "n_markets": 4
+     "n_markets": 7
     },
     {
      "id": "2C-9",
@@ -622,10 +837,11 @@
      "kind": "mechanism",
      "markets": [
       "Global PLC Market",
-      "Global Digital Twin Market"
+      "Global Digital Twin Market",
+      "India Industrial Gas Market"
      ],
      "caveat": "If rapid new device installation is occurring, installed-based share under-estimates fast-growing children; use growth premium but don't jump share by more than 5pp without shipment data.",
-     "n_markets": 2
+     "n_markets": 3
     },
     {
      "id": "2C-10",
@@ -638,10 +854,12 @@
       "Global Athletic Tape Market",
       "Global Decaf Coffee Market",
       "Global Water for Injection Container Market",
-      "Global Used Cooking Oil Collection Market"
+      "Global Used Cooking Oil Collection Market",
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "Global Industrial and Autonomous Robotics Market"
      ],
      "caveat": "Do not use regional price index to compensate for a wrong volume split; if arbitrage/global procurement exists, e.g., collagen membrane LatAm indexes around 1.0, keep price near 1.0.",
-     "n_markets": 4
+     "n_markets": 6
     },
     {
      "id": "2C-11",
@@ -651,10 +869,13 @@
      "why": "Logistics costs, order size, and competitive intensity create within-country price spreads.",
      "kind": "mechanism",
      "markets": [
-      "India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market"
+      "India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section",
+      "U.S. Used Cooking Oil Market Report"
      ],
      "caveat": "Only apply sub-national if you have specific logistics/hub evidence; otherwise stay at regional level.",
-     "n_markets": 1
+     "n_markets": 4
     },
     {
      "id": "2C-12",
@@ -668,6 +889,65 @@
      ],
      "caveat": "Do not confuse 'no data' with 'no regional difference'; collect evidence on regulation, income, and local production first. If evidence exists, apply heuristic 2C-6 or 2C-7 instead.",
      "n_markets": 1
+    },
+    {
+     "decision": "type_split",
+     "condition": "A commodity/industrial market has several large application types and no clear incumbent format; top segment is only 35-40% and no installed-base/regulatory lock-in forces concentration.",
+     "action": "Set the leading type at 35-45%, second at 20-35%, and keep 20-40% in long-tail; do not force a 50-70% incumbent.",
+     "why": "Advanced coatings and industrial gases serve multiple large end uses, so no single product category or gas type dominates.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Advanced Surface Engineering & Protective Coatings Market",
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section"
+     ],
+     "caveat": "Do not apply when a clear standard/installed base or regulation locks in one format; then use 2C-1.",
+     "id": "2C-13",
+     "n_markets": 3,
+     "added": "incremental"
+    },
+    {
+     "decision": "type_growth",
+     "condition": "A nascent capital-intensive hardware/robotics type is <10% share, has visible commercial pilots, and benefits from structural labor shortage or automation demand.",
+     "action": "Set growth premium +7 to +16pp, above the usual +2.7 to +6pp ceiling.",
+     "why": "Humanoid robots (+15.5pp) and cobots (+8.9pp) are small bases with high prospective adoption, while traditional industrial robots are mature.",
+     "kind": "mechanism",
+     "markets": [
+      "Global Industrial and Autonomous Robotics Market"
+     ],
+     "caveat": "Do not apply to consumer/software niches or after the type exceeds about 10% share; the premium must collapse toward +0.5 to +2.5pp once commercialized.",
+     "id": "2C-14",
+     "n_markets": 1,
+     "added": "incremental"
+    },
+    {
+     "decision": "type_mix_by_region",
+     "condition": "A split is a clean binary standard vs specialty/grade split and regional application mix is strongly structural, e.g., specialty only demanded in advanced aerospace/defense/medical industries.",
+     "action": "Allow regional shifts of +8 to +21pp for specialty in developed/advanced-manufacturing regions and +8 to +18pp for standard in emerging/price-sensitive regions; do not cap at the usual ±3pp.",
+     "why": "Miniature bearing grades show specialty over-indexing +21pp in North America and standard +18pp in Africa because application requirements differ by regional industrial base.",
+     "kind": "mechanism",
+     "markets": [
+      "Global MINIATURE Ball Bearing Market"
+     ],
+     "caveat": "Reserve for true binary/grade splits with structural demand differences; normal premium/legacy splits should use 2C-6 and not exceed ±3pp.",
+     "id": "2C-15",
+     "n_markets": 1,
+     "added": "incremental"
+    },
+    {
+     "decision": "price_by_region",
+     "condition": "Sub-national price index for industrial gases or commodities with concentrated production complexes and freight-sensitive distribution.",
+     "action": "Set production/excess-supply hubs at 0.92-0.94, distant/deficit states at 1.05-1.07, and mid-range states at 0.97-1.01; this extends the usual 0.96-0.99 hub floor downward.",
+     "why": "Gujarat and Odisha have large gas production/refining bases and lower logistics/tax costs, while Haryana and Rest of India rely on long-haul or imported supply.",
+     "kind": "mechanism",
+     "markets": [
+      "India Industrial Gas Market",
+      "India Industrial Gas Market Cross Section"
+     ],
+     "caveat": "Only for supply-driven industrial commodity indices; for consumer/non-bulk markets high-volume hubs should remain 0.96-0.99.",
+     "id": "2C-16",
+     "n_markets": 2,
+     "added": "incremental"
     }
    ],
    "pitfalls": [
@@ -677,107 +957,110 @@
     "Over-adjusting regional mix with large ±8/9pp shifts from a global base unless there is strong structural evidence. Such shifts are outliers and may be mechanical from a single expert.",
     "Treating all split categories as brand/generic or OTC/Rx when devices/consumables have entirely different substitution dynamics.",
     "Setting all price indices to 1.0 or using NA/Europe premium in commodity markets. Price should reflect local income, logistics, and competition, and should not be used to plug volume gaps.",
-    "Ignoring the base effect in type_growth: growth premium is share shift, not absolute growth. A small segment can have +6pp but still not move the market much, so do not assign big absolute size to it."
+    "Ignoring the base effect in type_growth: growth premium is share shift, not absolute growth. A small segment can have +6pp but still not move the market much, so do not assign big absolute size to it.",
+    "Top-segment share in commodity/industrial multi-application markets can be 35-38% (e.g., advanced coatings carbide 37.7%, industrial gas oxygen 35.1%), not just 40-45%. Do not force a 50-70% incumbent when no installed-base or regulatory lock-in exists.",
+    "Do not dismiss large regional type-mix shifts as mechanical outliers when the split is a binary standard/specialty grade: miniature-bearing specialty is +21pp in North America and standard +18pp in Africa. Such shifts can be structural; limit them to true binary/grade splits.",
+    "The +2.7 to +6pp small-segment growth premium cap is too low for very small nascent hardware categories with strong pilots (humanoids +15.5pp, cobots +8.9pp). Do not generalize those premiums to consumer/software niches or apply them after the segment exceeds about 10% share."
    ]
   }
  },
  "stats": {
   "all": {
    "growth.fcst_minus_hist": [
-    0.0071,
-    43
+    0.0065,
+    53
    ],
    "region.share.NA": [
-    0.375,
-    30
+    0.3654,
+    34
    ],
    "region.share.Europe": [
-    0.2713,
-    30
+    0.2675,
+    34
    ],
    "region.share.APAC": [
-    0.2268,
-    30
+    0.23,
+    34
    ],
    "region.share.LATAM": [
     0.0605,
-    30
+    34
    ],
    "region.share.MEA": [
     0.058,
-    30
+    34
    ],
    "region.cagr_gap.NA": [
     -0.0035,
-    30
+    34
    ],
    "region.cagr_gap.Europe": [
-    -0.007,
-    30
+    -0.0071,
+    34
    ],
    "region.cagr_gap.APAC": [
     0.0172,
-    30
+    34
    ],
    "region.cagr_gap.LATAM": [
     -0.0123,
-    30
+    34
    ],
    "region.cagr_gap.MEA": [
     -0.0166,
-    30
+    34
    ],
    "country.share.U.S.": [
-    0.8875,
-    32
+    0.878,
+    36
    ],
    "country.share.China": [
-    0.2965,
-    29
+    0.3061,
+    33
    ],
    "country.share.Germany": [
-    0.2303,
-    32
+    0.235,
+    37
    ],
    "country.share.Japan": [
-    0.1667,
-    29
+    0.161,
+    33
    ],
    "country.share.India": [
-    0.198,
-    29
+    0.1923,
+    33
    ],
    "country.cagr_gap_sd": [
-    0.0128,
-    36
-   ],
-   "country.rest_share": [
-    0.1536,
-    36
-   ],
-   "seg.top_share": [
-    0.5356,
-    43
-   ],
-   "seg.cagr_spread": [
-    0.026,
-    43
-   ],
-   "seg.cagr_dev": [
-    0.0074,
-    43
-   ],
-   "seg.sub_cagr_dev": [
-    0.0088,
-    19
-   ],
-   "seg.small_fast": [
-    0.2167,
+    0.013,
     42
    ],
+   "country.rest_share": [
+    0.1538,
+    41
+   ],
+   "seg.top_share": [
+    0.5153,
+    53
+   ],
+   "seg.cagr_spread": [
+    0.0295,
+    53
+   ],
+   "seg.cagr_dev": [
+    0.0078,
+    53
+   ],
+   "seg.sub_cagr_dev": [
+    0.0093,
+    24
+   ],
+   "seg.small_fast": [
+    0.138,
+    52
+   ],
    "seg.country_mix_sd": [
-    0.0091,
-    37
+    0.0089,
+    45
    ]
   },
   "Pharmaceuticals & APIs": {
@@ -880,100 +1163,100 @@
   },
   "ICT, software & digital services": {
    "growth.fcst_minus_hist": [
-    0.0087,
-    6
+    0.0092,
+    7
    ],
    "region.share.NA": [
-    0.3503,
-    5
+    0.3615,
+    6
    ],
    "region.share.Europe": [
-    0.2835,
-    5
+    0.2778,
+    6
    ],
    "region.share.APAC": [
-    0.2378,
-    5
+    0.2484,
+    6
    ],
    "region.share.LATAM": [
-    0.052,
-    5
+    0.0542,
+    6
    ],
    "region.share.MEA": [
-    0.063,
-    5
+    0.0615,
+    6
    ],
    "region.cagr_gap.NA": [
-    -0.0135,
-    5
+    -0.0174,
+    6
    ],
    "region.cagr_gap.Europe": [
-    -0.0089,
-    5
+    -0.0096,
+    6
    ],
    "region.cagr_gap.APAC": [
-    0.0186,
-    5
+    0.0237,
+    6
    ],
    "region.cagr_gap.LATAM": [
-    -0.0128,
-    5
+    -0.0057,
+    6
    ],
    "region.cagr_gap.MEA": [
-    0.0064,
-    5
+    0.0041,
+    6
    ],
    "country.share.U.S.": [
-    0.882,
-    6
+    0.88,
+    7
    ],
    "country.share.China": [
-    0.3457,
-    4
+    0.339,
+    5
    ],
    "country.share.Germany": [
-    0.2344,
-    6
+    0.2432,
+    7
    ],
    "country.share.Japan": [
-    0.1665,
-    4
+    0.161,
+    5
    ],
    "country.share.India": [
-    0.1439,
-    4
+    0.1532,
+    5
    ],
    "country.cagr_gap_sd": [
-    0.018,
-    6
+    0.0191,
+    7
    ],
    "country.rest_share": [
-    0.1763,
-    6
+    0.1643,
+    7
    ],
    "seg.top_share": [
-    0.5302,
-    6
+    0.5134,
+    7
    ],
    "seg.cagr_spread": [
-    0.0447,
-    6
+    0.0448,
+    7
    ],
    "seg.cagr_dev": [
     0.0126,
-    6
+    7
    ],
    "seg.sub_cagr_dev": [
-    0.0156,
-    4
+    0.0205,
+    5
    ],
    "seg.small_fast": [
-    -0.0506,
-    6
+    0.0,
+    7
    ],
    "seg.country_mix_sd": [
-    0.0077,
-    5
+    0.0082,
+    6
    ]
   },
   "Construction, travel & other services": {
@@ -1114,106 +1397,106 @@
   },
   "Industrial automation, electronics & components": {
    "growth.fcst_minus_hist": [
-    0.0082,
-    5
+    0.0072,
+    8
    ],
    "region.share.NA": [
-    0.3191,
-    4
+    0.2826,
+    6
    ],
    "region.share.Europe": [
-    0.2586,
-    4
+    0.252,
+    6
    ],
    "region.share.APAC": [
-    0.3045,
-    4
+    0.3413,
+    6
    ],
    "region.share.LATAM": [
-    0.0544,
-    4
+    0.056,
+    6
    ],
    "region.share.MEA": [
     0.0592,
-    4
+    6
    ],
    "region.cagr_gap.NA": [
     -0.0084,
-    4
+    6
    ],
    "region.cagr_gap.Europe": [
     -0.0155,
-    4
+    6
    ],
    "region.cagr_gap.APAC": [
     0.0211,
-    4
+    6
    ],
    "region.cagr_gap.LATAM": [
-    -0.0016,
-    4
+    -0.0047,
+    6
    ],
    "region.cagr_gap.MEA": [
-    0.0068,
-    4
+    0.0066,
+    6
    ],
    "country.share.U.S.": [
-    0.8715,
-    4
+    0.8555,
+    6
    ],
    "country.share.China": [
-    0.385,
-    4
+    0.4131,
+    6
    ],
    "country.share.Germany": [
-    0.258,
-    4
+    0.2765,
+    6
    ],
    "country.share.Japan": [
-    0.1905,
-    4
+    0.1682,
+    6
    ],
    "country.share.India": [
     0.1305,
-    4
+    6
    ],
    "country.cagr_gap_sd": [
-    0.0143,
-    4
+    0.0146,
+    6
    ],
    "country.rest_share": [
-    0.1824,
-    4
+    0.1711,
+    6
    ],
    "seg.top_share": [
-    0.4144,
-    5
+    0.4525,
+    8
    ],
    "seg.cagr_spread": [
-    0.0426,
-    5
+    0.0433,
+    8
    ],
    "seg.cagr_dev": [
     0.0145,
-    5
+    8
    ],
    "seg.sub_cagr_dev": [
-    0.0132,
-    3
+    0.0159,
+    6
    ],
    "seg.small_fast": [
-    0.1426,
-    5
+    0.066,
+    8
    ],
    "seg.country_mix_sd": [
-    0.0076,
-    5
+    0.0092,
+    7
    ]
   },
   "Food & beverage": {
    "growth.fcst_minus_hist": [
     0.0059,
-    5
+    7
    ],
    "region.share.NA": [
     0.3467,
@@ -1264,8 +1547,8 @@
     4
    ],
    "country.share.Germany": [
-    0.1467,
-    4
+    0.1535,
+    5
    ],
    "country.share.Japan": [
     0.1421,
@@ -1277,133 +1560,133 @@
    ],
    "country.cagr_gap_sd": [
     0.0114,
-    5
+    7
    ],
    "country.rest_share": [
-    0.212,
-    5
+    0.2016,
+    6
    ],
    "seg.top_share": [
     0.6021,
-    5
+    7
    ],
    "seg.cagr_spread": [
-    0.0234,
-    5
+    0.0245,
+    7
    ],
    "seg.cagr_dev": [
     0.0059,
-    5
+    7
    ],
    "seg.sub_cagr_dev": [
-    0.0109,
-    2
+    0.0088,
+    3
    ],
    "seg.small_fast": [
-    -0.1262,
-    4
+    -0.3726,
+    6
    ],
    "seg.country_mix_sd": [
-    0.0092,
-    5
+    0.0088,
+    7
    ]
   },
   "Chemicals & materials": {
    "growth.fcst_minus_hist": [
-    0.0056,
-    5
+    0.0058,
+    9
    ],
    "region.share.NA": [
-    0.3272,
-    2
+    0.284,
+    3
    ],
    "region.share.Europe": [
-    0.1699,
-    2
+    0.202,
+    3
    ],
    "region.share.APAC": [
-    0.382,
-    2
+    0.341,
+    3
    ],
    "region.share.LATAM": [
-    0.0499,
-    2
+    0.0615,
+    3
    ],
    "region.share.MEA": [
-    0.0711,
-    2
+    0.09,
+    3
    ],
    "region.cagr_gap.NA": [
-    -0.009,
-    2
+    -0.0067,
+    3
    ],
    "region.cagr_gap.Europe": [
-    -0.0158,
-    2
+    -0.0125,
+    3
    ],
    "region.cagr_gap.APAC": [
-    0.014,
-    2
+    0.0109,
+    3
    ],
    "region.cagr_gap.LATAM": [
-    -0.0051,
-    2
+    -0.0067,
+    3
    ],
    "region.cagr_gap.MEA": [
-    -0.0062,
-    2
+    -0.016,
+    3
    ],
    "country.share.U.S.": [
-    0.8792,
-    4
+    0.876,
+    5
    ],
    "country.share.China": [
-    0.417,
-    3
-   ],
-   "country.share.Germany": [
-    0.2104,
+    0.4105,
     4
    ],
+   "country.share.Germany": [
+    0.2186,
+    5
+   ],
    "country.share.Japan": [
-    0.099,
-    3
+    0.1027,
+    4
    ],
    "country.share.India": [
-    0.198,
-    3
+    0.1952,
+    4
    ],
    "country.cagr_gap_sd": [
-    0.0115,
-    5
+    0.0113,
+    6
    ],
    "country.rest_share": [
-    0.127,
-    5
+    0.1334,
+    6
    ],
    "seg.top_share": [
-    0.4143,
-    5
+    0.394,
+    9
    ],
    "seg.cagr_spread": [
-    0.026,
-    5
+    0.0312,
+    9
    ],
    "seg.cagr_dev": [
-    0.007,
-    5
+    0.0086,
+    9
    ],
    "seg.sub_cagr_dev": [
     0.0068,
     3
    ],
    "seg.small_fast": [
-    0.4317,
-    5
+    0.2929,
+    9
    ],
    "seg.country_mix_sd": [
-    0.0101,
-    5
+    0.0087,
+    8
    ]
   },
   "Energy, water & utilities": {

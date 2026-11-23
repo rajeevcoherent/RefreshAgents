@@ -1,17 +1,17 @@
 # House playbook learned from past ME workbooks
 
-58 markets (April, July, May); train 43 / held-out test 15 (split by market folder). Only scale-free quantities are learned - shares, growth spreads, history vs forecast - never a market's absolute size.
+72 markets (April, July, June, May); train 53 / held-out test 19 (split by market folder). Only scale-free quantities are learned - shares, growth spreads, history vs forecast - never a market's absolute size.
 
 ## Markets by category
 
+- Chemicals & materials: 13 - Global Adhesives & Sealants Market, Global Technical Foam Market, Asia and Middle East Water Treatment Chemical Market, U.S., China & Europe Glass Packaging Market, North America & Europe Azelaic Acid Market, North America and Europe Pelargonic Acid Market, Global Adhesives & Bonding Market, Global Lamination Adhesives for Flexible Packaging Market, U.S., Mexico, & Brazil Resin Compound Market, Global Advanced Surface Engineering & Protective Coatings Market, India Industrial Gas Market, India Industrial Gas Market Cross Section, U.S. Used Cooking Oil Market Report
 - Pharmaceuticals & APIs: 12 - Global Amphetamine + Deaxmphetamine Market, Global Buprenorphine Market, Global Chronic Spontaneous Urticaria Market_Coherent Market Insights, U.S Povidone Iodine Nasal Spray Market, U.S. Providone Iodine Market, Global Next Generation Probiotics Market, Global Water for Injection Container Market, Global Codeine Market, Global Apomorphine API & FDF Market, Global Apomorphine API Market, Global Sodium Oxybate API Market, Global Sodium Oxybate API + FDF Market
-- Chemicals & materials: 9 - Global Adhesives & Sealants Market, Global Technical Foam Market, Asia and Middle East Water Treatment Chemical Market, U.S., China & Europe Glass Packaging Market, North America & Europe Azelaic Acid Market, North America and Europe Pelargonic Acid Market, Global Adhesives & Bonding Market, Global Lamination Adhesives for Flexible Packaging Market, U.S., Mexico, & Brazil Resin Compound Market
-- ICT, software & digital services: 9 - Global Cyber-Physical Systems Security Market, Global Retail Self Scanning Solutions Market, North America and Europe Sales Training Market, Global Digital Twin Market, Global Head End System Market, Global PLC Market, Global Supply Chain Risk Management Market, U.S. Digital Signage Market, Global Well Planning & Engineering Software Market
-- Medical devices & healthcare services: 8 - Global Gel Ice Pack Market, Latin America Bone Cement Market, Collagen Membrane Market, Global High Intensity Focused Ultrasound (HIFU) Market, India Smart Hospitals & Digital Transformation Market, Global Athletic Tape Market, Global Laser Based Photo Rejuvenation Devices Market, North America & US Trocar Market
-- Industrial automation, electronics & components: 7 - Global High Energy Laser Market, Global Process Analyzer Market, Global Spectral Sensor Market, North America Electronic Design Services Market, Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market, Global Waveguide Market, Global Industrial Automation Systems Market
-- Food & beverage: 5 - Global Pizza Market, Middle East Agriculture Market, Global Decaf Coffee Market, Global Avocado Oil Market, Global Bourbon Whisky and Scottish Whiskey Market
+- ICT, software & digital services: 10 - Global Cyber-Physical Systems Security Market, Global Retail Self Scanning Solutions Market, North America and Europe Sales Training Market, Global Digital Twin Market, Global Head End System Market, Global PLC Market, Global Supply Chain Risk Management Market, U.S. Digital Signage Market, Global Well Planning & Engineering Software Market, Global Creator Economy Market
+- Medical devices & healthcare services: 10 - Global Gel Ice Pack Market, Latin America Bone Cement Market, Collagen Membrane Market, Global High Intensity Focused Ultrasound (HIFU) Market, India Smart Hospitals & Digital Transformation Market, Global Athletic Tape Market, Global Laser Based Photo Rejuvenation Devices Market, North America & US Trocar Market, Global Protein Biomarkers Market, U.S. Clostridium Difficile Testing Market
+- Industrial automation, electronics & components: 10 - Global High Energy Laser Market, Global Process Analyzer Market, Global Spectral Sensor Market, North America Electronic Design Services Market, Global Life Sciences And Pharmaceutical Industrial Automation And Control Systems Market, Global Waveguide Market, Global Industrial Automation Systems Market, India Process & Factory Automation Market, Global Industrial and Autonomous Robotics Market, Global MINIATURE Ball Bearing Market
+- Food & beverage: 7 - Global Pizza Market, Middle East Agriculture Market, Global Decaf Coffee Market, Global Avocado Oil Market, Global Bourbon Whisky and Scottish Whiskey Market, Africa Agriculture Market, Europe Functional Dairy Ingredients Market
+- Energy, water & utilities: 4 - Global Used Cooking Oil Collection Market, India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market, North America Greywater Recycling System Market, Global Waste Oil Market
 - Construction, travel & other services: 3 - GCC Outbound Tourism Market, U.S. Attic Ladder Market, Global Superyacht Market
-- Energy, water & utilities: 2 - Global Used Cooking Oil Collection Market, India Seawater Reverse Osmosis (SWRO) & High-Rejection Industrial RO Membrane Market
 - Consumer goods & retail: 2 - Saudi Arabia Aluminium & Wooden Kitchens Market, India Mobile Phone Accessories Market
 - Industrial machinery & equipment: 1 - Global Liquid Hydrogen Tank Market
 
@@ -19,86 +19,86 @@
 
 | Feature | p10 | median | p90 | n |
 |---|---|---|---|---|
-| growth.fcst_cagr | 4.8% | 7.8% | 12.3% | 58 |
-| growth.fcst_minus_hist | +0.45% | +0.66% | +1.01% | 58 |
-| growth.price_cagr | 0.7% | 1.2% | 1.9% | 23 |
-| region.share.NA | 28.4% | 35.8% | 40.1% | 37 |
-| region.share.Europe | 18.2% | 27.0% | 29.0% | 37 |
-| region.share.APAC | 17.5% | 23.0% | 37.5% | 37 |
-| region.share.LATAM | 3.4% | 6.0% | 8.9% | 37 |
-| region.share.MEA | 3.5% | 5.8% | 8.8% | 37 |
-| region.cagr_gap.NA | -1.36% | -0.38% | +0.30% | 37 |
-| region.cagr_gap.Europe | -1.53% | -0.82% | +0.80% | 37 |
-| region.cagr_gap.APAC | +0.75% | +1.60% | +2.50% | 37 |
-| region.cagr_gap.LATAM | -2.45% | -1.22% | +0.31% | 37 |
-| region.cagr_gap.MEA | -3.89% | -0.83% | +1.11% | 37 |
-| region.cagr_range | 2.3% | 3.6% | 5.6% | 37 |
-| country.share.U.S. | 83.8% | 88.0% | 92.4% | 39 |
-| country.share.Canada | 7.6% | 12.0% | 16.2% | 39 |
-| country.share.Germany | 15.3% | 23.0% | 30.5% | 40 |
-| country.share.U.K. | 12.1% | 17.1% | 21.5% | 38 |
-| country.share.France | 11.1% | 14.9% | 18.8% | 40 |
-| country.share.Italy | 8.1% | 11.6% | 15.8% | 38 |
-| country.share.Spain | 6.5% | 9.5% | 10.9% | 38 |
-| country.share.Russia | 5.2% | 6.2% | 12.5% | 36 |
-| country.share.China | 24.9% | 30.5% | 45.4% | 36 |
-| country.share.Japan | 10.0% | 16.4% | 24.4% | 36 |
-| country.share.India | 10.4% | 18.6% | 23.4% | 36 |
-| country.share.South Korea | 5.5% | 8.2% | 11.6% | 36 |
-| country.share.Brazil | 33.4% | 39.6% | 46.4% | 38 |
-| country.share.Mexico | 23.5% | 28.1% | 36.1% | 38 |
-| country.share.Argentina | 8.9% | 12.4% | 19.7% | 37 |
-| country.share.South Africa | 14.2% | 40.1% | 50.0% | 36 |
-| country.rest_share | 6.8% | 15.3% | 21.2% | 45 |
-| country.cagr_gap_sd | +0.90% | +1.27% | +2.13% | 45 |
-| seg.top_share | 40.8% | 52.7% | 67.9% | 58 |
-| seg.cagr_spread | 1.8% | 2.8% | 4.5% | 58 |
-| seg.cagr_dev | 0.5% | 0.8% | 1.4% | 58 |
-| seg.sub_cagr_dev | 0.6% | 0.9% | 2.1% | 29 |
-| seg.country_mix_sd | 0.7% | 0.9% | 2.2% | 48 |
+| growth.fcst_cagr | 5.2% | 7.8% | 13.6% | 72 |
+| growth.fcst_minus_hist | +0.44% | +0.65% | +1.02% | 72 |
+| growth.price_cagr | 0.8% | 1.2% | 1.9% | 30 |
+| region.share.NA | 27.7% | 35.8% | 40.1% | 43 |
+| region.share.Europe | 18.2% | 25.9% | 29.0% | 43 |
+| region.share.APAC | 17.5% | 24.5% | 38.5% | 43 |
+| region.share.LATAM | 3.4% | 6.0% | 8.9% | 43 |
+| region.share.MEA | 3.5% | 5.8% | 10.2% | 43 |
+| region.cagr_gap.NA | -2.01% | -0.38% | +0.30% | 43 |
+| region.cagr_gap.Europe | -1.58% | -0.82% | +0.80% | 43 |
+| region.cagr_gap.APAC | +0.75% | +1.60% | +2.87% | 43 |
+| region.cagr_gap.LATAM | -2.45% | -1.22% | +0.41% | 43 |
+| region.cagr_gap.MEA | -3.89% | -0.83% | +1.11% | 43 |
+| region.cagr_range | 2.3% | 3.7% | 7.6% | 43 |
+| country.share.U.S. | 82.2% | 87.6% | 92.1% | 46 |
+| country.share.Canada | 7.6% | 12.4% | 16.2% | 46 |
+| country.share.Germany | 15.4% | 23.5% | 30.4% | 47 |
+| country.share.U.K. | 12.0% | 17.2% | 21.7% | 45 |
+| country.share.France | 11.2% | 15.1% | 18.8% | 47 |
+| country.share.Italy | 7.5% | 11.6% | 15.8% | 45 |
+| country.share.Spain | 6.2% | 9.4% | 12.8% | 45 |
+| country.share.Russia | 4.5% | 6.2% | 8.9% | 41 |
+| country.share.China | 24.9% | 32.2% | 45.4% | 42 |
+| country.share.Japan | 10.0% | 15.8% | 24.4% | 42 |
+| country.share.India | 9.2% | 18.6% | 23.1% | 42 |
+| country.share.South Korea | 5.5% | 8.3% | 11.5% | 42 |
+| country.share.Brazil | 33.4% | 39.6% | 46.4% | 44 |
+| country.share.Mexico | 23.5% | 28.6% | 36.1% | 44 |
+| country.share.Argentina | 8.9% | 13.2% | 19.7% | 43 |
+| country.share.South Africa | 14.2% | 39.7% | 49.8% | 42 |
+| country.rest_share | 7.2% | 15.3% | 19.7% | 52 |
+| country.cagr_gap_sd | +0.96% | +1.30% | +2.23% | 53 |
+| seg.top_share | 39.1% | 51.3% | 67.9% | 72 |
+| seg.cagr_spread | 1.8% | 2.9% | 4.7% | 72 |
+| seg.cagr_dev | 0.5% | 0.9% | 1.5% | 72 |
+| seg.sub_cagr_dev | 0.5% | 0.9% | 2.4% | 36 |
+| seg.country_mix_sd | 0.7% | 0.9% | 2.2% | 59 |
 
 Directional frequencies:
 - share of markets with forecast CAGR > historical CAGR: 97%
-- share of global markets where APAC grows fastest: 84%
-- share of global markets where Europe grows slowest: 30%
-- share of global markets where NA is the largest region: 76%
-- share of global markets where NA grows slower than global: 68%
-- share of markets where smaller segments grow faster (seg.small_fast < 0): 35%
+- share of global markets where APAC grows fastest: 86%
+- share of global markets where Europe grows slowest: 28%
+- share of global markets where NA is the largest region: 72%
+- share of global markets where NA grows slower than global: 65%
+- share of markets where smaller segments grow faster (seg.small_fast < 0): 39%
 
 ## Rules - market economics
 
 | id | status | support (train / test) | rule | why |
 |---|---|---|---|---|
-| R10 | kept | 0.812 (n=32) / 0.714 (n=7) | U.S. share of North America is typically 84–93%. | The U.S. dominates NA in nearly every market, but Canada holds a small share. |
-| R11 | kept | 0.862 (n=29) / 0.714 (n=7) | China share of APAC is typically 18–42%. | China is a major APAC market, but Japan, India, South Korea also contribute. |
-| R12 | kept | 0.828 (n=29) / 1 (n=7) | India share of APAC is typically 9–24%. | India's share is moderate, rarely above one-quarter of APAC. |
-| R13 | kept | 0.833 (n=30) / 1 (n=8) | Brazil share of Latin America is typically 33–47%. | Brazil is the largest LATAM market, but Mexico and Argentina are significant. |
-| R14 | kept | 0.781 (n=32) / 0.714 (n=7) | Canada share of North America is typically 7–15%. | Canada is a stable secondary market within NA. |
-| R16 | kept | 0.839 (n=31) / 0.857 (n=7) | U.K. share of Europe is typically 12–22%. | U.K. is consistently a major European market. |
-| R17 | kept | 0.812 (n=32) / 0.75 (n=8) | France share of Europe is typically 11–19%. | France is a stable top-three European market. |
-| R18 | kept | 0.862 (n=29) / 0.857 (n=7) | Japan share of APAC is typically 10–25%. | Japan is a mature APAC market, second or third in size. |
-| R19 | kept | 0.724 (n=29) / 0.714 (n=7) | South Korea share of APAC is typically 5–10%. | South Korea is a small but consistent APAC player. |
-| R2 | kept | 0.814 (n=43) / 0.8 (n=15) | Root forecast CAGR usually falls between 4.7% and 13.7%. | Across markets, long-term growth rarely exceeds these bounds. |
-| R20 | kept | 0.791 (n=43) / 0.733 (n=15) | Top-level segment share (largest segment) is typically 41–69%. | Most markets have a leading segment but not an extreme monopoly. |
-| R21 | kept | 0.791 (n=43) / 0.933 (n=15) | Segment CAGR spread (fastest minus slowest top-level segment) is typically 1.8–4.7 pp. | Segment growth differences are moderate and rarely extremely wide. |
-| R22 | kept | 0.814 (n=43) / 0.867 (n=15) | Segment share-weighted mean absolute CAGR deviation from root is typically 0.4–1.5 pp. | Segment CAGRs cluster around the root; extreme deviations are rare. |
-| R23 | kept | 0.791 (n=43) / 0.933 (n=15) | Segment HHI (concentration) is typically 0.27–0.58. | Markets are moderately concentrated, neither fragmented nor monopoly. |
-| R25 | kept | 0.833 (n=36) / 0.778 (n=9) | Spread of country CAGRs around their region's CAGR (std) is typically 0.9–2.2 pp. | Country growth within a region is relatively homogeneous. |
-| R3 | kept | 0.933 (n=30) / 1 (n=7) | APAC region CAGR gap should be positive, i.e. APAC grows faster than the global root. | APAC is the fastest-growing region in the vast majority of markets. |
-| R5 | kept | 0.8 (n=30) / 1 (n=7) | North America share of the root market is typically 28–41%. | NA is the largest region in most markets, but not extremely concentrated. |
-| R6 | kept | 0.767 (n=30) / 0.714 (n=7) | Europe share of the root market is typically 20–32%. | Europe's share is moderate and stable across markets. |
-| R7 | kept | 0.8 (n=30) / 0.714 (n=7) | APAC share of the root market is typically 14–35%. | APAC share varies with the market's development but rarely leaves this range. |
-| R8 | kept | 0.833 (n=30) / 1 (n=7) | Latin America share of the root market is typically 3–9.5%. | LATAM is usually a small but non-negligible region. |
-| R9 | kept | 0.833 (n=30) / 0.857 (n=7) | Middle East & Africa share of the root market is typically 3–9%. | MEA is consistently a small single-digit share in global markets. |
-| R15 | weak | 0.812 (n=32) / 0.5 (n=8) | Germany share of Europe is typically 15–28%. | Germany is the largest European market, but not overwhelming. |
-| R4 | weak | 0.8 (n=30) / 0.571 (n=7) | Region CAGR spread (fastest minus slowest region) is usually 2.5–7.7 pp. | Regional growth dispersion tends to be moderate and bounded. |
+| R10 | kept | 0.806 (n=36) / 0.7 (n=10) | U.S. share of North America is typically 84–93%. | The U.S. dominates NA in nearly every market, but Canada holds a small share. |
+| R11 | kept | 0.848 (n=33) / 0.778 (n=9) | China share of APAC is typically 18–42%. | China is a major APAC market, but Japan, India, South Korea also contribute. |
+| R12 | kept | 0.818 (n=33) / 1 (n=9) | India share of APAC is typically 9–24%. | India's share is moderate, rarely above one-quarter of APAC. |
+| R13 | kept | 0.853 (n=34) / 1 (n=10) | Brazil share of Latin America is typically 33–47%. | Brazil is the largest LATAM market, but Mexico and Argentina are significant. |
+| R14 | kept | 0.722 (n=36) / 0.7 (n=10) | Canada share of North America is typically 7–15%. | Canada is a stable secondary market within NA. |
+| R16 | kept | 0.833 (n=36) / 0.889 (n=9) | U.K. share of Europe is typically 12–22%. | U.K. is consistently a major European market. |
+| R17 | kept | 0.811 (n=37) / 0.8 (n=10) | France share of Europe is typically 11–19%. | France is a stable top-three European market. |
+| R18 | kept | 0.879 (n=33) / 0.889 (n=9) | Japan share of APAC is typically 10–25%. | Japan is a mature APAC market, second or third in size. |
+| R19 | kept | 0.758 (n=33) / 0.778 (n=9) | South Korea share of APAC is typically 5–10%. | South Korea is a small but consistent APAC player. |
+| R2 | kept | 0.811 (n=53) / 0.842 (n=19) | Root forecast CAGR usually falls between 4.7% and 13.7%. | Across markets, long-term growth rarely exceeds these bounds. |
+| R21 | kept | 0.774 (n=53) / 0.895 (n=19) | Segment CAGR spread (fastest minus slowest top-level segment) is typically 1.8–4.7 pp. | Segment growth differences are moderate and rarely extremely wide. |
+| R22 | kept | 0.792 (n=53) / 0.895 (n=19) | Segment share-weighted mean absolute CAGR deviation from root is typically 0.4–1.5 pp. | Segment CAGRs cluster around the root; extreme deviations are rare. |
+| R23 | kept | 0.792 (n=53) / 0.842 (n=19) | Segment HHI (concentration) is typically 0.27–0.58. | Markets are moderately concentrated, neither fragmented nor monopoly. |
+| R25 | kept | 0.81 (n=42) / 0.818 (n=11) | Spread of country CAGRs around their region's CAGR (std) is typically 0.9–2.2 pp. | Country growth within a region is relatively homogeneous. |
+| R3 | kept | 0.941 (n=34) / 1 (n=9) | APAC region CAGR gap should be positive, i.e. APAC grows faster than the global root. | APAC is the fastest-growing region in the vast majority of markets. |
+| R5 | kept | 0.765 (n=34) / 1 (n=9) | North America share of the root market is typically 28–41%. | NA is the largest region in most markets, but not extremely concentrated. |
+| R6 | kept | 0.765 (n=34) / 0.778 (n=9) | Europe share of the root market is typically 20–32%. | Europe's share is moderate and stable across markets. |
+| R7 | kept | 0.765 (n=34) / 0.778 (n=9) | APAC share of the root market is typically 14–35%. | APAC share varies with the market's development but rarely leaves this range. |
+| R8 | kept | 0.853 (n=34) / 1 (n=9) | Latin America share of the root market is typically 3–9.5%. | LATAM is usually a small but non-negligible region. |
+| R9 | kept | 0.824 (n=34) / 0.778 (n=9) | Middle East & Africa share of the root market is typically 3–9%. | MEA is consistently a small single-digit share in global markets. |
+| R15 | weak | 0.811 (n=37) / 0.6 (n=10) | Germany share of Europe is typically 15–28%. | Germany is the largest European market, but not overwhelming. |
+| R20 | weak | 0.736 (n=53) / 0.684 (n=19) | Top-level segment share (largest segment) is typically 41–69%. | Most markets have a leading segment but not an extreme monopoly. |
+| R4 | weak | 0.794 (n=34) / 0.667 (n=9) | Region CAGR spread (fastest minus slowest region) is usually 2.5–7.7 pp. | Regional growth dispersion tends to be moderate and bounded. |
 
 ## Rules - house conventions
 
 | id | status | support (train / test) | rule | why |
 |---|---|---|---|---|
-| R1 | kept | 0.86 (n=43) / 0.867 (n=15) | Forecast minus historical CAGR is typically 0.4–1.1 percentage points. | Analysts set forecasts modestly above history by a consistent margin. |
-| R24 | kept | 0.892 (n=37) / 0.818 (n=11) | Segment mix variation across leaf countries (std) is typically below 1.9 pp. | The team builds sheets with near-identical segment mixes across countries. |
+| R1 | kept | 0.849 (n=53) / 0.895 (n=19) | Forecast minus historical CAGR is typically 0.4–1.1 percentage points. | Analysts set forecasts modestly above history by a consistent margin. |
+| R24 | kept | 0.889 (n=45) / 0.857 (n=14) | Segment mix variation across leaf countries (std) is typically below 1.9 pp. | The team builds sheets with near-identical segment mixes across countries. |
 
 ## How analysts sized the base year (from their Secondary / Base Number sheets)
 
@@ -228,40 +228,40 @@ Each market is predicted from the others (its own folder excluded). 'gain' = err
 
 | Feature | n | MAE corpus median | MAE analogs | gain | coverage |
 |---|---|---|---|---|---|
-| growth.fcst_cagr | 58 | 2.6% | 2.3% | +13% | 69% |
-| growth.fcst_minus_hist | 58 | +0.19% | +0.18% | +6% | 64% |
-| growth.price_cagr | 23 | 0.4% | 0.4% | +2% | 65% |
-| region.share.NA | 37 | 5.7% | 5.3% | +7% | 65% |
-| region.share.Europe | 37 | 4.5% | 4.6% | -3% | 62% |
-| region.share.APAC | 37 | 7.1% | 6.2% | +12% | 68% |
-| region.share.LATAM | 37 | 1.7% | 1.8% | -2% | 62% |
-| region.share.MEA | 37 | 2.1% | 2.0% | +4% | 70% |
-| region.cagr_gap.NA | 37 | +0.61% | +0.60% | +1% | 65% |
-| region.cagr_gap.Europe | 37 | +0.71% | +0.64% | +9% | 70% |
-| region.cagr_gap.APAC | 37 | +0.80% | +0.83% | -3% | 62% |
-| region.cagr_gap.LATAM | 37 | +1.20% | +0.92% | +24% | 65% |
-| region.cagr_gap.MEA | 37 | +2.22% | +1.37% | +38% | 70% |
-| region.cagr_range | 37 | 1.4% | 1.1% | +27% | 70% |
-| country.share.U.S. | 39 | 3.3% | 3.2% | +2% | 62% |
-| country.share.Canada | 39 | 3.3% | 3.2% | +2% | 62% |
-| country.share.Germany | 40 | 5.2% | 4.7% | +10% | 60% |
-| country.share.U.K. | 38 | 4.0% | 3.9% | +2% | 71% |
-| country.share.France | 40 | 2.8% | 2.8% | +0% | 55% |
-| country.share.Italy | 38 | 2.4% | 2.4% | -0% | 66% |
-| country.share.Spain | 38 | 1.8% | 1.8% | +1% | 61% |
-| country.share.Russia | 36 | 2.4% | 2.4% | -2% | 56% |
-| country.share.China | 36 | 7.5% | 5.6% | +25% | 72% |
-| country.share.Japan | 36 | 4.2% | 4.1% | +3% | 64% |
-| country.share.India | 36 | 5.1% | 4.4% | +15% | 64% |
-| country.share.South Korea | 36 | 1.9% | 1.7% | +12% | 64% |
-| country.share.Brazil | 38 | 5.1% | 5.9% | -14% | 58% |
-| country.share.Mexico | 38 | 4.7% | 4.7% | -1% | 58% |
-| country.share.Argentina | 37 | 3.6% | 2.7% | +24% | 70% |
-| country.share.South Africa | 36 | 14.1% | 11.7% | +17% | 61% |
-| country.rest_share | 45 | 4.8% | 4.7% | +4% | 67% |
-| country.cagr_gap_sd | 45 | +0.42% | +0.38% | +9% | 58% |
-| seg.top_share | 58 | 8.9% | 9.7% | -10% | 59% |
-| seg.cagr_spread | 58 | 1.0% | 1.1% | -3% | 66% |
-| seg.cagr_dev | 58 | 0.4% | 0.4% | +10% | 67% |
-| seg.sub_cagr_dev | 29 | 0.6% | 0.5% | +8% | 72% |
-| seg.country_mix_sd | 48 | 0.5% | 0.5% | -1% | 62% |
+| growth.fcst_cagr | 72 | 2.7% | 2.5% | +6% | 67% |
+| growth.fcst_minus_hist | 72 | +0.25% | +0.24% | +3% | 64% |
+| growth.price_cagr | 30 | 0.4% | 0.4% | -1% | 67% |
+| region.share.NA | 43 | 6.0% | 5.3% | +12% | 77% |
+| region.share.Europe | 43 | 4.2% | 4.2% | +1% | 60% |
+| region.share.APAC | 43 | 7.8% | 5.9% | +25% | 67% |
+| region.share.LATAM | 43 | 1.6% | 1.8% | -9% | 60% |
+| region.share.MEA | 43 | 2.2% | 2.3% | -4% | 63% |
+| region.cagr_gap.NA | 43 | +0.73% | +0.72% | +2% | 67% |
+| region.cagr_gap.Europe | 43 | +0.72% | +0.70% | +2% | 67% |
+| region.cagr_gap.APAC | 43 | +0.86% | +0.87% | -1% | 63% |
+| region.cagr_gap.LATAM | 43 | +1.18% | +0.94% | +20% | 63% |
+| region.cagr_gap.MEA | 43 | +2.18% | +1.43% | +34% | 58% |
+| region.cagr_range | 43 | 1.4% | 1.1% | +22% | 67% |
+| country.share.U.S. | 46 | 3.0% | 3.2% | -5% | 63% |
+| country.share.Canada | 46 | 3.0% | 3.2% | -5% | 63% |
+| country.share.Germany | 47 | 4.7% | 4.3% | +8% | 62% |
+| country.share.U.K. | 45 | 4.0% | 4.0% | +2% | 69% |
+| country.share.France | 47 | 2.7% | 2.7% | -2% | 55% |
+| country.share.Italy | 45 | 2.3% | 2.2% | +4% | 64% |
+| country.share.Spain | 45 | 1.9% | 1.8% | +4% | 62% |
+| country.share.Russia | 41 | 2.2% | 2.2% | -3% | 54% |
+| country.share.China | 42 | 7.7% | 5.4% | +29% | 71% |
+| country.share.Japan | 42 | 3.9% | 3.9% | +2% | 60% |
+| country.share.India | 42 | 5.0% | 4.2% | +16% | 67% |
+| country.share.South Korea | 42 | 1.8% | 1.6% | +14% | 67% |
+| country.share.Brazil | 44 | 4.8% | 5.6% | -16% | 64% |
+| country.share.Mexico | 44 | 4.8% | 4.2% | +12% | 59% |
+| country.share.Argentina | 43 | 3.5% | 3.0% | +13% | 74% |
+| country.share.South Africa | 42 | 13.2% | 10.2% | +23% | 67% |
+| country.rest_share | 52 | 4.4% | 4.2% | +5% | 71% |
+| country.cagr_gap_sd | 53 | +0.45% | +0.42% | +7% | 60% |
+| seg.top_share | 72 | 9.0% | 8.7% | +4% | 64% |
+| seg.cagr_spread | 72 | 1.2% | 1.2% | -2% | 67% |
+| seg.cagr_dev | 72 | 0.5% | 0.4% | +6% | 71% |
+| seg.sub_cagr_dev | 36 | 0.6% | 0.6% | +5% | 67% |
+| seg.country_mix_sd | 59 | 0.4% | 0.4% | -3% | 64% |
