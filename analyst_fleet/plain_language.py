@@ -68,6 +68,9 @@ def _ok_number(x: float, allowed: list[float]) -> bool:
     return False
 
 
+_UNIT = {"label": None}
+
+
 def _fmt_value(r: dict) -> str:
     v = r["value"]
     if v is None:
@@ -75,7 +78,7 @@ def _fmt_value(r: dict) -> str:
     if r["kind"] == "size_value":
         return f"US$ {v:,.2f} Mn"
     if r["kind"] == "asp":
-        return f"US$ {v:,.0f} per installed gearbox per year"
+        return f"US$ {v:,.2f} per {_UNIT['label']}" if _UNIT["label"] else f"US$ {v:,.0f} per installed gearbox per year"
     return f"{v:.2%}" if "cagr" in r["kind"] else f"{v:.1%}"
 
 
@@ -92,7 +95,8 @@ def _label(r: dict) -> str:
     if k == "size_value":
         return f"2025 market value of {r['geo']}"
     if k == "asp":
-        return f"average annual aftermarket price per installed gearbox, {r['seg']}, {r['geo']}"
+        return (f"average price per {_UNIT['label']}, {r['seg']}, {r['geo']}" if _UNIT["label"]
+                else f"average annual aftermarket price per installed gearbox, {r['seg']}, {r['geo']}")
     return k
 
 
@@ -132,6 +136,17 @@ def _facts(state: dict, r: dict) -> str:
 def plain_texts(state: dict, rows: list[dict]) -> dict[str, str]:
     """{'Data!E7': text, ...} for every row; structured fallback where the editor fails."""
     llm, cfg, tax = state["llm"], state["cfg"], state["tax"]
+    gen = state["sizing"].get("mode") == "generic"
+    _UNIT["label"] = state["sizing"].get("volume_unit") if gen else None
+    system = EDITOR_SYSTEM.format(market=cfg.market_name)
+    if gen:
+        system = (system.replace("Compressors account for about half of Germany's gearbox\n    aftermarket",
+                                 "Tablets account for about half of Germany's market")
+                  .replace("(installed fleet, industries, utilisation,\n    ageing assets, capacity additions, labour cost, "
+                           "OEM vs independent service ...)",
+                           "(patients and demand base, access and reimbursement,\n    prices, competition and generics, "
+                           "approvals and launches ...)")
+                  .replace("compressors take 50%", "tablets take 50%"))
     by_geo: dict[str, list[dict]] = {}
     for r in rows:
         key = r["geo"] if r["geo"] in tax.leaves else "(regions and aggregates)"
@@ -154,7 +169,7 @@ def plain_texts(state: dict, rows: list[dict]) -> dict[str, str]:
                 if _STOP["fatal"]:
                     continue
                 try:
-                    out = llm.json(f"plain:{geo}:{rnd}:{chunk[0]}", EDITOR_SYSTEM.format(market=cfg.market_name), user,
+                    out = llm.json(f"plain:{geo}:{rnd}:{chunk[0]}", system, user,
                                    tier="fast", temperature=0.2, retries=2,
                                    check=lambda o: None if isinstance(o.get("texts"), dict) else "texts object required")
                 except LLMFatal as e:                           # no balance / bad key: stop all editor calls

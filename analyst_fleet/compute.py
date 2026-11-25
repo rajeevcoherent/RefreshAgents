@@ -163,9 +163,10 @@ def price_numbers(state: dict, geo: dict, seg: dict) -> dict[str, Any]:
         sh = seg["shares"][dim.title].get(c, {})
         ab = _absolute(dim, sh)
         asp[c], units[c] = {}, {}
-        for s in dim.all_segments:
-            if s in base:
-                asp[c][s] = base[s] * idx[c]
+        for s, parent in dim.rows:               # a sub-segment without its own base price inherits its parent's
+            b = base.get(s) or (base.get(parent) if parent and s not in dim.children else None)
+            if b:
+                asp[c][s] = b * idx[c]
         for s, kids in dim.children.items():  # parent price = value / units of its children
             denom = sum(sh.get(kk, 0.0) / asp[c][kk] for kk in kids if asp[c].get(kk))
             asp[c][s] = 1.0 / denom if denom else 0.0
@@ -210,6 +211,14 @@ def run_checks(state: dict, geo: dict, seg: dict, price: dict) -> list[dict]:
             top = max(dim.top, key=lambda s: sh[s])
             if sh[top] > 0.6:
                 flag("soft", "segment dominance", f"{leaf} / {dim.title}", f"{top} is {sh[top]:.0%} of the dimension")
+    ends = (state.get("sizing") or {}).get("endpoints") or []
+    if ends:                                       # growth vs every published forecast, from our own base
+        imp = sorted(e["implied_cagr"] for e in ends)
+        rc = geo["cagr"][tax.root]
+        if not (imp[0] - 0.01 <= rc <= imp[-1] + 0.01):
+            flag("soft", "growth vs published endpoints", tax.root,
+                 f"CAGR {rc:.2%} is outside the {imp[0]:.2%}-{imp[-1]:.2%} implied by {len(ends)} published forecasts "
+                 f"from this base")
     for leaf in tax.leaves:
         c = geo["cagr"].get(leaf)
         if c is not None and not (0.0 <= c <= 0.15):

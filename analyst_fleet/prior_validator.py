@@ -144,7 +144,7 @@ def find_items(state: dict, lib: Library, rules: list[dict], target: dict) -> tu
                               "agent_reasoning": reason(k)})
             else:
                 items.append({**base, "id": f"cagr|{k}", "group": "regions", "kind": "geo_cagr", "node": k, "parent": tax.root,
-                              "agent": geo["cagr"][k], "human": root_c + _iqr_target(x, b), "unit": "CAGR 2025-32",
+                              "agent": geo["cagr"][k], "human": root_c + _iqr_target(x, b), "unit": "CAGR 2025-32", "band_offset": root_c,
                               "agent_reasoning": reason(k)})
         elif f.startswith("country.share."):
             cn = f.split(".", 2)[2]
@@ -241,7 +241,8 @@ def adjudicate(state: dict, items: list[dict], target: dict) -> dict[str, dict]:
                              geos=geos, limit=30)
         blocks = []
         for it in its:
-            b = it["band"]
+            off = it.get("band_offset", 0.0)        # gap bands shown as absolute CAGRs (parent + gap)
+            b = {k: (v + off if isinstance(v, float) and k.startswith("p") else v) for k, v in it["band"].items()}
             blocks.append(
                 f"ITEM {it['id']}  ({it['unit']}; feature {it['feature']})\n"
                 f"  AGENT: {fmt(it, it['agent'])}   PRIOR BAND ({b['source']}, n={b['n']}): p10 {fmt(it, b['p10'])} | "

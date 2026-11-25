@@ -31,7 +31,41 @@ def _raw_items(state, parent: str) -> dict:
 
 
 # ----------------------------------------------------------------------------------- global anchor
+def _generic_global_steps(state: dict, full: bool) -> tuple[list[str], list[str]]:
+    sz, tax = state["sizing"], state["tax"]
+    G = state["numbers"]["geo"]["value"][tax.root]
+    bu, td, cm = sz["bottom_up"], sz["top_down_usd_mn"], sz.get("cited_median_usd_mn")
+    tdp = sz.get("top_down_parent") or {}
+    w = {k: _f(v, 0.0) for k, v in (sz.get("weights") or {}).items()}
+    blend = (f"[2A] {tax.root} 2025 = {w.get('bottom_up', 0):.2f} x bottom-up US$ {bu['total_usd_mn']:,.1f} Mn + "
+             f"{w.get('top_down', 0):.2f} x top-down US$ {td:,.1f} Mn"
+             + (f" + {w.get('cited', 0):.2f} x published US$ {cm:,.1f} Mn" if cm else "") + f" = US$ {G:,.1f} Mn")
+    wts = (f"route weights bottom-up {w.get('bottom_up', 0):.2f} / top-down {w.get('top_down', 0):.2f} / "
+           f"published {w.get('cited', 0):.2f}")
+    if not full:
+        return [blend + f" (full build-up: {tax.root} value cell / Sizing sheet)"], [wts]
+    steps, assum = [], []
+    for a, r in bu["by_application"].items():
+        chain_txt = " x ".join(f"{e.get('label')} {_f(e.get('value'), 0):,.4g}" for e in r.get("volume_build") or [])
+        steps.append(f"[2C] {a}: volume {chain_txt} = {r['installed_units']:,.0f} units x US$ {r['spend_per_unit_usd']:,.2f} "
+                     f"per unit = US$ {r['value_usd_mn']:,.1f} Mn")
+        assum.append(f"{a}: " + "; ".join(f"{e.get('label')} = {e.get('value')} ({e.get('evidence', 'analyst')})"
+                                          for e in r.get("volume_build") or [])
+                     + f"; price US$ {r['spend_per_unit_usd']:,.2f} per {sz.get('volume_unit', 'unit')}")
+    steps.append(f"[2C] Bottom-up total = sum of segments = US$ {bu['total_usd_mn']:,.1f} Mn")
+    steps.append(f"[2A] Top-down = {tdp.get('parent_market')} 2025 US$ {_f(tdp.get('parent_value_2025_usd_mn'), 0):,.1f} Mn x "
+                 f"{_f(tdp.get('share_of_parent'), 0):.3f} = US$ {td:,.1f} Mn")
+    if cm:
+        cites = "; ".join(f"US$ {_f(c.get('figure_usd_mn'), 0):,.0f} Mn ({c.get('year')}) x scope factor {_f(c.get('scope_factor'), 0):.3f}"
+                          f" moved to 2025 = US$ {c['value_2025_in_scope_usd_mn']:,.1f} Mn" for c in sz.get("cited") or [])
+        steps.append(f"[2A] Published figures converted to the client scope: {cites}; median = US$ {cm:,.1f} Mn")
+    steps.append(blend)
+    return steps, [f"top-down share of {tdp.get('parent_market')}: {_f(tdp.get('share_of_parent'), 0):.3f}", wts] + assum
+
+
 def global_steps(state: dict, full: bool) -> tuple[list[str], list[str]]:
+    if state["sizing"].get("mode") == "generic":
+        return _generic_global_steps(state, full)
     sz, tax = state["sizing"], state["tax"]
     geo = state["numbers"]["geo"]
     G = geo["value"][tax.root]
@@ -185,7 +219,23 @@ def chain(state: dict, c) -> dict[str, str]:
         dim = tax.priced_dimension
         sh = seg["shares"][dim.title][c.geo]
         cv = geo["value"][c.geo]
-        if c.seg in bu:
+        gen = state["sizing"].get("mode") == "generic"
+        unit = state["sizing"].get("volume_unit", "unit")
+        base_seg = c.seg if c.seg in bu else (c.parent_seg if gen and c.parent_seg in bu else None)
+        if gen and base_seg:
+            r = bu[base_seg]
+            steps.append(f"[2C] {base_seg} average price ({tax.root}) = US$ {r['spend_per_unit_usd']:,.2f} per {unit} (sizing build)"
+                         + (f"; {c.seg} carries its parent's price" if base_seg != c.seg else ""))
+            steps.append(f"[2A] {c.geo} price index = analyst {raw_i:.2f} x {k:.4f} (all countries scaled so volume x price "
+                         f"adds up to the market value) = {idx:.3f}")
+            steps.append(f"=> US$ {r['spend_per_unit_usd']:,.2f} x {idx:.3f} = US$ {val:,.2f} per {unit}")
+            assum += [f"{base_seg} price US$ {r['spend_per_unit_usd']:,.2f} per {unit} (sizing analyst)",
+                      f"{c.geo} price level {raw_i:.2f} x average (analyst judgement)"]
+        elif gen:
+            kids = dim.children.get(c.seg, ())
+            steps.append(f"[2C] {c.seg} price = value of {c.seg} / volume of its sub-segments ({', '.join(kids)}) "
+                         f"= US$ {val:,.2f} per {unit}")
+        elif c.seg in bu:
             r = bu[c.seg]
             comp = (sp.get(c.seg) or {}).get("components") or {}
             cstr = (" (" + " + ".join(f"{kk.replace('_', ' ')} {v:.2%}" for kk, v in comp.items()) + ")") if comp else ""
@@ -202,7 +252,10 @@ def chain(state: dict, c) -> dict[str, str]:
                          f"({', '.join(kids)}) = US$ {val:,.0f} per gearbox per year")
         if units:
             a_val = cv * (sh.get(c.seg, 0) * (sh.get(c.parent_seg, 1) if c.parent_seg else 1))
-            steps.append(f"=> serviced gearboxes implied: {c.seg} value US$ {a_val:,.2f} Mn / US$ {val:,.0f} = {units:,.0f} gearboxes")
+            if gen:
+                steps.append(f"=> volume implied: {c.seg} value US$ {a_val:,.2f} Mn / US$ {val:,.2f} = {units:,.0f} units")
+            else:
+                steps.append(f"=> serviced gearboxes implied: {c.seg} value US$ {a_val:,.2f} Mn / US$ {val:,.0f} = {units:,.0f} gearboxes")
     contrib = {s: " | ".join(x for x in steps if x.startswith(f"[{s}]")) or "not used for this number" for s in ("2A", "2B", "2C")}
     return {"calc": "\n".join(steps), "assumptions": "; ".join(dict.fromkeys(assum)),
             "c2A": contrib["2A"], "c2B": contrib["2B"], "c2C": contrib["2C"]}

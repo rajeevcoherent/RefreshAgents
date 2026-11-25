@@ -16,6 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 from ..evidence.oem import oem_table
 from .. import compute
 from ..syslog import event
+from . import generic as G
 from .common import PERSONA, canon_keys, dim_stage, dump, fmt_facts, house, scope_block, num, select_facts
 
 CHUNK = 4
@@ -68,12 +69,30 @@ Return json:
 }}"""
 
 
+def _generic_prompt(tpl: str) -> str:
+    out = tpl.replace(PERSONA, G.PERSONA, 1).replace(_THINK, G.SEG_THINK)
+    out = out.replace("'s aftermarket", "'s market").replace("total aftermarket", "total market")
+    return out.replace("aftermarket value split", "market value split").replace('"OEM"', '"analyst"')
+
+
+GROUP_SYSTEM_G = _generic_prompt(GROUP_SYSTEM)
+COUNTRY_SYSTEM_G = _generic_prompt(COUNTRY_SYSTEM)
+
+
+def _gen(state: dict) -> bool:
+    return bool(getattr(state["cfg"], "generic", False))
+
+
+def _premium_max(state: dict) -> float:
+    return G.PREMIUM_MAX if _gen(state) else 0.08
+
+
 def _tree(dim) -> str:
     return "\n".join(("    - " if parent else "  - ") + s + (f"   (share of {parent})" if parent else "")
                      for s, parent in dim.rows)
 
 
-def _check_group(dim):
+def _check_group(dim, pmax: float = 0.08):
     def check(out: dict) -> str | None:
         segs = canon_keys(out.get("segments") or {}, dim.all_segments)
         miss = [s for s in dim.all_segments if s not in segs]
@@ -81,15 +100,15 @@ def _check_group(dim):
             return f"'segments' is missing (exact names): {miss}"
         for s in dim.all_segments:
             p = num((segs[s] or {}).get("growth_premium"))
-            if p is None or abs(p) > 0.08:
-                return f"segments[{s}].growth_premium must be a decimal between -0.08 and 0.08"
+            if p is None or abs(p) > pmax:
+                return f"segments[{s}].growth_premium must be a decimal between -{pmax} and {pmax}"
             if len(str((segs[s] or {}).get("reasoning", ""))) < 60:
                 return f"segments[{s}].reasoning is too thin - give 3-4 concrete sentences"
         return None
     return check
 
 
-def _check_countries(dim, countries):
+def _check_countries(dim, countries, pmax: float = 0.08):
     def check(out: dict) -> str | None:
         cs = canon_keys(out.get("countries") or {}, countries)
         for c in cs.values():
@@ -124,8 +143,8 @@ def _check_countries(dim, countries):
             if not isinstance((cs[c] or {}).get("why"), dict):
                 return f"countries[{c}].why must be an object keyed by segment"
             for s, v in ((cs[c] or {}).get("growth_premium_overrides") or {}).items():
-                if num(v) is None or abs(num(v)) > 0.08:
-                    return f"countries[{c}].growth_premium_overrides[{s}] must be a decimal between -0.08 and 0.08"
+                if num(v) is None or abs(num(v)) > pmax:
+                    return f"countries[{c}].growth_premium_overrides[{s}] must be a decimal between -{pmax} and {pmax}"
         return None
     return check
 
@@ -133,12 +152,16 @@ def _check_countries(dim, countries):
 def _context(state: dict, group: str, dim, geo: dict, countries: list[str]) -> str:
     tax, oem = state["tax"], state["oem"]
     defs = state["segment_definitions"]
-    def_txt = "\n".join(f"- {s}: {defs.get(s, '(no definition)')}" for s in dim.all_segments)
+    def_txt = "\n".join(f"- {s}: {defs.get(s, '(no separate definition; see the client scope)')}" for s in dim.all_segments)
     craw = (state.get("country_raw") or {}).get(group, {}).get("items", {})
     ctx = "\n".join(f"- {c}: 2025 value US$ {geo['value'][c]:.2f} Mn, CAGR {geo['cagr'][c]:.2%}. Country analyst: "
                     f"{(craw.get(c) or {}).get('reasoning', '')[:500]}" for c in countries)
     extra = ""
-    if dim.priced:
+    if dim.priced and _gen(state):
+        bu = state["sizing"]["bottom_up"]["by_application"]
+        extra = (f"{tax.root.upper()} BOTTOM-UP VIEW (sizing analyst, volume x price - adjust per country): value by "
+                 "segment = " + ", ".join(f"{a}: {r['share_of_bottom_up']:.1%}" for a, r in bu.items()) + "\n")
+    elif dim.priced:
         bu = state["sizing"]["bottom_up"]["by_application"]
         extra = ("GLOBAL INSTALLED-BASE VIEW (sizing analyst, global average - adjust per country): aftermarket value by "
                  "application = " + ", ".join(f"{a}: {r['share_of_bottom_up']:.1%}" for a, r in bu.items())
@@ -147,11 +170,39 @@ def _context(state: dict, group: str, dim, geo: dict, countries: list[str]) -> s
     critique = state.get("critique", {}).get(f"segments:{group}||{dim.title}", "")
     return (f"MARKET: {state['cfg'].market_name}\nGROUP: {group}\nCOUNTRIES (exact names): {countries}\n{ctx}\n\n"
             f"SEGMENT DEFINITIONS (client document):\n{def_txt}\n\n{extra}"
-            f"OEM (new-unit) 2025 MIX, same share convention (evidence id 'OEM'):\n"
-            f"{oem_table(oem, countries + [group], tax, dim.title)}\n\n"
-            f"WEB EVIDENCE (verified quotes):\n{fmt_facts(facts)}"
+            + ("" if _gen(state) else f"OEM (new-unit) 2025 MIX, same share convention (evidence id 'OEM'):\n"
+               f"{oem_table(oem, countries + [group], tax, dim.title)}\n\n")
+            + f"WEB EVIDENCE (verified quotes):\n{fmt_facts(facts)}"
             + scope_block(state, "allocation")
             + house(state, dim_stage(state, dim.title))
+            + (f"\n\nREVIEWER CRITIQUE OF YOUR LAST ATTEMPT - address it:\n{critique}" if critique else ""))
+
+
+def _context_cached(state: dict, group: str, dim, geo: dict, countries: list[str], gview_txt: str = "") -> str:
+    """Generic-market context ordered for DeepSeek prefix caching: what every call of this dimension shares
+    comes first (market, definitions, bottom-up view, rules, house judgement), then what every call of this
+    group shares (group facts, group view), and only the chunk's countries and critique last."""
+    tax = state["tax"]
+    defs = state["segment_definitions"]
+    def_txt = "\n".join(f"- {s}: {defs.get(s, '(no separate definition; see the client scope)')}" for s in dim.all_segments)
+    extra = ""
+    if dim.priced:
+        bu = state["sizing"]["bottom_up"]["by_application"]
+        extra = (f"{tax.root.upper()} BOTTOM-UP VIEW (sizing analyst, volume x price - adjust per country): value by "
+                 "segment = " + ", ".join(f"{a}: {r['share_of_bottom_up']:.1%}" for a, r in bu.items()) + "\n\n")
+    members = tax.leaf_groups[group]
+    facts = select_facts(state.get("facts", []), themes=("segment", "installed_base"), geos=members + [group], limit=35)
+    craw = (state.get("country_raw") or {}).get(group, {}).get("items", {})
+    ctx = "\n".join(f"- {c}: 2025 value US$ {geo['value'][c]:.2f} Mn, CAGR {geo['cagr'][c]:.2%}. Country analyst: "
+                    f"{(craw.get(c) or {}).get('reasoning', '')[:500]}" for c in countries)
+    critique = state.get("critique", {}).get(f"segments:{group}||{dim.title}", "")
+    return (f"MARKET: {state['cfg'].market_name}\nDIMENSION: {dim.title}\n\n"
+            f"SEGMENT DEFINITIONS (client document):\n{def_txt}\n\n{extra}"
+            + scope_block(state, "allocation").lstrip("\n")
+            + house(state, dim_stage(state, dim.title))
+            + f"\n\nGROUP: {group}\nWEB EVIDENCE FOR THIS GROUP (verified quotes):\n{fmt_facts(facts)}"
+            + (f"\n\nYOUR GROUP-LEVEL VIEW:\n{gview_txt}" if gview_txt else "")
+            + f"\n\nCOUNTRIES (exact names): {countries}\n{ctx}"
             + (f"\n\nREVIEWER CRITIQUE OF YOUR LAST ATTEMPT - address it:\n{critique}" if critique else ""))
 
 
@@ -159,16 +210,21 @@ def _seg_job(state: dict, group: str, dim, geo: dict, pool: ThreadPoolExecutor) 
     llm, tax = state["llm"], state["tax"]
     members = tax.leaf_groups[group]
     role = f"segments:{group}||{dim.title}"
-    gview = llm.json(role, GROUP_SYSTEM.format(dim=dim.title, group=group, tree=_tree(dim)),
-                     _context(state, group, dim, geo, members), check=_check_group(dim), temperature=0.3)
+    gen, pmax = _gen(state), _premium_max(state)
+    gsys, csys = (GROUP_SYSTEM_G, COUNTRY_SYSTEM_G) if gen else (GROUP_SYSTEM, COUNTRY_SYSTEM)
+    ctx_fn = _context_cached if gen else _context
+    gview = llm.json(role, gsys.format(dim=dim.title, group=group, tree=_tree(dim)),
+                     ctx_fn(state, group, dim, geo, members), check=_check_group(dim, pmax), temperature=0.3)
     gtxt = dump({s: {k: v for k, v in (gview["segments"].get(s) or {}).items()
                      if k in ("group_share_view", "reasoning", "growth_premium")} for s in dim.all_segments})
-    chunks = [members[i:i + CHUNK] for i in range(0, len(members), CHUNK)]
+    size = max(1, min(CHUNK, 120 // max(1, len(dim.all_segments))))   # keep each reply to ~120 cells
+    chunks = [members[i:i + size] for i in range(0, len(members), size)]
     event("batch.segment_chunks", job=role, chunks=chunks)
     futs = [pool.submit(llm.json, f"{role}:{ch[0]}..",
-                        COUNTRY_SYSTEM.format(dim=dim.title, group=group, tree=_tree(dim)),
-                        _context(state, group, dim, geo, ch) + f"\n\nYOUR GROUP-LEVEL VIEW:\n{gtxt}",
-                        check=_check_countries(dim, ch), temperature=0.3, retries=5) for ch in chunks]
+                        csys.format(dim=dim.title, group=group, tree=_tree(dim)),
+                        (_context_cached(state, group, dim, geo, ch, gtxt) if gen else
+                         _context(state, group, dim, geo, ch) + f"\n\nYOUR GROUP-LEVEL VIEW:\n{gtxt}"),
+                        check=_check_countries(dim, ch, pmax), temperature=0.3, retries=5) for ch in chunks]
     countries: dict = {}
     for f in futs:
         countries.update(f.result()["countries"])
@@ -183,6 +239,10 @@ def segments_node(state: dict, only: list[str] | None = None) -> dict:
             if only is None or f"{g}||{d.title}" in only]
     event("batch.segments", jobs=[f"{g}||{d.title}" for g, d in jobs])
     workers = state["cfg"].llm_workers
+    if _gen(state) and getattr(state["cfg"], "batch_segments", False):
+        from .segments_batch import segments_batched       # several dimensions per call, same validators
+        raw.update(segments_batched(state, geo, jobs, workers))
+        return {"segments_raw": raw, "log": state.get("log", []) + [f"segments: {len(jobs)} group x dimension jobs, batched"]}
     # two pools: group views on one, country chunks on the other (no nested-pool deadlock)
     with ThreadPoolExecutor(max_workers=workers) as jobs_pool, ThreadPoolExecutor(max_workers=workers) as chunk_pool:
         futs = {f"{g}||{d.title}": jobs_pool.submit(_seg_job, state, g, d, geo, chunk_pool) for g, d in jobs}

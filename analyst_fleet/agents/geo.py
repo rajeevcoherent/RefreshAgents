@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from ..evidence.oem import oem_table
 from .. import compute
 from ..syslog import event
+from . import generic as G
 from .common import GEO_ITEM_FIELDS, PERSONA, check_geo_items, dump, fmt_facts, house, scope_block, select_facts
 
 log = logging.getLogger("fleet.geo")
@@ -48,24 +49,34 @@ Return json: {{"items": {{"<geography>": {{...}}}}, "overview": "3-5 sentences o
 def regional_node(state: dict) -> dict:
     llm, tax, oem, sizing = state["llm"], state["tax"], state["oem"], state["sizing"]
     regions = tax.regions
+    gen = getattr(state["cfg"], "generic", False)
+    if not regions:                                   # single-country market: nothing to split
+        return {"regional_raw": None, "log": state.get("log", []) + ["regional: single geography, no split"]}
     facts = select_facts(state.get("facts", []), themes=("regional", "current_events", "installed_base"),
                          geos=regions + tax.leaves, limit=60)
     critique = state.get("critique", {}).get("regional", "")
     user = (f"MARKET: {state['cfg'].market_name}\nSCOPE: {state['scope'].get('scope_statement', '')}\n"
             f"GLOBAL 2025 AFTERMARKET VALUE: US$ {sizing['global_value_2025']:.1f} Mn; GLOBAL CAGR 2025-32: {sizing['global_cagr']:.2%}\n"
             f"Sizing analyst's growth view: {sizing['step1'].get('cagr_reasoning', '')}\n\n"
-            f"OEM (new-unit) MARKET BY REGION (evidence id 'OEM'):\n{oem_table(oem, regions, tax, 'By Application')}\n\n"
-            f"WEB EVIDENCE (verified quotes):\n{fmt_facts(facts)}\n\nREGIONS (use exact names): {regions}"
+            + ("" if gen else f"OEM (new-unit) MARKET BY REGION (evidence id 'OEM'):\n{oem_table(oem, regions, tax, 'By Application')}\n\n")
+            + f"WEB EVIDENCE (verified quotes):\n{fmt_facts(facts)}\n\nREGIONS (use exact names): {regions}"
             + scope_block(state)
             + house(state, "regional")
             + (f"\n\nREVIEWER CRITIQUE OF YOUR LAST ATTEMPT - address it:\n{critique}" if critique else ""))
-    out = llm.json("regional", REGIONAL_SYSTEM, user, check=check_geo_items(regions), temperature=0.3)
+    if gen:
+        user = user.replace("GLOBAL 2025 AFTERMARKET VALUE", f"{tax.root} 2025 MARKET VALUE").replace("GLOBAL CAGR", f"{tax.root} CAGR")
+        user += G.house_growth_bands("region")
+        out = llm.json("regional", G.REGIONAL.format(root=tax.root), user,
+                       check=check_geo_items(regions, cagr_range=G.GEO_CAGR_RANGE), temperature=0.3)
+    else:
+        out = llm.json("regional", REGIONAL_SYSTEM, user, check=check_geo_items(regions), temperature=0.3)
     return {"regional_raw": out, "log": state.get("log", []) + ["regional: done"]}
 
 
 def _country_call(state: dict, parent: str, pval: float, pcagr: float, critique: str = "") -> dict:
     llm, tax, oem = state["llm"], state["tax"], state["oem"]
     kids = tax.children_of[parent]
+    gen = getattr(state["cfg"], "generic", False)
     facts = select_facts(state.get("facts", []), themes=("regional", "current_events"), geos=kids + [parent], limit=45)
     reg_note = ""
     rr = (state.get("regional_raw") or {}).get("items", {}).get(parent)
@@ -75,14 +86,19 @@ def _country_call(state: dict, parent: str, pval: float, pcagr: float, critique:
         reg_note = f"Parent analyst's view of {parent}: {state['country_raw'][tax.parent_of[parent]]['items'][parent].get('reasoning', '')}\n"
     user = (f"MARKET: {state['cfg'].market_name}\n"
             f"{parent} 2025 AFTERMARKET VALUE: US$ {pval:.2f} Mn; {parent} CAGR 2025-32: {pcagr:.2%}\n{reg_note}\n"
-            f"OEM (new-unit) MARKET FOR THESE GEOGRAPHIES (evidence id 'OEM'; grouped/'Rest of' OEM geographies shown where a country has no sheet):\n"
+            + ("" if gen else f"OEM (new-unit) MARKET FOR THESE GEOGRAPHIES (evidence id 'OEM'; grouped/'Rest of' OEM geographies shown where a country has no sheet):\n"
             f"{oem_table(oem, kids + [parent], tax, 'By Industry Vertical')}\n"
             f"Other OEM geographies that may contain these countries: "
-            f"{', '.join(k for k in oem if k.startswith(('GCC', 'Rest of')))}\n\n"
-            f"WEB EVIDENCE (verified quotes):\n{fmt_facts(facts)}\n\nGEOGRAPHIES (use exact names): {kids}"
+            f"{', '.join(k for k in oem if k.startswith(('GCC', 'Rest of')))}\n\n")
+            + f"WEB EVIDENCE (verified quotes):\n{fmt_facts(facts)}\n\nGEOGRAPHIES (use exact names): {kids}"
             + scope_block(state)
             + house(state, "country")
             + (f"\n\nREVIEWER CRITIQUE OF YOUR LAST ATTEMPT - address it:\n{critique}" if critique else ""))
+    if gen:
+        user = user.replace("2025 AFTERMARKET VALUE", "2025 MARKET VALUE")
+        user += G.house_growth_bands("country")
+        return llm.json(f"country:{parent}", G.COUNTRY.format(parent=parent, cagr=pcagr), user,
+                        check=check_geo_items(kids, cagr_range=G.GEO_CAGR_RANGE), temperature=0.3)
     system = COUNTRY_SYSTEM.format(parent=parent, cagr=pcagr)
     return llm.json(f"country:{parent}", system, user, check=check_geo_items(kids), temperature=0.3)
 

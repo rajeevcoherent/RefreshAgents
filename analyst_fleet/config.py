@@ -48,8 +48,19 @@ class Config:
     base_url: str = field(default_factory=lambda: os.environ.get("ME_LLM_BASE_URL", "https://api.deepseek.com"))
     reasoning_model: str = field(default_factory=lambda: os.environ.get("FLEET_REASONING_MODEL", "deepseek-v4-pro"))
     fast_model: str = field(default_factory=lambda: os.environ.get("FLEET_FAST_MODEL", "deepseek-flash"))
-    max_tokens: int = 24000
+    max_tokens: int = 64000                 # DeepSeek thinking-mode default; batched replies are long
     llm_workers: int = 6
+    # Thinking mode (DeepSeek default: ON, effort high, reasoning tokens billed as output).
+    # Fast tier = mechanical jobs (scope reading, query planning, fact extraction, plain-language editing): OFF.
+    # Reasoning tier = the analysts' judgement calls: ON. Effort: "low" | "high" | "max".
+    fast_thinking: bool = field(default_factory=lambda: os.environ.get("FLEET_FAST_THINKING", "0") == "1")
+    reasoning_thinking: bool = True
+    reasoning_effort: str = field(default_factory=lambda: os.environ.get("FLEET_REASONING_EFFORT", "high"))
+    # Per-call trace (outputs/llm_trace/<date>.jsonl): tokens, cache hits, cost; full prompt + reply if trace_content
+    trace_content: bool = True
+    # never call DeepSeek: every answer must come from data/cache.sqlite (rebuilding saved runs)
+    cache_only: bool = field(default_factory=lambda: os.environ.get("FLEET_CACHE_ONLY", "0") == "1")
+    trace_dir: str = ""
 
     # Evidence
     blind: bool = True                       # exclude the publisher's own report
@@ -76,6 +87,14 @@ class Config:
     taxonomy_path: Path = PKG / "taxonomy.json"
     cache_db: Path = ROOT / "data" / "cache.sqlite"
     out_dir: Path = ROOT / "outputs"
+
+    # Generic market mode (a market from a client scope sheet instead of the gearbox documents + OEM data)
+    generic: bool = False
+    market_class: str = ""                  # e.g. "prescription drug", set by the batch runner for the analysts
+    # Batching (generic markets): several segment dimensions per call (same validators; failures fall back to
+    # one-dimension calls) and more web sources per fact-extraction call.
+    batch_segments: bool = field(default_factory=lambda: os.environ.get("FLEET_BATCH_SEGMENTS", "1") == "1")
+    extract_batch: int = 20
 
     @property
     def blocklist(self) -> tuple[str, ...]:

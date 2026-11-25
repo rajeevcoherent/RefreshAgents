@@ -152,6 +152,10 @@ def scope_basis(state: dict, c: Cell) -> str:
         d = defs.get(c.seg, "")
         par = f" Parent {c.parent_seg}: {defs.get(c.parent_seg, '')[:300]}" if c.parent_seg else ""
         return (d[:700] + par) if d else "(segment not found in the client definition document)"
+    if state["sizing"].get("mode") == "generic":
+        sc = state.get("scope") or {}
+        return (f"In-scope market per the client scope sheet: {sc.get('scope_statement', '')[:600]} Excluded: "
+                + "; ".join(str(i.get("item", i)) if isinstance(i, dict) else str(i) for i in (sc.get("exclusions") or [])[:8]))
     if c.kind == "size_value" and c.geo == state["tax"].root:
         sp = state["sizing"]["step1"].get("spend_pct_of_new_unit_price") or {}
         ex = "; ".join(f"{a}: {str(v.get('excluded', ''))[:160]}" for a, v in sp.items() if isinstance(v, dict) and v.get("excluded"))
@@ -178,8 +182,21 @@ def explain(state: dict, c: Cell, stage_cache: dict[str, str]) -> dict[str, str]
         bu = (state["sizing"].get("bottom_up") or {}).get("by_application", {})
         idx, idx_raw = pr["index"].get(c.geo), _f(ci.get("index"))
         trend = praw.get("price_trend") or {}
-        out["approach"] = "Price (ASP) - global average annual spend per installed gearbox x country price index"
-        if c.seg in bu:
+        gen = state["sizing"].get("mode") == "generic"
+        unit = state["sizing"].get("volume_unit", "unit")
+        out["approach"] = (f"Price (ASP) - average price per {unit} x country price index" if gen else
+                           "Price (ASP) - global average annual spend per installed gearbox x country price index")
+        bseg = c.seg if c.seg in bu else (c.parent_seg if c.parent_seg in bu else None)
+        if gen and bseg:
+            b = bu[bseg]
+            out["method"] = (f"Average for {bseg}: US$ {b['spend_per_unit_usd']:,.2f} per {unit} (sizing build). "
+                             f"{c.geo} price index {idx_raw:.2f} set by the pricing analyst"
+                             + (f", scaled to {idx:.3f} so implied volume reconciles with value" if idx and idx_raw
+                                and abs(idx - idx_raw) > 5e-4 else "") + f" -> US$ {val:,.2f} per {unit}.")
+        elif gen:
+            out["method"] = (f"Parent row: value of {c.seg} in {c.geo} divided by the volume of its sub-segments "
+                             f"= US$ {val:,.2f} per {unit}.")
+        elif c.seg in bu:
             b = bu[c.seg]
             out["method"] = (f"Global average for {c.seg}: US$ {b['spend_per_unit_usd']:,.0f} per installed gearbox per year "
                              f"(= {b['spend_pct']:.1%} of the new gearbox price US$ {b['oem_asp_usd']:,.0f}, from the sizing build). "
@@ -193,7 +210,7 @@ def explain(state: dict, c: Cell, stage_cache: dict[str, str]) -> dict[str, str]
                             f"{(praw.get('application_notes') or {}).get(c.seg, '')}  TREND: "
                             f"{(trend.get('annual_change') or 0):.1%} a year - {trend.get('reasoning', '')}")
         out["adjustments"] = "; ".join(f"{a['kind']}: {a['detail']}" for a in adjs if a["stage"] == "pricing")
-        out["evidence"] = "OEM (new-unit prices)"
+        out["evidence"] = "pricing analyst; sizing build" if gen else "OEM (new-unit prices)"
         gi = _geo_item(state, c.geo)
         out["confidence"] = str(gi.get("confidence") or "")
     elif c.kind in ("seg_share", "seg_cagr"):
@@ -226,7 +243,9 @@ def explain(state: dict, c: Cell, stage_cache: dict[str, str]) -> dict[str, str]
             dim = tax.dimension(c.dim)
             if dim.priced and not c.parent_seg:
                 bu = (state["sizing"].get("bottom_up") or {}).get("by_application", {}).get(c.seg)
-                if bu:
+                if bu and state["sizing"].get("mode") == "generic":
+                    out["method"] += f" Bottom-up view ({tax.root}): {bu['share_of_bottom_up']:.1%} of market value."
+                elif bu:
                     out["method"] += (f" Bottom-up installed-base view (global): {bu['share_of_bottom_up']:.1%} of "
                                       f"aftermarket value.")
             out["reasoning"] = (f"COUNTRY: {(cr.get('why') or {}).get(c.seg, '')}  GROUP: {si.get('reasoning', '')}")
@@ -264,7 +283,12 @@ def explain(state: dict, c: Cell, stage_cache: dict[str, str]) -> dict[str, str]
                 bu, td, cm = sz["bottom_up"]["total_usd_mn"], sz["top_down_usd_mn"], sz.get("cited_median_usd_mn")
                 w = sz["weights"]
                 out["approach"] = "2A base-year anchor - triangulation of bottom-up, top-down and cited figures"
-                out["method"] = (f"Bottom-up (installed base {sz['bottom_up']['installed_units']:,.0f} gearboxes x annual service "
+                tdp = sz.get("top_down_parent") or {}
+                gen_m = (f"Bottom-up (volume x price per {tax.priced_dimension.title} segment) US$ {bu:,.1f} Mn x "
+                         f"{w.get('bottom_up', 0):.2f} + top-down ({tdp.get('parent_market')} x {tdp.get('share_of_parent')}) "
+                         f"US$ {td:,.1f} Mn x {w.get('top_down', 0):.2f}"
+                         + (f" + cited median US$ {cm:,.1f} Mn x {w.get('cited', 0):.2f}" if cm else "") + f" = US$ {val:,.1f} Mn.")
+                out["method"] = gen_m if sz.get("mode") == "generic" else (f"Bottom-up (installed base {sz['bottom_up']['installed_units']:,.0f} gearboxes x annual service "
                                  f"spend) US$ {bu:,.1f} Mn x {w.get('bottom_up', 0):.2f} + top-down (OEM 2025 US$ "
                                  f"{sz['oem_2025_usd_mn']:,.1f} Mn x aftermarket/OEM ratio) US$ {td:,.1f} Mn x {w.get('top_down', 0):.2f}"
                                  + (f" + cited median US$ {cm:,.1f} Mn x {w.get('cited', 0):.2f}" if cm else "")
@@ -283,7 +307,8 @@ def explain(state: dict, c: Cell, stage_cache: dict[str, str]) -> dict[str, str]
             else:
                 out["approach"], out["method"] = "root", "Global = 100% by definition."
                 out["reasoning"] = "The global market is the reference total; every regional share in this block is a share of it."
-            out["evidence"] = "OEM; " + "; ".join(str(x.get("evidence")) for x in sz.get("cited") or [])
+            out["evidence"] = ("" if sz.get("mode") == "generic" else "OEM; ") + "; ".join(
+                str(x.get("evidence")) for x in sz.get("cited") or [])
         else:
             pv = geo["value"].get(p, 0.0)
             lvl = "regional" if p == tax.root else "country"
@@ -336,8 +361,51 @@ def explain_all(state: dict, include_asp: bool = False) -> list[dict]:
 
 
 # --------------------------------------------------------------------------------- methodology
+def _generic_methodology(state: dict, S: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    """Replace the gearbox-specific sections (evidence, sizing, geography, pricing, limitations)."""
+    tax, cfg, sz = state["tax"], state["cfg"], state["sizing"]
+    geo = state["numbers"]["geo"]
+    bu, tdp = sz["bottom_up"], sz.get("top_down_parent") or {}
+    unit = sz.get("volume_unit", "unit")
+    repl = {
+        "1. Scope and definitions": f"{tax.market_name}. Base year {cfg.base_year}, forecast CAGR window {cfg.base_year}-"
+            f"{cfg.forecast_end_year}, value in US$ Mn. Scope statement: {(state.get('scope') or {}).get('scope_statement', '')} "
+            f"Value basis: {(state.get('scope') or {}).get('value_basis', '')}. Definition, segmentation and exclusions are "
+            f"taken from the client scope sheet. Geography: {len(tax.leaves)} leaf geographies.",
+        "2. Evidence base": f"Desk research with {len(state.get('evidence') or [])} web sources read and "
+            f"{len(state.get('facts') or [])} facts kept under the verbatim-quote rule (a number is used only if the quoted "
+            f"sentence is on the page). {'Blind mode: the publisher of the comparison sheets was blocked from search and reading. ' if cfg.blind else ''}"
+            "No client data workbooks were supplied for this market.",
+        "3. Base-year size (2A anchor): three independent routes": f"Bottom-up: for every segment of "
+            f"{tax.priced_dimension.title}, a volume chain (base count x factors, each labelled and sourced) times a price "
+            f"per {unit}: " + "; ".join(f"{a}: {r['installed_units']:,.0f} x US$ {r['spend_per_unit_usd']:,.2f}"
+                                        for a, r in bu["by_application"].items())
+            + f" = US$ {bu['total_usd_mn']:,.1f} Mn. Top-down: {tdp.get('parent_market')} US$ "
+            f"{tdp.get('parent_value_2025_usd_mn')} Mn x {tdp.get('share_of_parent')} = US$ {sz['top_down_usd_mn']:,.1f} Mn. "
+            f"Cited: {len(sz.get('cited') or [])} published figures moved to 2025 in-scope terms"
+            + (f" (median US$ {sz['cited_median_usd_mn']:,.1f} Mn)" if sz.get("cited_median_usd_mn") else "")
+            + f". Weights {sz['weights']} -> US$ {geo['value'][tax.root]:,.1f} Mn. Reason: {sz['step2'].get('reasoning', '')}",
+        "5. Geography (2A, top-down)": f"A regional analyst split the {tax.root} value across {len(tax.regions)} "
+            "geographies, then one analyst per parent node split it across its children, level by level - each with a share, "
+            "a CAGR and written reasoning (demand base, access and pricing, competition, geopolitics). Values are share x "
+            "parent value; shares are normalised to 100% within each parent.",
+        "7. Pricing": f"Unit: {unit}. Average price per segment from the bottom-up route, a country price index set by the "
+            "pricing analyst and normalised so implied volume reconciles with value.",
+        "11. Limitations": "No client data workbooks were supplied: the absolute size rests on public evidence and the "
+            "sizing analyst's volume and price chains; country-level segment mixes for small countries rest on analyst "
+            "judgement; band 3 trend tags are not produced.",
+    }
+    return [(h, repl.get(h, t)) for h, t in S]
+
+
 def methodology(state: dict) -> list[tuple[str, str]]:
     """(heading, paragraph) pairs describing how THIS run produced its numbers."""
+    if state["sizing"].get("mode") == "generic":
+        return _generic_methodology(state, _methodology(state))
+    return _methodology(state)
+
+
+def _methodology(state: dict) -> list[tuple[str, str]]:
     tax, cfg, n = state["tax"], state["cfg"], state["numbers"]
     sz, geo = state["sizing"], n["geo"]
     sc = state.get("scope") or {}
@@ -377,7 +445,7 @@ def methodology(state: dict) -> list[tuple[str, str]]:
               f"{bu['installed_units']:,.0f} serviced gearboxes; x annual aftermarket spend per gearbox set as a % of new-unit "
               f"price per application ({', '.join(f'{a}: {r['spend_pct']:.1%}' for a, r in bu['by_application'].items())}) "
               f"= US$ {bu['total_usd_mn']:,.1f} Mn. Top-down: OEM 2025 US$ {sz['oem_2025_usd_mn']:,.1f} Mn x aftermarket/OEM "
-              f"ratio {(_f(sz['step1']['aftermarket_to_oem_ratio'].get('value')) or 0):.2f} = US$ {sz['top_down_usd_mn']:,.1f} Mn. "
+              f"ratio {(_f((sz['step1'].get('aftermarket_to_oem_ratio') or {}).get('value')) or 0):.2f} = US$ {sz['top_down_usd_mn']:,.1f} Mn. "
               f"Cited: {len(sz.get('cited') or [])} published figures moved to 2025 in-scope terms"
               + (f" (median US$ {sz['cited_median_usd_mn']:,.1f} Mn)" if sz.get("cited_median_usd_mn") else "")
               + f". The sizing analyst weighted the routes {sz['weights']} -> US$ {geo['value'][tax.root]:,.1f} Mn. "

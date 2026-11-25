@@ -62,7 +62,8 @@ class Taxonomy:
 
     def strategy_of(self, dim_title: str) -> str | None:
         """'2B' / '2C' for a segmentation dimension when the market declares it (taxonomy 'strategies')."""
-        return next((k for k, v in self.strategies.items() if v.get("dimension") == dim_title), None)
+        return next((k for k, v in self.strategies.items()
+                     if isinstance(v, dict) and v.get("dimension") == dim_title), None)   # skips 'how_they_combine' text
 
     def _walk(self, name: str, sub) -> None:
         kids: list[str] = []
@@ -130,8 +131,8 @@ class Taxonomy:
     def leaf_groups(self) -> dict[str, list[str]]:
         """Parent node -> its direct leaf children (the unit a segment analyst covers)."""
         groups: dict[str, list[str]] = {}
-        for leaf in self.leaves:
-            groups.setdefault(self.parent_of[leaf], []).append(leaf)
+        for leaf in self.leaves:                 # a single-country market is its own group
+            groups.setdefault(self.parent_of[leaf] or leaf, []).append(leaf)
         return groups
 
     def dimension(self, title: str) -> Dimension:

@@ -20,9 +20,15 @@ from .agents.pricing import pricing_node
 from .agents.research import research_node, scope_node
 from .agents.review import review
 from .agents.segments import segments_node
-from .agents.sizing import sizing_node
+from .agents.sizing import sizing_node as _sizing_gearbox
+from .agents.sizing_generic import sizing_node as _sizing_generic
 
 log = logging.getLogger("fleet.graph")
+
+def sizing_node(state: dict) -> dict:
+    """Gearbox installed-base sizing, or the generic volume x price sizing for scope-sheet markets."""
+    return (_sizing_generic if getattr(state["cfg"], "generic", False) else _sizing_gearbox)(state)
+
 
 RAW_KEYS = ("sizing", "regional_raw", "country_raw", "segments_raw", "pricing_raw")
 
@@ -54,6 +60,9 @@ class FleetState(TypedDict, total=False):
     snapshots: list
     best_pass: int
     out_path: str
+    prior_check: dict
+    validation: list
+    validation_mode: str
     log: list
 
 

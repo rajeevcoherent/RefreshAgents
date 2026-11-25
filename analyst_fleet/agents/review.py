@@ -2,6 +2,7 @@
 pieces back. It never edits numbers; it names the stage and the instruction."""
 from __future__ import annotations
 
+from . import generic as G
 from .common import PERSONA, num, scope_block
 
 REVIEW_SYSTEM = PERSONA + """
@@ -32,10 +33,24 @@ Return json:
 def digest(state: dict, numbers: dict) -> str:
     tax, geo, seg, price = state["tax"], numbers["geo"], numbers["seg"], numbers["price"]
     sz = state["sizing"]
-    lines = [f"GLOBAL 2025: US$ {sz['global_value_2025']:.1f} Mn; CAGR 2025-32 {sz['global_cagr']:.2%}; "
+    if sz.get("mode") == "generic":
+        td = sz.get("top_down_parent") or {}
+        lines = [f"{tax.root.upper()} 2025: US$ {sz['global_value_2025']:,.1f} Mn; CAGR 2025-32 {sz['global_cagr']:.2%}; "
+                 f"routes: bottom-up (volume x price) {sz['bottom_up']['total_usd_mn']:,.1f}, top-down "
+                 f"({td.get('parent_market')} x {td.get('share_of_parent')}) {sz['top_down_usd_mn']:,.1f}, cited median "
+                 f"{sz['cited_median_usd_mn'] or 'none'}; weights {sz['weights']}; volume unit: {sz.get('volume_unit')}; "
+                 + "; ".join(f"{a}: {r['installed_units']:,.0f} units x US$ {r['spend_per_unit_usd']:,.2f}"
+                             for a, r in sz["bottom_up"]["by_application"].items())]
+        if sz.get("endpoints"):
+            imp = sorted(e["implied_cagr"] for e in sz["endpoints"])
+            lines.append(f"PUBLISHED FORECAST ENDPOINTS ({len(imp)}) imply a CAGR of {imp[0]:.2%}-{imp[-1]:.2%} from this base; "
+                         f"sheet CAGR {sz['global_cagr']:.2%} -> 2032 US$ {sz['global_value_2025'] * (1 + sz['global_cagr']) ** 7:,.0f} Mn")
+    else:
+        lines = [f"GLOBAL 2025: US$ {sz['global_value_2025']:.1f} Mn; CAGR 2025-32 {sz['global_cagr']:.2%}; "
              f"routes: bottom-up {sz['bottom_up']['total_usd_mn']:.1f}, top-down {sz['top_down_usd_mn']:.1f}, "
              f"cited median {sz['cited_median_usd_mn'] or 'none'}; weights {sz['weights']}; "
              f"OEM 2025 {sz['oem_2025_usd_mn']:.1f}; installed base {sz['bottom_up']['installed_units']:,.0f} units"]
+    lines = list(lines)
     for p in tax.parent_nodes:
         kids = tax.children_of[p]
         lines.append(f"\n{p} (US$ {geo['value'].get(p, 0):.2f} Mn, CAGR {geo['cagr'].get(p, 0):.2%}) -> " + "; ".join(
@@ -45,8 +60,8 @@ def digest(state: dict, numbers: dict) -> str:
             parts = []
             for s in dim.top:
                 kids = dim.children.get(s, ())
-                sub = (" [of which: " + ", ".join(f"{k[:22]} {sh.get(k, 0):.0%}" for k in kids) + "]") if kids else ""
-                parts.append(f"{s[:24]} {sh.get(s, 0):.0%}{sub}")
+                sub = (" [of which: " + ", ".join(f"{k[:22]} {sh.get(k, 0):.1%}" for k in kids) + "]") if kids else ""
+                parts.append(f"{s[:24]} {sh.get(s, 0):.1%}{sub}")
             return "; ".join(parts)
         lines.append(f"\nMIX {dim.title}. Top-level segments sum to 100%. Bracketed sub-segments are shares OF their "
                      f"parent (they sum to 100% of the parent) - never add them to the top level.")
@@ -77,7 +92,8 @@ def review(state: dict, numbers: dict) -> dict:
     tax = state["tax"]
     valid = (["sizing", "regional", "pricing"] + [f"country:{p}" for p in tax.parent_nodes[1:]]
              + [f"segments:{g}||{d.title}" for g in tax.leaf_groups for d in tax.dimensions])
-    system = REVIEW_SYSTEM.replace("VALID_TARGETS", ", ".join(f'"{v}"' for v in valid))
+    tpl = G.REVIEW if getattr(state["cfg"], "generic", False) else REVIEW_SYSTEM
+    system = tpl.replace("VALID_TARGETS", ", ".join(f'"{v}"' for v in valid))
 
     def check(out: dict) -> str | None:
         if num(out.get("overall")) is None:

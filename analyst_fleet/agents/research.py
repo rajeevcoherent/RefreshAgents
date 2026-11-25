@@ -16,6 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from ..evidence.web import Web, relevant_passages
 from ..syslog import event
+from . import generic as G
 from .common import PERSONA, domain_of, dump
 
 log = logging.getLogger("fleet.research")
@@ -109,12 +110,17 @@ _FALLBACK_QUERIES = [
 ]
 
 
+def _generic(state: dict) -> bool:
+    return bool(getattr(state["cfg"], "generic", False))
+
+
 def scope_node(state: dict) -> dict:
     llm, cfg = state["llm"], state["cfg"]
-    out = llm.json("scope", SCOPE_SYSTEM,
+    out = llm.json("scope", G.SCOPE if _generic(state) else SCOPE_SYSTEM,
                    f"MARKET: {cfg.market_name}\nBASE YEAR {cfg.base_year}, FORECAST TO {cfg.forecast_end_year}\n\n"
-                   f"CLIENT DEFINITION DOCUMENT:\n{state['definitions_text']}\n\n"
-                   f"RELATED OEM (new-unit) DEFINITION, for boundary only:\n{state['oem_definitions_text'][:3500]}",
+                   f"CLIENT DEFINITION DOCUMENT:\n{state['definitions_text']}"
+                   + (f"\n\nRELATED OEM (new-unit) DEFINITION, for boundary only:\n{state['oem_definitions_text'][:3500]}"
+                      if state.get("oem_definitions_text") else ""),
                    tier="fast", temperature=0.2, check=_check_scope, retries=4)
     event("scope.sources", client_inclusions=sum(i["source"] == "client" for i in out["inclusions"]),
           analyst_inclusions=[i["item"] for i in out["inclusions"] if i["source"] == "analyst"],
@@ -127,7 +133,7 @@ def _plan(state: dict) -> list[tuple[str, str]]:
     llm = state["llm"]
     seg_names = [s for d in state["tax"].dimensions for s in d.all_segments]
     try:
-        plan = llm.json("research_plan", PLAN_SYSTEM,
+        plan = llm.json("research_plan", G.PLAN if _generic(state) else PLAN_SYSTEM,
                         f"MARKET: {state['cfg'].market_name}\nSCOPE: {dump(state['scope'])}\n"
                         f"REGIONS/COUNTRIES: {', '.join(state['tax'].parent_nodes[1:])}; key countries "
                         f"{', '.join(state['tax'].leaves[:30])}\nSEGMENTS: {', '.join(seg_names)}",
@@ -139,11 +145,19 @@ def _plan(state: dict) -> list[tuple[str, str]]:
         log.warning("query planner failed (%s); using fallback queries", e)
         qs = []
     seen, out = set(), []
-    for q, t in qs + _FALLBACK_QUERIES:
+    for q, t in qs + (_generic_fallback(state) if _generic(state) else _FALLBACK_QUERIES):
         if q.lower() not in seen:
             seen.add(q.lower())
             out.append((q, t))
     return out
+
+
+def _generic_fallback(state: dict) -> list[tuple[str, str]]:
+    name = state["tax"].short_name
+    return [(f"{name} market size 2025", "global_size"), (f"{name} revenue 2024 annual report", "global_size"),
+            (f"{name} sales by region", "regional"), (f"{name} price per unit cost", "pricing"),
+            (f"{name} key companies market share", "players"), (f"{name} patients prevalence demand", "installed_base"),
+            (f"{name} approval launch 2025", "current_events"), (f"{name} market growth forecast 2032", "global_size")]
 
 
 def research_node(state: dict) -> dict:
@@ -172,6 +186,10 @@ def research_node(state: dict) -> dict:
     event("batch.read_pages", pages=len(to_read), urls=[e["url"] for e in to_read])
     kw = ("gear", "aftermarket", "service", "repair", "overhaul", "compressor", "turbine", "lng", "market",
           "capacity", "installed", "mtpa", "pipeline", "ammonia", "price", "cost")
+    if _generic(state):
+        kw = tuple(w for w in state["tax"].short_name.split() if len(w) > 3) + (
+            "market", "revenue", "sales", "price", "cost", "patients", "prevalence", "units", "billion", "million",
+            "growth", "share")
     with ThreadPoolExecutor(max_workers=4) as ex:
         pages = list(ex.map(lambda e: (e, web.read(e["url"])), to_read))
     for e, text in pages:
@@ -193,14 +211,16 @@ def _squash(s: str) -> str:
 
 def _extract(state: dict, evidence: list[dict]) -> list[dict]:
     llm = state["llm"]
-    batches = [evidence[i:i + 10] for i in range(0, len(evidence), 10)]
+    size = getattr(state["cfg"], "extract_batch", 10) if _generic(state) else 10
+    batches = [evidence[i:i + size] for i in range(0, len(evidence), size)]
     by_id = {e["id"]: e for e in evidence}
 
     def run(batch):
         txt = "\n\n".join(f"ITEM {e['id']} (theme {e['theme']}; {e['domain']}; title: {e['title']}):\n{e['text']}" for e in batch)
         ids = [e["id"] for e in batch]
         try:
-            fs = llm.json("extract", EXTRACT_SYSTEM, txt, tier="fast", temperature=0.0).get("facts", [])
+            system = G.EXTRACT.format(market=state["cfg"].market_name) if _generic(state) else EXTRACT_SYSTEM
+            fs = llm.json("extract", system, txt, tier="fast", temperature=0.0).get("facts", [])
             event("batch.extract", items=f"{ids[0]}-{ids[-1]}", n_items=len(batch), raw_facts=len(fs))
             return fs
         except Exception as ex:

@@ -115,9 +115,17 @@ def write_workbook(state: dict, path: Path) -> Path:
     from .cell_reasoning import explain_all, methodology
     cell_rows = explain_all(state, include_asp=True)
     plain: dict[str, str] = {}
-    if getattr(cfg, "plain_language", True) and state.get("llm") is not None:
+    saved = state.get("plain_texts") or {}               # {cell: {"text", "value"}} from an earlier write of this run
+    key_of = lambda cr: f"{cr['sheet']}!{cr['cell']}"
+    same = lambda cr: (key_of(cr) in saved and saved[key_of(cr)].get("text") and saved[key_of(cr)].get("value") is not None
+                       and cr.get("value") is not None and abs(float(saved[key_of(cr)]["value"]) - float(cr["value"])) < 1e-9)
+    plain = {key_of(cr): saved[key_of(cr)]["text"] for cr in cell_rows if same(cr)}
+    todo = [cr for cr in cell_rows if not same(cr)]
+    if todo and getattr(cfg, "plain_language", True) and state.get("llm") is not None:
         from .plain_language import plain_texts
-        plain = plain_texts(state, cell_rows)
+        plain.update(plain_texts(state, todo))
+    state["plain_texts"] = {key_of(cr): {"text": plain[key_of(cr)], "value": cr.get("value")}
+                            for cr in cell_rows if plain.get(key_of(cr))}
     for cr in cell_rows:
         cr["plain"] = plain.get(f"{cr['sheet']}!{cr['cell']}", "")
 
@@ -144,7 +152,7 @@ def write_workbook(state: dict, path: Path) -> Path:
     aws = wb.create_sheet("ASP")
     aws.cell(1, 2, "Market Name").font = BOLD
     aws.cell(1, 3, tax.market_name)
-    unit = (state.get("pricing_raw") or {}).get("unit_definition") or \
+    unit = (state.get("pricing_raw") or {}).get("unit_definition") or state["sizing"].get("volume_unit") or \
         "US$ of aftermarket revenue per installed gearbox per year"
     aws.cell(2, 4, f"Price Table - US$ per unit; unit = {unit}").font = BOLD
     aws.cell(3, 2, dim.title).font = BOLD
@@ -276,8 +284,10 @@ def write_workbook(state: dict, path: Path) -> Path:
     pz.append(["Index normalisation factor", price["index_scale"]])
     pz.append([])
     pz.append(["Application", "Global average US$/unit-yr", "Basis", "Note"])
+    gen = state["sizing"].get("mode") == "generic"
     for a, r_ in state["sizing"]["bottom_up"]["by_application"].items():
-        pz.append([a, r_["spend_per_unit_usd"], f"{r_['spend_pct']:.1%} of OEM new-unit price US$ {r_['oem_asp_usd']:,.0f}",
+        pz.append([a, r_["spend_per_unit_usd"], "sizing analyst's price per unit (bottom-up build)" if gen else
+                   f"{r_['spend_pct']:.1%} of OEM new-unit price US$ {r_['oem_asp_usd']:,.0f}",
                    (pr.get("application_notes") or {}).get(a, "")])
     pz.append([])
     hr = pz.max_row + 1
@@ -302,6 +312,41 @@ def write_workbook(state: dict, path: Path) -> Path:
     sw.append(["Triangulation reasoning", s2.get("reasoning", "")])
     sw.append([])
     sw.append(["Route", "US$ Mn"])
+    if sz.get("mode") == "generic":
+        _generic_sizing_rows(sw, sz)
+    else:
+        _gearbox_sizing_rows(sw, sz, s1)
+    sw.append(["Cited figure", "Figure US$ Mn", "Year", "Scope factor", "2025 in-scope US$ Mn", "", "Reasoning"])
+    for c in sz["cited"]:
+        sw.append([c.get("evidence"), c.get("figure_usd_mn"), c.get("year"), c.get("scope_factor"),
+                   c.get("value_2025_in_scope_usd_mn"), "", c.get("reasoning", "")])
+    for rr in sw.iter_rows():
+        if len(rr) >= 7:
+            rr[6].alignment = WRAP
+    _rest_of_workbook(wb, state, tax, cfg, path, numbers, cell_rows)
+    return path
+
+
+def _generic_sizing_rows(sw, sz) -> None:
+    s1, td = sz["step1"], sz.get("top_down_parent") or {}
+    sw.append(["A. Bottom-up: volume x price per segment", sz["bottom_up"]["total_usd_mn"]])
+    sw.append(["B. Top-down: parent market x share", sz["top_down_usd_mn"],
+               f"{td.get('parent_market')} = US$ {td.get('parent_value_2025_usd_mn')} Mn x share {td.get('share_of_parent')}",
+               "", "", "", td.get("reasoning", "")])
+    sw.append(["C. Cited figures (median, 2025 in-scope)", sz["cited_median_usd_mn"]])
+    sw.append([])
+    sw.append(["Volume unit", sz.get("volume_unit", "")])
+    sw.append(["Segment", "Volume 2025", "Price US$/unit", "", "", "Value US$ Mn", "Volume build (product of the chain) / reasoning"])
+    for a, r_ in sz["bottom_up"]["by_application"].items():
+        it = (s1.get("segments") or {}).get(a) or {}
+        chain = " x ".join(f"{e.get('label')} {e.get('value')} [{e.get('evidence', 'analyst')}]" for e in r_.get("volume_build") or [])
+        sw.append([a, r_["installed_units"], r_["spend_per_unit_usd"], "", "", r_["value_usd_mn"],
+                   f"{chain}. PRICE: {it.get('price_reasoning', '')} WHY: {it.get('reasoning', '')}"])
+    sw.append(["Total", sz["bottom_up"]["installed_units"], "", "", "", sz["bottom_up"]["total_usd_mn"]])
+    sw.append([])
+
+
+def _gearbox_sizing_rows(sw, sz, s1) -> None:
     sw.append(["A. Bottom-up: installed base x spend per unit", sz["bottom_up"]["total_usd_mn"]])
     sw.append(["B. Top-down: OEM 2025 x aftermarket/OEM ratio", sz["top_down_usd_mn"],
                f"OEM 2025 = {sz['oem_2025_usd_mn']:.1f}; ratio = {s1['aftermarket_to_oem_ratio']['value']}",
@@ -334,14 +379,10 @@ def write_workbook(state: dict, path: Path) -> Path:
                 c.number_format = "0.00%"
             sw.cell(sw.max_row, 8).alignment = WRAP
         sw.append([])
-    sw.append(["Cited figure", "Figure US$ Mn", "Year", "Scope factor", "2025 in-scope US$ Mn", "", "Reasoning"])
-    for c in sz["cited"]:
-        sw.append([c.get("evidence"), c.get("figure_usd_mn"), c.get("year"), c.get("scope_factor"),
-                   c.get("value_2025_in_scope_usd_mn"), "", c.get("reasoning", "")])
-    for rr in sw.iter_rows():
-        if len(rr) >= 7:
-            rr[6].alignment = WRAP
 
+
+def _rest_of_workbook(wb, state, tax, cfg, path, numbers, cell_rows) -> None:
+    from .cell_reasoning import methodology
     # ================================================================ Evidence
     ev = wb.create_sheet("Evidence")
     _header(ev, 1, ["Id", "Theme", "Domain", "Title", "URL", "Query", "Text (snippet / extracted passage)"],
@@ -446,7 +487,8 @@ def write_workbook(state: dict, path: Path) -> Path:
                  ("Web sources", len(state.get("evidence") or [])), ("Verified facts", len(state.get("facts") or [])),
                  ("LLM calls (live / cached)", f"{usage['calls']} / {usage['cached']}"),
                  ("Tokens (prompt / completion)", f"{usage['prompt_tokens']:,} / {usage['completion_tokens']:,}"),
-                 ("Volume unit", "Th units = thousand installed gearboxes serviced per year (value / ASP x 1000)"),
+                 ("Volume unit", state["sizing"].get("volume_unit") if state["sizing"].get("mode") == "generic"
+                  else "Th units = thousand installed gearboxes serviced per year (value / ASP x 1000)"),
                  ("Not produced", "Band 3 (CMI_Trend_NN curve tags) - requires the publisher's internal trend library")]:
         ri.append([k, str(v)])
     ri.column_dimensions["A"].width = 46
@@ -484,12 +526,12 @@ def write_workbook(state: dict, path: Path) -> Path:
         dfn.row_dimensions[10].height = 45
         wb.active = 0
     wb.save(path)
-    return path
 
 
 def dump_state(state: dict, path: Path) -> None:
     keep = {k: state.get(k) for k in ("scope", "sizing", "regional_raw", "country_raw", "segments_raw", "pricing_raw",
-                                      "reviews", "best_pass", "facts", "evidence", "log", "validation", "validation_mode", "prior_check")}
+                                      "reviews", "best_pass", "facts", "evidence", "log", "validation", "validation_mode", "prior_check",
+                                      "plain_texts", "growth_correction")}
     n = state["numbers"]
     keep["numbers"] = {"geo": n["geo"], "seg": {k: n["seg"][k] for k in ("shares", "seg_cagr", "rollup")},
                        "price": {k: n["price"][k] for k in ("base_usd", "index", "asp", "total_units")},

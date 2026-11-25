@@ -8,6 +8,7 @@ the global average and the price trend; code normalises the indices.
 """
 from __future__ import annotations
 
+from . import generic as G
 from .common import PERSONA, canon_keys, dump, fmt_facts, house, scope_block, num, select_facts
 
 PRICING_SYSTEM = PERSONA + """
@@ -31,7 +32,7 @@ Return json:
  "overview": "3-4 sentences"}"""
 
 
-def _check(countries):
+def _check(countries, lo: float = 0.3, hi: float = 2.5):
     def check(out: dict) -> str | None:
         ci = canon_keys(out.get("country_index") or {}, countries)
         miss = [c for c in countries if c not in ci]
@@ -39,8 +40,8 @@ def _check(countries):
             return f"country_index missing (exact names): {miss}"
         for c in countries:
             v = num((ci[c] or {}).get("index"))
-            if v is None or not (0.3 <= v <= 2.5):
-                return f"country_index[{c}].index must be between 0.3 and 2.5"
+            if v is None or not (lo <= v <= hi):
+                return f"country_index[{c}].index must be between {lo} and {hi}"
         t = num((out.get("price_trend") or {}).get("annual_change"))
         if t is None or not (-0.05 <= t <= 0.1):
             return "price_trend.annual_change must be a decimal between -0.05 and 0.10"
@@ -48,7 +49,28 @@ def _check(countries):
     return check
 
 
+def _pricing_generic(state: dict) -> dict:
+    llm, tax, sz = state["llm"], state["tax"], state["sizing"]
+    bu = sz["bottom_up"]["by_application"]
+    unit = sz.get("volume_unit") or state["scope"].get("volume_unit", "one unit")
+    dim = tax.priced_dimension
+    base = "\n".join(f"- {a}: {tax.root} average US$ {r['spend_per_unit_usd']:,.2f} per unit" for a, r in bu.items())
+    facts = select_facts(state.get("facts", []), themes=("pricing", "players"), limit=30)
+    critique = state.get("critique", {}).get("pricing", "")
+    user = (f"MARKET: {state['cfg'].market_name}\nSCOPE: {state['scope'].get('value_basis', '')}\nVOLUME UNIT: {unit}\n\n"
+            f"AVERAGE PRICE PER SEGMENT OF {dim.title} ({tax.root}):\n{base}\n\n"
+            f"COUNTRIES (exact names): {tax.leaves}\n\nWEB EVIDENCE (verified quotes):\n{fmt_facts(facts)}"
+            + scope_block(state) + house(state, "pricing")
+            + (f"\n\nREVIEWER CRITIQUE OF YOUR LAST ATTEMPT - address it:\n{critique}" if critique else ""))
+    lo, hi = G.PRICE_INDEX_RANGE
+    out = llm.json("pricing", G.PRICING.format(unit=unit, dim=dim.title), user, check=_check(tax.leaves, lo, hi),
+                   temperature=0.3)
+    return {"pricing_raw": out, "log": state.get("log", []) + ["pricing: done"]}
+
+
 def pricing_node(state: dict) -> dict:
+    if getattr(state["cfg"], "generic", False):
+        return _pricing_generic(state)
     llm, tax, oem = state["llm"], state["tax"], state["oem"]
     bu = state["sizing"]["bottom_up"]["by_application"]
     base = "\n".join(f"- {a}: global average US$ {r['spend_per_unit_usd']:,.0f} per installed gearbox per year "
