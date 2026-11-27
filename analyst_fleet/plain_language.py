@@ -15,6 +15,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
+from .agents import generic as G
 from .llm import LLMFatal
 from .syslog import event
 
@@ -139,7 +140,15 @@ def plain_texts(state: dict, rows: list[dict]) -> dict[str, str]:
     gen = state["sizing"].get("mode") == "generic"
     _UNIT["label"] = state["sizing"].get("volume_unit") if gen else None
     system = EDITOR_SYSTEM.format(market=cfg.market_name)
-    if gen:
+    if gen and G.INDUSTRY == "neutral":         # non-healthcare markets (FLEET_INDUSTRY=neutral)
+        system = (system.replace("Compressors account for about half of Germany's gearbox\n    aftermarket",
+                                 "Product A accounts for about half of Germany's market")
+                  .replace("(installed fleet, industries, utilisation,\n    ageing assets, capacity additions, labour cost, "
+                           "OEM vs independent service ...)",
+                           "(demand base and adoption, prices, competition and\n    substitutes, capacity and "
+                           "investment, regulation ...)")
+                  .replace("compressors take 50%", "product A takes 50%"))
+    elif gen:
         system = (system.replace("Compressors account for about half of Germany's gearbox\n    aftermarket",
                                  "Tablets account for about half of Germany's market")
                   .replace("(installed fleet, industries, utilisation,\n    ageing assets, capacity additions, labour cost, "

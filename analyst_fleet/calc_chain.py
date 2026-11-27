@@ -7,6 +7,7 @@ the saved state, so the arithmetic shown is exactly the arithmetic that produced
 """
 from __future__ import annotations
 
+import re
 from typing import Any
 
 
@@ -34,15 +35,23 @@ def _raw_items(state, parent: str) -> dict:
 def _generic_global_steps(state: dict, full: bool) -> tuple[list[str], list[str]]:
     sz, tax = state["sizing"], state["tax"]
     G = state["numbers"]["geo"]["value"][tax.root]
+    rs = sz.get("rescale")                     # set only by rescale_family.py (sibling markets tied to one total)
+    G0 = rs["original_usd_mn"] if rs else G
     bu, td, cm = sz["bottom_up"], sz["top_down_usd_mn"], sz.get("cited_median_usd_mn")
     tdp = sz.get("top_down_parent") or {}
     w = {k: _f(v, 0.0) for k, v in (sz.get("weights") or {}).items()}
     blend = (f"[2A] {tax.root} 2025 = {w.get('bottom_up', 0):.2f} x bottom-up US$ {bu['total_usd_mn']:,.1f} Mn + "
              f"{w.get('top_down', 0):.2f} x top-down US$ {td:,.1f} Mn"
-             + (f" + {w.get('cited', 0):.2f} x published US$ {cm:,.1f} Mn" if cm else "") + f" = US$ {G:,.1f} Mn")
+             + (f" + {w.get('cited', 0):.2f} x published US$ {cm:,.1f} Mn" if cm else "") + f" = US$ {G0:,.1f} Mn"
+             + (" (before rescaling)" if rs else ""))
+    tail = ([f"[2A] Rescaled: {rs['basis']} -> {tax.root} 2025 = US$ {rs['target_usd_mn']:,.1f} Mn "
+             f"(= US$ {G0:,.1f} Mn x {rs['factor']:.4f}); every share, CAGR and price is unchanged"] if rs else [])
     wts = (f"route weights bottom-up {w.get('bottom_up', 0):.2f} / top-down {w.get('top_down', 0):.2f} / "
            f"published {w.get('cited', 0):.2f}")
     if not full:
+        if rs:                                 # every other cell starts from the rescaled total, not the old blend
+            return [f"[2A] {tax.root} 2025 = whole market US$ {rs['family_total_usd_mn']:,.0f} Mn x "
+                    f"{rs['family_share']:.0%} = US$ {G:,.1f} Mn (full build-up: {tax.root} value cell / Sizing sheet)"], [wts]
         return [blend + f" (full build-up: {tax.root} value cell / Sizing sheet)"], [wts]
     steps, assum = [], []
     for a, r in bu["by_application"].items():
@@ -60,6 +69,7 @@ def _generic_global_steps(state: dict, full: bool) -> tuple[list[str], list[str]
                           f" moved to 2025 = US$ {c['value_2025_in_scope_usd_mn']:,.1f} Mn" for c in sz.get("cited") or [])
         steps.append(f"[2A] Published figures converted to the client scope: {cites}; median = US$ {cm:,.1f} Mn")
     steps.append(blend)
+    steps += tail
     return steps, [f"top-down share of {tdp.get('parent_market')}: {_f(tdp.get('share_of_parent'), 0):.3f}", wts] + assum
 
 
@@ -222,7 +232,16 @@ def chain(state: dict, c) -> dict[str, str]:
         gen = state["sizing"].get("mode") == "generic"
         unit = state["sizing"].get("volume_unit", "unit")
         base_seg = c.seg if c.seg in bu else (c.parent_seg if gen and c.parent_seg in bu else None)
-        if gen and base_seg:
+        si_ = (pr.get("segment_index") or {}).get(base_seg, {}).get(c.geo) if base_seg else None
+        if gen and base_seg and si_ is not None:          # combined market: each component keeps its own sheet's price
+            r = bu[base_seg]
+            steps.append(f"[2C] {base_seg} average price ({tax.root}) = US$ {r['spend_per_unit_usd']:,.2f} per unit (component sheet)")
+            steps.append(f"[2A] {c.geo} price index for {base_seg} = {si_:.3f} (the component sheet's own index, kept so the "
+                         f"price equals that sheet's)")
+            steps.append(f"=> US$ {r['spend_per_unit_usd']:,.2f} x {si_:.3f} = US$ {val:,.2f} per unit")
+            assum += [f"{base_seg} price US$ {r['spend_per_unit_usd']:,.2f} per unit (component sheet)",
+                      f"{c.geo} price index {si_:.3f} for {base_seg} (component sheet)"]
+        elif gen and base_seg:
             r = bu[base_seg]
             steps.append(f"[2C] {base_seg} average price ({tax.root}) = US$ {r['spend_per_unit_usd']:,.2f} per {unit} (sizing build)"
                          + (f"; {c.seg} carries its parent's price" if base_seg != c.seg else ""))
@@ -256,6 +275,12 @@ def chain(state: dict, c) -> dict[str, str]:
                 steps.append(f"=> volume implied: {c.seg} value US$ {a_val:,.2f} Mn / US$ {val:,.2f} = {units:,.0f} units")
             else:
                 steps.append(f"=> serviced gearboxes implied: {c.seg} value US$ {a_val:,.2f} Mn / US$ {val:,.0f} = {units:,.0f} gearboxes")
+    if state["sizing"].get("combined_from"):          # combined market: shares/growth are sums of the component sheets
+        def _src(x: str) -> str:
+            x = x.replace("(analyst judgement)", "(computed from the component sheets)")
+            x = re.sub(r"\(([^()]*?)analyst (?=[-+\d])", r"(\1component sheets ", x)
+            return x.replace("growth premium: analyst", "growth premium: component sheets")
+        steps, assum = [_src(x) for x in steps], [_src(x) for x in assum]
     contrib = {s: " | ".join(x for x in steps if x.startswith(f"[{s}]")) or "not used for this number" for s in ("2A", "2B", "2C")}
     return {"calc": "\n".join(steps), "assumptions": "; ".join(dict.fromkeys(assum)),
             "c2A": contrib["2A"], "c2B": contrib["2B"], "c2C": contrib["2C"]}

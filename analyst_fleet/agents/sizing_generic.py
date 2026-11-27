@@ -17,7 +17,7 @@ segment, with spend_per_unit_usd = price per unit), so pricing, compute and the 
 from __future__ import annotations
 
 from .common import canon_keys, dump, fmt_facts, house, num, scope_block, select_facts
-from .generic import PERSONA
+from .generic import INDUSTRY, PERSONA
 
 STEP1 = PERSONA + """
 
@@ -57,6 +57,12 @@ Use decimals for shares and factors. Only list cited figures that are actually i
 cited_forecasts = every published FUTURE value of this market in the evidence (the value, not the CAGR the source
 quotes). The code works out the growth each implies from our own 2025 base - do not copy a source's CAGR, because
 it starts from that source's base year and base size."""
+if INDUSTRY == "neutral":                       # non-healthcare markets (FLEET_INDUSTRY=neutral); healthcare unchanged
+    _HC_BASE = "(e.g. treated patients, animals, sites, labs,\n    installed units, packs)"
+    if _HC_BASE not in STEP1:
+        raise RuntimeError("sizing_generic.py neutral wording: base-count example not found in STEP1")
+    STEP1 = STEP1.replace(_HC_BASE, "(e.g. acreage treated, households, installed assets,\n"
+                                    "    facilities, units shipped, production volume)")
 
 STEP2 = PERSONA + """
 

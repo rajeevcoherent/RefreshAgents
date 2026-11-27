@@ -8,6 +8,9 @@ Segmentation text conventions handled (as written by the research team):
   "By X" / "1. By X"        a dimension header
   "- item" / "  - item"     items; two spaces of indent per level
   bare lines                top-level items in dimensions written as "Group" + "- member" lists
+  "• item" / "  ◦ item"     bulleted sheets: "•" is a segment, "◦" or a deeper-indented "•" its sub-segment;
+                            "Total" rows and "X Vs Y" cross-tables are dropped (text without bullets is
+                            parsed exactly as before)
 Levels below the second are not separate rows in the Input Sheet; they are kept as the
 "covers" note of their level-2 parent so analysts still see them. Duplicate names within one
 dimension get their parent in brackets so every row is unique.
@@ -47,8 +50,61 @@ def _clean(s: str) -> str:
     return re.sub(r"\s+", " ", (s or "").replace(" ", " ")).strip()
 
 
+BULLETS = "•◦▪"
+XTAB = re.compile(r"(?i)\bvs\.?\s")
+
+
+def _bullet_blocks(text: str) -> list[tuple[str, list[tuple[int, str]]]]:
+    """Bulleted segmentation text ("•" items, "◦" or deeper-indented "•" sub-items) -> [(title, [(level, name)])].
+    A non-indented line without a bullet is a dimension header; "X Vs Y" cross-tables and "Total" rows are dropped."""
+    raw: list[tuple[str, list[str]]] = []
+    for line in text.replace("\r", "").split("\n"):
+        s = line.strip()
+        if not s:
+            continue
+        is_item = s[0] in BULLETS or s.startswith("-")
+        m = HEADER.match(line)
+        if not is_item and (m or not line[0].isspace()):
+            raw.append(("By " + _clean(m.group(2)) if m else _clean(s), []))
+        elif raw:
+            raw[-1][1].append(line.rstrip())
+    blocks = []
+    for title, lines in raw:
+        if XTAB.search(title):
+            continue                                # cross-table of two dimensions, not a dimension
+        dot_indents = sorted({len(l) - len(l.lstrip()) for l in lines if l.strip()[0] in "•▪-"})
+        items, last = [], 0
+        for l in lines:
+            s = l.strip()
+            name = _clean(s.lstrip(BULLETS + "-"))
+            if not name or name.lower() == "total":
+                continue
+            if s[0] == "◦":
+                lv = last + 1                       # hollow bullet: one level below the "•" above it
+            else:
+                ind = len(l) - len(l.lstrip())
+                lv = dot_indents.index(ind) if ind in dot_indents else 0
+                last = lv
+            items.append((lv, name))
+        blocks.append((title, items))
+    return blocks
+
+
 def parse_segmentation(text: str) -> tuple[list[dict], dict[str, list[str]]]:
     """-> (dimensions in taxonomy shape, geography dims {title: [names]})."""
+    if any(c in (text or "") for c in BULLETS):
+        # bulleted sheets: rewrite each dimension in the dashed form below and parse it the same way
+        dims, geo_dims = [], {}
+        for title, items in _bullet_blocks(text):
+            if GEO_DIM.match(title):
+                geo_dims[title] = [n for lv, n in items if lv == 0]
+                continue
+            d, _ = parse_segmentation("\n".join(["By DIMENSION"] + [("  " * (lv - 1) + "- " + n) if lv else n
+                                                                     for lv, n in items]))
+            for x in d:
+                x["title"] = title
+            dims += d
+        return dims, geo_dims
     blocks: list[tuple[str, list[str]]] = []
     for line in (text or "").replace("\r", "").split("\n"):
         if not line.strip():
@@ -155,7 +211,7 @@ def load_sheet(path: Path) -> list[dict]:
         notes = {s: n for d in dims for s, n in d.pop("notes").items()}
         for i, d in enumerate(dims):
             d["priced"] = i == 0                   # first dimension is the product view in these sheets
-        short = re.sub(r"(?i)^(global\s*(&|and)\s*u\.?s\.?|global|asia pacific|japan)\s+", "", title)
+        short = re.sub(r"(?i)^(global\s*(&|and)\s*(u\.?s\.?|russia)|global|asia pacific|japan)\s+", "", title)
         short = re.sub(r"(?i)\s+market$", "", short).strip().lower()
         tax = {"_note": f"Generated from the client scope sheet ({path.name}); labels only.",
                "market_name": title, "short_name": short, "base_year": 2025, "forecast_end_year": 2032,

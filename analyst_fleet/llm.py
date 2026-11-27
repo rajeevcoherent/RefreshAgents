@@ -42,6 +42,34 @@ class LLMFatal(LLMError):
     """Account-level refusal (no balance, bad key): stop instead of retrying."""
 
 
+def repair_comma_slip(txt: str, err: json.JSONDecodeError, max_fixes: int = 5) -> tuple[Any, list[str]]:
+    """Repair ONLY one model slip in a reply that already failed to parse: right after a text value
+    ("...") the comma is missing before the next key, or a stray "]" stands where the comma belongs ("],").
+    Returns (object, fixes) or (None, []) if the reply has any other defect - then it stays rejected."""
+    fixes: list[str] = []
+    for _ in range(max_fixes):
+        if not err.msg.startswith("Expecting ',' delimiter"):
+            return None, []
+        pos = err.pos
+        before = txt[:pos].rstrip()
+        if not before.endswith('"'):                    # must follow a text value
+            return None, []
+        rest = txt[pos:]
+        if rest.startswith('"'):                        # missing comma before the next key
+            txt = before + "," + txt[len(before):]
+            fixes.append(f"comma inserted at char {len(before)}")
+        elif rest.startswith("]") and rest[1:].lstrip().startswith(","):   # "]," where "," belongs
+            txt = txt[:pos] + txt[pos + 1:]
+            fixes.append(f"stray ']' removed at char {pos}")
+        else:
+            return None, []
+        try:
+            return json.loads(txt), fixes
+        except json.JSONDecodeError as e:
+            err = e
+    return None, []
+
+
 
 # USD per 1M tokens at PEAK rate (api-docs.deepseek.com/quick_start/pricing, read 2026-11-23):
 # (input cache hit, input cache miss, output). Off-peak = half. Peak = 01:00-04:00 and 06:00-10:00 UTC,
@@ -177,11 +205,18 @@ class LLM:
                     out = json.loads(txt)
                 except json.JSONDecodeError as e0:
                     if "Extra data" not in str(e0):
-                        raise
-                    # a complete object followed by stray text: keep the object, log the repair
-                    out, end = json.JSONDecoder().raw_decode(txt.strip())
-                    event("restriction.repair", role=role, model=model, attempt=attempt + 1,
-                          reason=f"trailing text after json dropped ({len(txt.strip()) - end} chars)")
+                        # only for replies that already failed: the missing-comma / "]," slip after a text value
+                        out, fixes = repair_comma_slip(txt, e0)
+                        if out is None:
+                            raise
+                        log.warning("[%s] repaired json: %s", role, "; ".join(fixes))
+                        event("restriction.repair", role=role, model=model, attempt=attempt + 1,
+                              reason="comma slip after a text value fixed: " + "; ".join(fixes))
+                    else:
+                        # a complete object followed by stray text: keep the object, log the repair
+                        out, end = json.JSONDecoder().raw_decode(txt.strip())
+                        event("restriction.repair", role=role, model=model, attempt=attempt + 1,
+                              reason=f"trailing text after json dropped ({len(txt.strip()) - end} chars)")
             except json.JSONDecodeError as e:
                 last_err = f"invalid json: {e}"
                 rec = self._record(status="invalid_json", reason=last_err, **rec_args)

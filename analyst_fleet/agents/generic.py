@@ -195,3 +195,112 @@ def house_growth_bands(level: str) -> str:
 GEO_CAGR_RANGE = (-0.15, 0.60)
 PREMIUM_MAX = 0.20
 PRICE_INDEX_RANGE = (0.05, 6.0)
+
+
+# ---------------------------------------------------------------------------------------------------
+# Industry-neutral wording for non-healthcare markets. Chosen once per process, before any other module
+# builds its prompts: FLEET_INDUSTRY=neutral. Unset (default) = the healthcare text above, unchanged.
+# Only example words change; reply formats, rules and validator ranges are the same.
+import os as _os
+
+HC_PERSONA = PERSONA
+NEUTRAL_PERSONA = """You are a senior, opinionated market-research analyst. For every assignment you work as a
+specialist in the industry of the market named in the task - its value chain, who buys from
+whom, how products are specified, priced and sold, and the companies that compete in it. You
+know how such markets are sized in practice: the demand base (acreage treated, households,
+installed assets and facilities, production volumes, units shipped, IT and capital budgets),
+penetration and adoption, replacement and upgrade cycles, price per unit and price trends,
+channel structure and margins, capacity, investment cycles and regulation.
+
+How you work:
+- You COMMIT to a specific number for every item you are asked for. No ranges where a point value
+  is requested, no refusals, no "it depends".
+- Every number is defended with concrete reasoning: demand base and how much of it is reached,
+  adoption and replacement, price and margin structure, competition and substitutes, supply and
+  capacity, regulation and standards, and geopolitics (trade restrictions, tariffs, sanctions,
+  local-content rules, energy and input costs, currency stress, conflict) when it matters.
+- Stay inside the client's scope: count only what the definition includes and nothing it excludes.
+- Cite evidence ids (e.g. "W12") only for evidence you were actually given and used. Anything else
+  is labelled analyst judgment. Never invent sources.
+- Use decimals for shares and growth rates (0.065 = 6.5%)."""
+
+_BASE_YEAR = [
+    ("Weigh launch / approval dates, reimbursement and coverage status, price level, and company-reported",
+     "Weigh launch / approval dates, adoption status, price level, and company-reported"),
+    ("A large patient or user population in a market that launched recently, has no\nreimbursement or sells at a low price",
+     "A large user population in a market where the product launched recently, is not yet\nadopted or sells at a low price"),
+]
+_NEUTRAL_SWAPS = {
+    "SCOPE": [
+        ("e.g. one primary indication per prescription", "e.g. one primary application per sale"),
+        ("(e.g. one patient-year of therapy, one pack, one kiosk installed, one service contract)",
+         "(e.g. one tonne, one unit shipped, one system installed, one licence or service contract)"),
+        ("(patients, animals, sites, labs, installed units)",
+         "(end users, installed assets, facilities, production volumes)"),
+    ],
+    "PLAN": [
+        ("company product revenues (annual reports, earnings) where the market is a few products",
+         "company segment revenues (annual reports, earnings) where a few companies dominate"),
+        ("the demand base: patients / prevalence / treated population, animal populations,\n"
+         "                    procedures, sites, labs, installed units, research spend",
+         "the demand base: end users, installed base of assets or facilities,\n"
+         "                    production or consumption volumes, capital and IT budgets"),
+        ("list / net prices, cost per unit or per year of therapy, contract prices",
+         "list / transaction prices, cost per unit, contract and subscription prices"),
+        ("(approvals, reimbursement, access, spend)", "(capacity, investment, regulation, spend)"),
+        ("(formulation, indication, product type, channel, end user)",
+         "(product type, application, technology, channel, end user)"),
+        ("approvals, launches, shortages, patent expiries, pricing reform, tariffs",
+         "launches, capacity additions, regulation, M&A, shortages, tariffs and trade measures"),
+    ],
+    "REGIONAL": [
+        ("Think demand base first (patients / animals / sites / installed units and how many are reached),\n"
+         "then access and price (reimbursement, payer mix, list vs net price, generic penetration), then\n"
+         "growth: approvals and launches, uptake, capacity, pricing reform, competition and geopolitics.",
+         "Think demand base first (end users, installed assets, facilities, production volumes and how much\n"
+         "of it is reached), then price and channel (price level, product mix, channel structure, local vs\n"
+         "imported supply), then growth: adoption and replacement, capacity and investment, regulation,\n"
+         "competition and geopolitics."),
+    ] + _BASE_YEAR,
+    "COUNTRY": [
+        ("its demand base, access and reimbursement, price level, the\ncompanies and products present, "
+         "approvals and launch timing, local manufacturing, and the\ngeopolitical, regulatory and macro factors "
+         "that raise or cut spend (pricing reform, tariffs,\ntrade restrictions, local-content rules, currency and "
+         "financing stress).",
+         "its demand base, adoption, price level, the\ncompanies and products present, regulation and launch "
+         "timing, local manufacturing, and the\ngeopolitical, regulatory and macro factors that raise or cut "
+         "spend (tariffs, sanctions,\ntrade restrictions, local-content rules, subsidies, currency and financing "
+         "stress)."),
+    ] + _BASE_YEAR,
+    "SEG_THINK": [
+        ("(epidemiology, approvals, reimbursement, channels,\nproduct availability, price)",
+         "(end-use industry mix, adoption, regulation, channels,\nproduct availability, price)"),
+    ],
+    "PRICING": [
+        ("think list vs net prices, reimbursement and price controls, generic / biosimilar competition,\n"
+         "tiered or reference pricing, import duties and logistics, currency, and channel mix.",
+         "think list vs transaction prices, local vs imported supply, competition and low-cost substitutes,\n"
+         "purchasing scale and contracts, import duties and logistics, currency, and channel mix."),
+    ],
+    "REVIEW": [],
+}
+
+
+def _neutral(name: str, text: str) -> str:
+    """Healthcare prompt -> neutral prompt. Every phrase must be found, so no healthcare wording slips through."""
+    if text.startswith(HC_PERSONA):
+        text = NEUTRAL_PERSONA + text[len(HC_PERSONA):]
+    for old, new in _NEUTRAL_SWAPS[name]:
+        if old not in text:
+            raise RuntimeError(f"generic.py neutral wording: phrase not found in {name}: {old[:60]!r}")
+        text = text.replace(old, new)
+    return text
+
+
+INDUSTRY = _os.environ.get("FLEET_INDUSTRY", "healthcare").strip().lower() or "healthcare"
+if INDUSTRY not in ("healthcare", "neutral"):
+    raise ValueError(f"FLEET_INDUSTRY must be 'healthcare' or 'neutral', got {INDUSTRY!r}")
+if INDUSTRY == "neutral":
+    PERSONA = NEUTRAL_PERSONA
+    SCOPE, PLAN, REGIONAL, COUNTRY, SEG_THINK, PRICING, REVIEW = (
+        _neutral(n, globals()[n]) for n in ("SCOPE", "PLAN", "REGIONAL", "COUNTRY", "SEG_THINK", "PRICING", "REVIEW"))

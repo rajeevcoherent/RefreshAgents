@@ -156,7 +156,9 @@ def _generic_fallback(state: dict) -> list[tuple[str, str]]:
     name = state["tax"].short_name
     return [(f"{name} market size 2025", "global_size"), (f"{name} revenue 2024 annual report", "global_size"),
             (f"{name} sales by region", "regional"), (f"{name} price per unit cost", "pricing"),
-            (f"{name} key companies market share", "players"), (f"{name} patients prevalence demand", "installed_base"),
+            (f"{name} key companies market share", "players"),
+            (f"{name} installed base demand volume" if G.INDUSTRY == "neutral" else f"{name} patients prevalence demand",
+             "installed_base"),
             (f"{name} approval launch 2025", "current_events"), (f"{name} market growth forecast 2032", "global_size")]
 
 

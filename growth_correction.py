@@ -96,6 +96,14 @@ rolled out, growth is far above the parent rate; where it is established (early 
 already reached) growth is closer to or below the parent rate. Say for each geography where it is on that curve
 (approval date, reimbursement status, supply, price) and size the gap accordingly. Wide differences between
 geographies are expected here."""
+if G.INDUSTRY == "neutral":                     # non-healthcare markets (FLEET_INDUSTRY=neutral); healthcare unchanged
+    LAUNCH_RULE = """
+LAUNCH-PHASE PRODUCT: this product is in its first years on the market, so growth across geographies follows
+LAUNCH TIMING, not the mature-market pattern: where it launched recently, is at an early adoption stage, or is still
+being rolled out, growth is far above the parent rate; where it is established (early launch, broad adoption, mature
+price already reached) growth is closer to or below the parent rate. Say for each geography where it is on that curve
+(launch / rollout timing, adoption stage, supply, price) and size the gap accordingly. Wide differences between
+geographies are expected here."""
 
 GEO_GROWTH = G.PERSONA + """
 
@@ -133,6 +141,43 @@ def distinct_endpoints(fs: list[dict], base: float, base_year: int = 2025) -> li
         v = fig * sf
         out.append({**f, "value_in_scope_usd_mn": v, "implied_cagr": (v / base) ** (1 / (yr - base_year)) - 1})
     return out
+
+
+WHOLE_MARKET = (0.8, 1.25)        # scope factors of forecasts for the same market (not a country / segment / sub-product)
+MIN_ENDPOINTS = 3                 # fewer whole-market forecasts than this: the sheet's global CAGR stays as it is
+
+
+def select_endpoints(ends: list[dict]) -> tuple[list[dict], list[dict]]:
+    """-> (used, excluded). Only whole-market forecasts set the range: a country, segment or sub-product forecast
+    scaled to the whole market by a large factor is unreliable (one bad factor used to set the range by itself).
+    With 4+ whole-market forecasts, implied CAGRs outside the Tukey fences (Q1 - 1.5 IQR, Q3 + 1.5 IQR) are dropped."""
+    used, excluded = [], []
+    for e in ends:
+        sf = num(e.get("scope_factor"))
+        (used if WHOLE_MARKET[0] <= sf <= WHOLE_MARKET[1] else excluded).append(e)
+    for e in excluded:
+        e["excluded"] = "not a whole-market forecast (scope factor outside 0.8-1.25)"
+    if len(used) >= 4:
+        imp = sorted(e["implied_cagr"] for e in used)
+
+        def q(p: float) -> float:                      # linear-interpolation quantile
+            k = (len(imp) - 1) * p
+            f = int(k)
+            return imp[f] + (imp[min(f + 1, len(imp) - 1)] - imp[f]) * (k - f)
+        q1, q3 = q(0.25), q(0.75)
+        lo_f, hi_f = q1 - 1.5 * (q3 - q1), q3 + 1.5 * (q3 - q1)
+        keep = [e for e in used if lo_f <= e["implied_cagr"] <= hi_f]
+        for e in used:
+            if e not in keep:
+                e["excluded"] = f"outlier (implied CAGR outside {lo_f:.2%}-{hi_f:.2%})"
+                excluded.append(e)
+        used = keep
+    if len(used) < MIN_ENDPOINTS:                      # too little comparable evidence: the global CAGR is not changed
+        for e in used:
+            e["excluded"] = f"only {len(used)} whole-market forecast(s); at least {MIN_ENDPOINTS} needed to change the CAGR"
+        excluded += used
+        used = []
+    return used, excluded
 
 
 def _check_growth(lo: float, med: float, hi: float):
@@ -240,7 +285,11 @@ def main() -> int:
                       check=_check_endpoints([c["id"] for c in cands]), temperature=0.1)
         jc = canon_keys(fc["candidates"], [c["id"] for c in cands])
         fcs = [{**c, **{k: jc[c["id"]].get(k) for k in ("scope_factor", "source_name", "reasoning")}} for c in cands]
-    ends = distinct_endpoints(fcs, base)
+    all_ends = distinct_endpoints(fcs, base)
+    ends, excluded = select_endpoints(all_ends)
+    for e in excluded:
+        print(f"  excluded {e.get('evidence')}: US$ {num(e['figure_usd_mn']):,.0f} Mn {e['year']} x {num(e['scope_factor'])} "
+              f"-> {e['implied_cagr']:.2%} - {e['excluded']}")
     sz = state["sizing"]
     old_cagr = sz["global_cagr"]
     if ends:
@@ -257,7 +306,7 @@ def main() -> int:
                        f"(midpoint {(lo + hi) / 2:.2%}).") + (f" Departure: {g['departure_reason']}" if g.get("departure_reason") else "")
     else:
         new_cagr, growth_text = old_cagr, sz["step1"].get("cagr_reasoning", "")
-        print("no published forecast values found - global CAGR left unchanged")
+        print(f"fewer than {MIN_ENDPOINTS} usable whole-market forecast values - global CAGR left unchanged")
     sz["step1"]["cagr_reasoning_initial"] = sz["step1"].get("cagr_reasoning", "")
     sz["step1"]["global_cagr_initial"] = old_cagr
     sz["step1"]["cagr_reasoning"] = f"[{LABEL}: {old_cagr:.2%} -> {new_cagr:.2%}] " + growth_text
@@ -325,6 +374,7 @@ def main() -> int:
     new_geo = state["numbers"]["geo"]
     state["growth_correction"] = {
         "source": str(src), "global_cagr": [old_cagr, new_geo["cagr"][root]], "endpoints": ends,
+        "excluded_endpoints": excluded,
         "prior_items": [r["id"] for r in records],
         "cagr_changes": {k: [old_geo["cagr"][k], new_geo["cagr"][k]] for k in new_geo["cagr"]}}
     state["log"] = (state.get("log") or []) + [f"growth correction: CAGR {old_cagr:.2%} -> {new_geo['cagr'][root]:.2%}; "

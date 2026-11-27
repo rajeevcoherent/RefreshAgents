@@ -311,7 +311,7 @@ def write_workbook(state: dict, path: Path) -> Path:
     sw.append(["Triangulation weights", json.dumps({k: round(v, 3) for k, v in sz["weights"].items()})])
     sw.append(["Triangulation reasoning", s2.get("reasoning", "")])
     sw.append([])
-    sw.append(["Route", "US$ Mn"])
+    sw.append(["Route (independent estimate, BEFORE rescaling - see row 4)" if sz.get("rescale") else "Route", "US$ Mn"])
     if sz.get("mode") == "generic":
         _generic_sizing_rows(sw, sz)
     else:
